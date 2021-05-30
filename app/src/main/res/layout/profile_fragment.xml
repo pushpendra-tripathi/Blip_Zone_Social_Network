@@ -112,10 +112,11 @@
         android:layout_height="wrap_content"
         android:numColumns="2"
         android:padding="10dp"
+        android:gravity="center"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:listitem="@layout/profile_fragment" />
+        tools:listitem="@layout/card_profile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

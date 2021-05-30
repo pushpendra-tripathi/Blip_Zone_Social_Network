@@ -1,4 +1,4 @@
-package com.starlord.blipzone.base;
+package com.starlord.blipzone.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;

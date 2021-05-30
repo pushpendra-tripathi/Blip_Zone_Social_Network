@@ -7,8 +7,11 @@ import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.starlord.blipzone.base.VolleyClient;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
+import com.starlord.blipzone.configurations.UrlConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +60,35 @@ public class CommonClassForAPI {
                 return params;
             }
         };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public static void callRegisterRequest(Activity context, String username, String email,
+                                           String password, ApiResultCallback apiResultCallback) {
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("username", username);
+            params.put("email", email);
+            params.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "callAuthAPI: url  " + UrlConstants.REGISTER_USER);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, UrlConstants.REGISTER_USER, params, response -> {
+                    Log.d(TAG, "onResponse: callAuthAPI JSONObject " + response);
+                    apiResultCallback.onAPIResultSuccess(response);
+                }, error -> {
+                    Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error);
+                    apiResultCallback.onAPIResultError(error);
+
+                });
 
         // Access the RequestQueue through your singleton class.
         VolleyClient.getInstance(context).addToRequestQueue(jsonObjectRequest);

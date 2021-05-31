@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/username_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -49,7 +49,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username" />
+            app:layout_constraintTop_toBottomOf="@id/username_sign_up" />
 
         <EditText
             android:id="@+id/email_sign_up"
@@ -109,7 +109,7 @@
             app:layout_constraintTop_toBottomOf="@id/sign_up_btn">
 
             <TextView
-                android:id="@+id/signup"
+                android:id="@+id/login_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Already have an account ?"

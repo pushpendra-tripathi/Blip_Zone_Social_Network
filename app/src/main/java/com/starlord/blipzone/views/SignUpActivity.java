@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 
 import org.json.JSONException;
@@ -65,17 +66,24 @@ public class SignUpActivity extends AppCompatActivity {
                     userNameValue,
                     emailValue,
                     passwordValue,
-                    new ApiResultCallback() {
+                    new ApiResponseCallback() {
                         @Override
-                        public void onAPIResultSuccess(JSONObject jsonObject) {
+                        public void onApiSuccessResult(JSONObject jsonObject) {
                             Log.d(TAG, "onResponse: Success");
                             progressDialog.dismiss();
                             processLoginResponse(jsonObject);
                         }
 
                         @Override
-                        public void onAPIResultError(VolleyError volleyError) {
-                            Log.d(TAG, "onAPIResultError: " + volleyError.toString());
+                        public void onApiFailureResult(Exception e) {
+                            Log.d(TAG, "onAPIResultError: " + e.toString());
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onApiErrorResult(VolleyError volleyError) {
+                            Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                            Toast.makeText(SignUpActivity.this, "Either username or email is already registered", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         }
                     });
@@ -93,9 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignUpActivity.this, VerificationActivity.class);
                 intent.putExtra("email", email.getText().toString());
                 startActivity(intent);
-            } else {
-                Toast.makeText(SignUpActivity.this, details, Toast.LENGTH_LONG).show();
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

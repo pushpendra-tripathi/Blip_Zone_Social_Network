@@ -4,7 +4,6 @@ package com.starlord.blipzone.api;
 import android.app.Activity;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -21,10 +20,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
+
 public class CommonClassForAPI {
     private static final String TAG = "CommonClassForAPI";
 
-    public static void callGetRequest(Activity context, String url, ApiResultCallback apiResultCallback) {
+    public static void callAuthGetRequest(Activity context, String url, ApiResultCallback apiResultCallback) {
         Log.d(TAG, "callAuthAPI: url  " + url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -35,10 +36,58 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error);
                     apiResultCallback.onAPIResultError(error);
 
-                });
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return params;
+            }
+        };
 
         // Access the RequestQueue through your singleton class.
         VolleyClient.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public static void callAuthPostRequest(Activity context, String url, ApiResponseCallback apiResponseCallback) {
+
+        StringRequest callRequest = new StringRequest
+                (Request.Method.POST, url, response -> {
+                    try {
+                        Log.d(TAG, "onResponse: LoginAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
+                    } catch (JSONException e) {
+                        apiResponseCallback.onApiFailureResult(e);
+                    }
+                },
+                        (VolleyError error) -> {
+                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
+                            if (error != null) {
+                                NetworkResponse networkResponse = error.networkResponse;
+                                Log.d(TAG, "onErrorResponse: LoginAPI " + networkResponse);
+                                apiResponseCallback.onApiErrorResult(error);
+                            }
+                        }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
 
     }
 
@@ -126,7 +175,7 @@ public class CommonClassForAPI {
     }
 
     public static void callLoginRequest(Activity context, String loginData, String password,
-                                               ApiResponseCallback apiResponseCallback) {
+                                        ApiResponseCallback apiResponseCallback) {
 
         StringRequest callRequest = new StringRequest
                 (Request.Method.POST, UrlConstants.LOGIN_USER, response -> {

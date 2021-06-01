@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
-import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResponseCallback;
 
 import org.json.JSONException;
@@ -28,7 +27,7 @@ public class VerificationActivity extends AppCompatActivity {
     TextView resendOTP, resendCounter;
     String email;
     private ProgressDialog progressDialog;
-    String TAG = "VerificationActivity";
+    String TAG = "VerificationActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +35,7 @@ public class VerificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verification);
         getSupportActionBar().hide();
 
-        verificationOTP = findViewById(R.id.verification_otp);
-        verify = findViewById(R.id.verify_btn);
-        resendCounter = findViewById(R.id.resent_otp_counter);
-        resendOTP = findViewById(R.id.resend_otp);
-        progressDialog = new ProgressDialog(this);
+        initializeViews();
 
         email = getIntent().getStringExtra("email");
 
@@ -90,13 +85,24 @@ public class VerificationActivity extends AppCompatActivity {
         });
     }
 
+    private void initializeViews() {
+        verificationOTP = findViewById(R.id.verification_otp);
+        verify = findViewById(R.id.verify_btn);
+        resendCounter = findViewById(R.id.resent_otp_counter);
+        resendOTP = findViewById(R.id.resend_otp);
+        progressDialog = new ProgressDialog(this);
+    }
+
     private void processVerificationResponse(JSONObject jsonObject) {
         try {
             boolean status = jsonObject.getBoolean("status");
-            String details = jsonObject.getString("details");
+            String details = jsonObject.getString("detail");
 
             if (status) {
                 Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
+                Toast.makeText(VerificationActivity.this,
+                        details,
+                        Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             } else {
                 Toast.makeText(VerificationActivity.this,

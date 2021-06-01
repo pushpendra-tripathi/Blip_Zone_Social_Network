@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static com.starlord.blipzone.configurations.UrlConstants.*;
+
 public class GlobalVariables {
 
     private static final String SHARED_PREFERENCES_FILE = "com.starlord.blipzone.SHARED_PREFERENCES_FILE";
@@ -28,12 +30,25 @@ public class GlobalVariables {
     }
 
 
-    public void setData() {
-        editor.putString("key", "value");
+    public void setData(String key, String value) {
+        editor.putString(key, value);
         editor.apply();
     }
 
     public boolean hasUserLoggedIN() {
-        return sharedPreferences.getBoolean("PREF_USER_LOGGED", false);
+        return sharedPreferences.getBoolean(USER_LOGGED, false);
+    }
+
+    public void userLoggedIN() {
+        editor.putBoolean(USER_LOGGED, true);
+        editor.apply();
+    }
+
+    public String getUserToken() {
+        return sharedPreferences.getString(ACCESS_TOKEN, "");
+    }
+
+    public String getRefreshToken() {
+        return sharedPreferences.getString(REFRESH_TOKEN, "");
     }
 }

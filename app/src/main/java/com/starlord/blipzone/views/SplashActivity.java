@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.configurations.GlobalVariables;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -24,9 +25,15 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (GlobalVariables.getInstance(SplashActivity.this).hasUserLoggedIN()) {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }, SPLASH_SCREEN_TIME_OUT);
     }

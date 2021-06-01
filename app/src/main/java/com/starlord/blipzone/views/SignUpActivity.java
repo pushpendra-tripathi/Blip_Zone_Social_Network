@@ -28,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button signUp;
     TextView login;
     private ProgressDialog progressDialog;
-    String TAG = "SignUpActivity";
+    String TAG = "SignUpActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

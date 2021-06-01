@@ -16,16 +16,21 @@ import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResponseCallback;
+import com.starlord.blipzone.configurations.GlobalVariables;
+import com.starlord.blipzone.configurations.UrlConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.starlord.blipzone.configurations.UrlConstants.*;
 
 public class LoginActivity extends AppCompatActivity {
     EditText loginData, password;
     TextView forgotPassword, signUp;
     Button login;
     private ProgressDialog progressDialog;
-    String TAG = "LoginActivity";
+    String TAG = "LoginActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +76,15 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onApiErrorResult(VolleyError volleyError) {
                             Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
-                            Toast.makeText(LoginActivity.this,
-                                    "Either username or email is already registered",
-                                    Toast.LENGTH_SHORT).show();
+                            if (volleyError.networkResponse.statusCode == 302){
+                                Toast.makeText(LoginActivity.this,
+                                        "Either username or email is already registered",
+                                        Toast.LENGTH_SHORT).show();
+                            } else{
+                                Toast.makeText(LoginActivity.this,
+                                        "Either username or email is already registered",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                             progressDialog.dismiss();
                         }
                     });
@@ -91,14 +102,20 @@ public class LoginActivity extends AppCompatActivity {
     private void processLoginResponse(JSONObject jsonObject) {
         try {
             boolean status = jsonObject.getBoolean("status");
-            String details = jsonObject.getString("details");
+            String details = jsonObject.getString("detail");
+            JSONObject data = jsonObject.getJSONObject("data");
+            String refreshToken = data.getString("refresh");
+            String accessToken = data.getString("access");
 
             if (status) {
+                GlobalVariables.getInstance(LoginActivity.this).setData(ACCESS_TOKEN, accessToken);
+                GlobalVariables.getInstance(LoginActivity.this).setData(REFRESH_TOKEN, refreshToken);
+                GlobalVariables.getInstance(LoginActivity.this).userLoggedIN();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {
                 Toast.makeText(LoginActivity.this,
-                        "Either username or email is already registered",
+                        "Login details are incorrect",
                         Toast.LENGTH_SHORT).show();
             }
 

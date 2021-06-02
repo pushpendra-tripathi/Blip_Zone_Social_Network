@@ -83,7 +83,7 @@
             android:id="@+id/circleImageView"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:src="@drawable/profile"
+            android:src="@drawable/profile_avatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -181,9 +181,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profile_blog_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/layout_card_profile"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        tools:listitem="@layout/layout_card_profile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

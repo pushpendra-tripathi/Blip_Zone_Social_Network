@@ -1,15 +1,6 @@
 package com.starlord.blipzone.views;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,28 +9,32 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
-import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
-import com.starlord.blipzone.models.UserModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.starlord.blipzone.api.CommonClassForAPI.*;
-import static com.starlord.blipzone.configurations.UrlConstants.*;
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.BASE_URL;
+import static com.starlord.blipzone.configurations.UrlConstants.PROFILE;
 
 public class ProfileFragment extends Fragment {
     CircleImageView circleImageView;
@@ -61,12 +56,13 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View profileView = inflater.inflate(R.layout.fragment_profile, container, false);
         initializeViews(profileView);
-        return  profileView;
+        return profileView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadProfileInfo();
         loadProfileDetails();
     }
 
@@ -86,6 +82,20 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void loadProfileInfo() {
+        usernameTxt.setText(GlobalVariables.getInstance(getActivity()).getUserName());
+        Glide.with(getActivity())
+                .load(GlobalVariables.getInstance(getActivity()).getUserProfileImage())
+                .placeholder(R.drawable.profile_avatar)
+                .into(circleImageView);
+        if (!GlobalVariables.getInstance(getActivity()).getUserProfileBio().equals("")) {
+            bio.setVisibility(View.VISIBLE);
+            bio.setText(GlobalVariables.getInstance(getActivity()).getUserProfileBio());
+        }
+        followers.setText(GlobalVariables.getInstance(getActivity()).getFollowers());
+        following.setText(GlobalVariables.getInstance(getActivity()).getFollowing());
+    }
+
     private void processProfileRequest(JSONObject jsonObject) {
         try {
             boolean status = jsonObject.getBoolean("status");
@@ -93,53 +103,33 @@ public class ProfileFragment extends Fragment {
             if (status) {
                 JSONObject data = jsonObject.getJSONObject("data");
                 JSONObject user = data.getJSONObject("user");
-                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
-                    usernameTxt.setText(GlobalVariables.getInstance(getActivity()).getUserName());
-                } else {
-                    usernameTxt.setText(user.getString("username"));
-                    GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
-                }
 
-                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
-                    Glide.with(getActivity())
-                            .load(GlobalVariables.getInstance(getActivity()).getUserProfileImage())
-                            .placeholder(R.drawable.profile_avatar)
-                            .into(circleImageView);
-                } else {
-                    Glide.with(getActivity())
-                            .load(UrlConstants.BASE_URL + user.getString("profile_image"))
-                            .placeholder(R.drawable.profile_avatar)
-                            .into(circleImageView);
-                    GlobalVariables.getInstance(getActivity()).setUserProfileImage(BASE_URL + user.getString("profile_image"));
-                }
-                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
-                    if (!GlobalVariables.getInstance(getActivity()).getUserProfileBio().equals("")) {
-                        bio.setVisibility(View.VISIBLE);
-                        bio.setText(GlobalVariables.getInstance(getActivity()).getUserProfileBio());
-                    }
-                } else {
-                    if (!user.getString("about").equals("")) {
-                        bio.setVisibility(View.VISIBLE);
-                        bio.setText(user.getString("about"));
-                        GlobalVariables.getInstance(getActivity()).setUserProfileBio(user.getString("about"));
-                    }
+                usernameTxt.setText(user.getString("username"));
+                GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
+
+                Glide.with(getActivity())
+                        .load(UrlConstants.BASE_URL + user.getString("profile_image"))
+                        .placeholder(R.drawable.profile_avatar)
+                        .into(circleImageView);
+                GlobalVariables.getInstance(getActivity()).setUserProfileImage(BASE_URL + user.getString("profile_image"));
+
+                if (!user.getString("about").equals("")) {
+                    bio.setVisibility(View.VISIBLE);
+                    bio.setText(user.getString("about"));
+                    GlobalVariables.getInstance(getActivity()).setUserProfileBio(user.getString("about"));
+
                 }
                 JSONObject count = data.getJSONObject("count");
-                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
-                    followers.setText(GlobalVariables.getInstance(getActivity()).getFollowers());
-                } else {
-                    followers.setText(count.getString("follower"));
-                    GlobalVariables.getInstance(getActivity()).setFollowers(count.getString("followers"));
-                }
-                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
-                    following.setText(GlobalVariables.getInstance(getActivity()).getFollowing());
-                } else {
-                    following.setText(count.getString("following"));
-                    GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
-                }
+
+                followers.setText(count.getString("follower"));
+                GlobalVariables.getInstance(getActivity()).setFollowers(count.getString("follower"));
+
+                following.setText(count.getString("following"));
+                GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
+
 
                 JSONArray blog = data.getJSONArray("blogs");
-                for (int i=0; i<blog.length(); i++){
+                for (int i = 0; i < blog.length(); i++) {
                     JSONObject blogObject = blog.getJSONObject(i);
                     BlogModel blogModel = new BlogModel();
                     blogModel.setImageUrl(blogObject.getString("image"));
@@ -161,7 +151,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void initializeViews(View view){
+    private void initializeViews(View view) {
         circleImageView = view.findViewById(R.id.circleImageView);
         followers = view.findViewById(R.id.follower_txt);
         following = view.findViewById(R.id.following_txt);
@@ -171,7 +161,7 @@ public class ProfileFragment extends Fragment {
         followUnFollowProfileEdit = view.findViewById(R.id.follow_unfollow_editprofile_btn);
         profileBlogRecyclerView = view.findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(false);
-        gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         profileAdapter = new ProfileAdapter(getActivity(), blogModelList);
         profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
         profileBlogRecyclerView.setAdapter(profileAdapter);

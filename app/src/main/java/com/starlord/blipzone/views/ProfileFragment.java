@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,10 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.UserModel;
@@ -43,9 +46,10 @@ public class ProfileFragment extends Fragment {
     TextView followers, following, bio, usernameTxt;
     Button followUnFollowProfileEdit;
     RecyclerView profileBlogRecyclerView;
-    LinearLayoutManager linearLayoutManager;
+    GridLayoutManager gridLayoutManager;
+    ProfileAdapter profileAdapter;
     String TAG = "ProfileFragmentLog";
-    List<BlogModel> blogModelList;
+    ArrayList<BlogModel> blogModelList;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -89,26 +93,62 @@ public class ProfileFragment extends Fragment {
             if (status) {
                 JSONObject data = jsonObject.getJSONObject("data");
                 JSONObject user = data.getJSONObject("user");
-                usernameTxt.setText(user.getString("username"));
+                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
+                    usernameTxt.setText(GlobalVariables.getInstance(getActivity()).getUserName());
+                } else {
+                    usernameTxt.setText(user.getString("username"));
+                    GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
+                }
 
-                //
-                Glide.with(getActivity())
-                        .load(user.getString("profile_image"))
-                        .placeholder(R.drawable.profile_avatar)
-                        .into(circleImageView);
-                if(user.getString("about") != null) {
-                    bio.setVisibility(View.VISIBLE);
-                    bio.setText(user.getString("about"));
+                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
+                    Glide.with(getActivity())
+                            .load(GlobalVariables.getInstance(getActivity()).getUserProfileImage())
+                            .placeholder(R.drawable.profile_avatar)
+                            .into(circleImageView);
+                } else {
+                    Glide.with(getActivity())
+                            .load(UrlConstants.BASE_URL + user.getString("profile_image"))
+                            .placeholder(R.drawable.profile_avatar)
+                            .into(circleImageView);
+                    GlobalVariables.getInstance(getActivity()).setUserProfileImage(BASE_URL + user.getString("profile_image"));
+                }
+                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
+                    if (!GlobalVariables.getInstance(getActivity()).getUserProfileBio().equals("")) {
+                        bio.setVisibility(View.VISIBLE);
+                        bio.setText(GlobalVariables.getInstance(getActivity()).getUserProfileBio());
+                    }
+                } else {
+                    if (!user.getString("about").equals("")) {
+                        bio.setVisibility(View.VISIBLE);
+                        bio.setText(user.getString("about"));
+                        GlobalVariables.getInstance(getActivity()).setUserProfileBio(user.getString("about"));
+                    }
                 }
                 JSONObject count = data.getJSONObject("count");
-                followers.setText(count.getString("follower"));
-                following.setText(count.getString("following"));
+                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
+                    followers.setText(GlobalVariables.getInstance(getActivity()).getFollowers());
+                } else {
+                    followers.setText(count.getString("follower"));
+                    GlobalVariables.getInstance(getActivity()).setFollowers(count.getString("followers"));
+                }
+                if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved()){
+                    following.setText(GlobalVariables.getInstance(getActivity()).getFollowing());
+                } else {
+                    following.setText(count.getString("following"));
+                    GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
+                }
 
                 JSONArray blog = data.getJSONArray("blogs");
                 for (int i=0; i<blog.length(); i++){
+                    JSONObject blogObject = blog.getJSONObject(i);
                     BlogModel blogModel = new BlogModel();
+                    blogModel.setImageUrl(blogObject.getString("image"));
+                    blogModel.setId(blogObject.getInt("id"));
+                    blogModelList.add(blogModel);
+                    profileAdapter.notifyDataSetChanged();
                 }
 
+                GlobalVariables.getInstance(getActivity()).saveProfileData();
 
             } else {
                 Toast.makeText(getActivity(),
@@ -127,9 +167,13 @@ public class ProfileFragment extends Fragment {
         following = view.findViewById(R.id.following_txt);
         usernameTxt = view.findViewById(R.id.username_profile);
         bio = view.findViewById(R.id.bio_txt);
+        blogModelList = new ArrayList<>();
         followUnFollowProfileEdit = view.findViewById(R.id.follow_unfollow_editprofile_btn);
         profileBlogRecyclerView = view.findViewById(R.id.profile_blog_rv);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        blogModelList = new ArrayList<>();
+        profileBlogRecyclerView.setHasFixedSize(false);
+        gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        profileAdapter = new ProfileAdapter(getActivity(), blogModelList);
+        profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
+        profileBlogRecyclerView.setAdapter(profileAdapter);
     }
 }

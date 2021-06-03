@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
@@ -84,8 +84,9 @@ public class ProfileFragment extends Fragment {
 
     private void loadProfileInfo() {
         usernameTxt.setText(GlobalVariables.getInstance(getActivity()).getUserName());
-        Glide.with(getActivity())
-                .load(GlobalVariables.getInstance(getActivity()).getUserProfileImage())
+
+        Picasso.get().load(GlobalVariables.getInstance(getActivity())
+                .getUserProfileImage())
                 .placeholder(R.drawable.profile_avatar)
                 .into(circleImageView);
         if (!GlobalVariables.getInstance(getActivity()).getUserProfileBio().equals("")) {
@@ -107,8 +108,7 @@ public class ProfileFragment extends Fragment {
                 usernameTxt.setText(user.getString("username"));
                 GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
 
-                Glide.with(getActivity())
-                        .load(UrlConstants.BASE_URL + user.getString("profile_image"))
+                Picasso.get().load(UrlConstants.BASE_URL + user.getString("profile_image"))
                         .placeholder(R.drawable.profile_avatar)
                         .into(circleImageView);
                 GlobalVariables.getInstance(getActivity()).setUserProfileImage(BASE_URL + user.getString("profile_image"));

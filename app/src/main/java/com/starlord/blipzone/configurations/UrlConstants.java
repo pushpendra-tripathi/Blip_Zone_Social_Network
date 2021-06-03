@@ -9,7 +9,7 @@ public class UrlConstants {
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
     public static final String LOGIN_USER = BASE_URL + "/api/auth/login/";
     public static final String PROFILE = BASE_URL + "/api/auth/profile/";
-    public static final String BLOG_POST = BASE_URL + "/api/auth/blog/";
+    public static final String BLOG_POST = BASE_URL + "/api/blog/post/list/";
 
 
     //Shared Preferences constants

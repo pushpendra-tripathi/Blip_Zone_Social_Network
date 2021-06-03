@@ -37,9 +37,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ProfileAdapter.ProfileViewHolder holder, int position) {
         BlogModel blogModel = blogModelList.get(position);
-        Glide.with(context)
-                .load(UrlConstants.BASE_URL + blogModel.getImageUrl())
-                .into(holder.imageView);
+        if (blogModel.getImageUrl().length() > 4) {
+            Glide.with(context)
+                    .load(UrlConstants.BASE_URL + blogModel.getImageUrl())
+                    .into(holder.imageView);
+        }
     }
 
     @Override

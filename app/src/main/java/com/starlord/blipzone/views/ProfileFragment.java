@@ -142,7 +142,7 @@ public class ProfileFragment extends Fragment {
 
             } else {
                 Toast.makeText(getActivity(),
-                        "Either username or email is already registered",
+                        "Something went wrong",
                         Toast.LENGTH_SHORT).show();
             }
 

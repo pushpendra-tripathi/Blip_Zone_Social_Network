@@ -137,6 +137,7 @@ public class HomeFragment extends Fragment {
                     blogModel.setImageUrl(blog.getString("image"));
                     blogModel.setViewType(blog.getInt("view_type"));
 
+                    blogModelArrayList.add(blogModel);
                 }
             } else {
                 Toast.makeText(getActivity(),

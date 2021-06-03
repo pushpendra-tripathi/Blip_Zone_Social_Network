@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.utils.SquareImageView;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
     }
 
     public class ProfileViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        SquareImageView imageView;
 
         public ProfileViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
             super(itemView);

@@ -44,6 +44,7 @@ public class GlobalVariables {
         editor.apply();
     }
 
+    //Access tokens ////////////////////////////////////////////////////////////////////////////////////
     public String getUserToken() {
         return sharedPreferences.getString(ACCESS_TOKEN, "");
     }
@@ -57,6 +58,10 @@ public class GlobalVariables {
         editor.apply();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //User profile data shared preferences ////////////////////////////////////////////////////
     public boolean isProfileDataSaved() {
         return sharedPreferences.getBoolean(PROFILE_DATA, false);
     }
@@ -105,4 +110,5 @@ public class GlobalVariables {
     public String getUserProfileBio() {
         return sharedPreferences.getString(USER_PROFILE_BIO, "");
     }
+    //////////////////////////////////////////////////////////////////////////////
 }

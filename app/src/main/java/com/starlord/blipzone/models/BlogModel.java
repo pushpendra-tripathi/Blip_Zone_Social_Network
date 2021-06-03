@@ -8,7 +8,10 @@ import java.util.Locale;
 public class BlogModel {
     int id;
     List<CommentModel> commentList;
-    List<LikeModel> likeList;
+    List<UserModel> likeList;
+    boolean isLiked;
+    boolean owner;
+    UserModel userModel;
     String createdAt;
     String lastUpdatedOn;
     String content;
@@ -32,12 +35,36 @@ public class BlogModel {
         this.commentList = commentList;
     }
 
-    public List<LikeModel> getLikeList() {
+    public List<UserModel> getLikeList() {
         return likeList;
     }
 
-    public void setLikeList(List<LikeModel> likeList) {
+    public void setLikeList(List<UserModel> likeList) {
         this.likeList = likeList;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isOwner() {
+        return owner;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 
     public String getCreatedAt() {

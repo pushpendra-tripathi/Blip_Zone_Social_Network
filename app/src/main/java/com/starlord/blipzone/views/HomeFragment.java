@@ -1,66 +1,156 @@
 package com.starlord.blipzone.views;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.callbacks.ApiResultCallback;
+import com.starlord.blipzone.configurations.UrlConstants;
+import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.models.CommentModel;
+import com.starlord.blipzone.models.UserModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+
+
 public class HomeFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<BlogModel> blogModelArrayList;
+    String TAG = "HomeFragmentLog";
 
     public HomeFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View homeView = inflater.inflate(R.layout.fragment_home, container, false);
+        initializeViews(homeView);
+        return homeView;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadBlogPosts();
+    }
+
+    private void loadBlogPosts() {
+        callAuthGetRequest(getActivity(), UrlConstants.BLOG_POST, new ApiResultCallback() {
+            @Override
+            public void onAPIResultSuccess(JSONObject jsonObject) {
+                Log.d(TAG, "onResponse: Success");
+                processBlogRequest(jsonObject);
+            }
+
+            @Override
+            public void onAPIResultError(VolleyError volleyError) {
+                Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void processBlogRequest(JSONObject jsonObject) {
+        try {
+            boolean status = jsonObject.getBoolean("status");
+
+            if (status) {
+                JSONArray data = jsonObject.getJSONArray("data");
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject blog = data.getJSONObject(i);
+                    BlogModel blogModel = new BlogModel();
+                    blogModel.setId(blog.getInt("id"));
+
+                    JSONArray commentArray = blog.getJSONArray("comment");
+                    List<CommentModel> commentModelList = new ArrayList<>();
+                    for (int j = 0; j < commentArray.length(); j++) {
+                        JSONObject comment = commentArray.getJSONObject(j);
+                        CommentModel commentModel = new CommentModel();
+                        commentModel.setId(comment.getInt("id"));
+
+                        JSONObject user = comment.getJSONObject("user");
+                        UserModel userModel = new UserModel();
+                        userModel.setId(user.getInt("id"));
+                        userModel.setUserName(user.getString("username"));
+                        userModel.setFirstName(user.getString("first_name"));
+                        userModel.setLastName(user.getString("last_name"));
+                        userModel.setProfileImage(user.getString("profile_image"));
+
+                        commentModel.setUserModel(userModel);
+                        commentModel.setCreatedAt(comment.getString("created_at"));
+                        commentModel.setLastUpdatedAt(comment.getString("last_updated_on"));
+                        commentModel.setContent(comment.getString("content"));
+                        commentModel.setPostId(comment.getInt("post"));
+                        commentModelList.add(commentModel);
+                    }
+                    blogModel.setCommentList(commentModelList);
+
+                    JSONArray likesArray = blog.getJSONArray("like");
+                    List<UserModel> likesList = new ArrayList<>();
+                    for (int k = 0; k < likesArray.length(); k++) {
+                        JSONObject likesUser = likesArray.getJSONObject(k);
+
+                        JSONObject user = likesUser.getJSONObject("user");
+                        UserModel userModel = new UserModel();
+                        userModel.setId(user.getInt("id"));
+                        userModel.setUserName(user.getString("username"));
+                        userModel.setFirstName(user.getString("first_name"));
+                        userModel.setLastName(user.getString("last_name"));
+                        userModel.setProfileImage(user.getString("profile_image"));
+                        likesList.add(userModel);
+                    }
+
+                    blogModel.setLikeList(likesList);
+                    blogModel.setLiked(blog.getBoolean("is_liked"));
+                    blogModel.setOwner(blog.getBoolean("owner"));
+
+                    JSONObject user = blog.getJSONObject("user");
+                    UserModel blogUserModel = new UserModel();
+                    blogUserModel.setId(user.getInt("id"));
+                    blogUserModel.setUserName(user.getString("username"));
+                    blogUserModel.setFirstName(user.getString("first_name"));
+                    blogUserModel.setLastName(user.getString("last_name"));
+                    blogUserModel.setProfileImage(user.getString("profile_image"));
+
+                    blogModel.setUserModel(blogUserModel);
+                    blogModel.setCreatedAt(blog.getString("created_at"));
+                    blogModel.setLastUpdatedOn(blog.getString("last_updated_at"));
+                    blogModel.setContent(blog.getString("blog"));
+                    blogModel.setImageUrl(blog.getString("image"));
+                    blogModel.setViewType(blog.getInt("view_type"));
+
+                }
+            } else {
+                Toast.makeText(getActivity(),
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeViews(View homeView) {
+        blogModelArrayList = new ArrayList<>();
+    }
+
 }
+

@@ -4,10 +4,13 @@ public class UrlConstants {
 
     //API connection urls
     public static final String BASE_URL = "https://87c06727e94e.ngrok.io";
+
     public static final String REGISTER_USER = BASE_URL + "/api/auth/register/";
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
     public static final String LOGIN_USER = BASE_URL + "/api/auth/login/";
     public static final String PROFILE = BASE_URL + "/api/auth/profile/";
+    public static final String BLOG_POST = BASE_URL + "/api/auth/blog/";
+
 
     //Shared Preferences constants
     public static final String ACCESS_TOKEN = "accessToken";

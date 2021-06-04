@@ -1,11 +1,13 @@
 package com.starlord.blipzone.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class ProfileFragment extends Fragment {
     RecyclerView profileBlogRecyclerView;
     GridLayoutManager gridLayoutManager;
     ProfileAdapter profileAdapter;
+    LinearLayout followerLayout, followingLayout;
     String TAG = "ProfileFragmentLog";
     ArrayList<BlogModel> blogModelList;
 
@@ -64,6 +67,14 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loadProfileInfo();
         loadProfileDetails();
+
+        followerLayout.setOnClickListener(v ->{
+            startActivity(new Intent(getActivity(), FollowersListActivity.class));
+        });
+
+        followingLayout.setOnClickListener(v ->{
+            startActivity(new Intent(getActivity(), FollowingListActivity.class));
+        });
     }
 
     private void loadProfileDetails() {
@@ -121,11 +132,21 @@ public class ProfileFragment extends Fragment {
                 }
                 JSONObject count = data.getJSONObject("count");
 
-                followers.setText(count.getString("follower"));
-                GlobalVariables.getInstance(getActivity()).setFollowers(count.getString("follower"));
+                if (count.getString("follower").equals("")) {
+                    followers.setText("0");
+                    GlobalVariables.getInstance(getActivity()).setFollowers("0");
+                } else {
+                    followers.setText(count.getString("follower"));
+                    GlobalVariables.getInstance(getActivity()).setFollowers(count.getString("follower"));
+                }
 
-                following.setText(count.getString("following"));
-                GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
+                if (count.getString("following").equals("")) {
+                    following.setText("0");
+                    GlobalVariables.getInstance(getActivity()).setFollowing("0");
+                } else{
+                    following.setText(count.getString("following"));
+                    GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
+                }
 
 
                 JSONArray blog = data.getJSONArray("blogs");
@@ -156,6 +177,8 @@ public class ProfileFragment extends Fragment {
         followers = view.findViewById(R.id.follower_txt);
         following = view.findViewById(R.id.following_txt);
         usernameTxt = view.findViewById(R.id.username_profile);
+        followerLayout = view.findViewById(R.id.followerLayout);
+        followingLayout = view.findViewById(R.id.followingLayout);
         bio = view.findViewById(R.id.bio_txt);
         blogModelList = new ArrayList<>();
         followUnFollowProfileEdit = view.findViewById(R.id.follow_unfollow_editprofile_btn);

@@ -41,7 +41,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="username"
-            app:drawableEndCompat="@drawable/layout_verified_badge" />
+             />
 
         <TextView
             android:id="@+id/fullName"

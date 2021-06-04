@@ -9,7 +9,13 @@ public class UrlConstants {
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
     public static final String LOGIN_USER = BASE_URL + "/api/auth/login/";
     public static final String PROFILE = BASE_URL + "/api/auth/profile/";
+    public static final String OTHER_PROFILE = BASE_URL + "/api/auth/profile/";
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/list/";
+    public static final String FOLLOW_LIST = BASE_URL + "/api/network/followlist/";
+    public static final String UNFOLLOW = BASE_URL + "/api/network/unfollow/";
+    public static final String BLOCK_LIST = BASE_URL + "/api/network/blocklist/";
+    public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
+    public static final String SEARCH = BASE_URL + "/api/search/";
 
 
     //Shared Preferences constants
@@ -21,5 +27,5 @@ public class UrlConstants {
     public static final String USER_PROFILE_BIO = "userProfileBio";
     public static final String USER_NAME = "userName";
     public static final String FOLLOWERS_COUNT = "followersCount";
-    public static final String FOLLOWING_COUNT =    "FollowingCount";
+    public static final String FOLLOWING_COUNT = "FollowingCount";
 }

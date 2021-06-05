@@ -1,9 +1,5 @@
 package com.starlord.blipzone.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
-import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
-import static com.starlord.blipzone.configurations.UrlConstants.BASE_URL;
 import static com.starlord.blipzone.configurations.UrlConstants.PROFILE;
 
 public class OtherProfileActivity extends AppCompatActivity {
@@ -52,7 +50,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         loadProfileDetails();
 
         backBtn.setOnClickListener(v ->{
-
+            onBackPressed();
         });
     }
 

@@ -1,6 +1,7 @@
 package com.starlord.blipzone.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class FollowersListActivity extends AppCompatActivity {
     TextView title;
     LinearLayoutManager linearLayoutManager;
     ArrayList<UserModel> followersList;
+    String TAG = "FollowersListActivityLog";
     PersonsAdapter personsAdapter;
 
     @Override
@@ -38,6 +40,10 @@ public class FollowersListActivity extends AppCompatActivity {
 
         initializeViews();
         loadFollowersRequest();
+
+        backBtn.setOnClickListener(v -> {
+            onBackPressed();
+        });
     }
 
     private void loadFollowersRequest() {
@@ -46,12 +52,14 @@ public class FollowersListActivity extends AppCompatActivity {
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {
+                        Log.d(TAG, "onResponse: Success");
                         processFollowersResponse(jsonObject);
                     }
 
                     @Override
                     public void onAPIResultError(VolleyError volleyError) {
-
+                        Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                        Toast.makeText(FollowersListActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -1,13 +1,14 @@
 package com.starlord.blipzone.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
@@ -30,6 +31,7 @@ public class FollowingListActivity extends AppCompatActivity {
     TextView title;
     LinearLayoutManager linearLayoutManager;
     ArrayList<UserModel> followingList;
+    String TAG = "FollowingListActivityLog";
     PersonsAdapter personsAdapter;
 
     @Override
@@ -38,26 +40,32 @@ public class FollowingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_following_list);
 
         initializeViews();
-        loadFollowersRequest();
+        loadFollowingRequest();
+
+        backBtn.setOnClickListener(v -> {
+            onBackPressed();
+        });
     }
 
-    private void loadFollowersRequest() {
+    private void loadFollowingRequest() {
         CommonClassForAPI.callAuthGetRequest(FollowingListActivity.this,
                 UrlConstants.FOLLOW_LIST,
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {
-                        processFollowersResponse(jsonObject);
+                        Log.d(TAG, "onResponse: Success");
+                        processFollowingResponse(jsonObject);
                     }
 
                     @Override
                     public void onAPIResultError(VolleyError volleyError) {
-
+                        Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                        Toast.makeText(FollowingListActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void processFollowersResponse(JSONObject jsonObject) {
+    private void processFollowingResponse(JSONObject jsonObject) {
         try {
             boolean status = jsonObject.getBoolean("status");
 

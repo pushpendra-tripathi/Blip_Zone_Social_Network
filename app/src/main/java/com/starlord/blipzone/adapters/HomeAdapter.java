@@ -41,7 +41,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
     @Override
     public void onBindViewHolder(@NonNull @NotNull HomeAdapter.HomeViewAdapter holder, int position) {
         BlogModel blogModel = blogModelArrayList.get(position);
-        Picasso.get().load(blogModel.getUserModel().getProfileImage()).into(holder.circleImageView);
+        Picasso.get().load(blogModel.getUserModel().getProfileImage())
+                .placeholder(R.drawable.profile_avatar)
+                .into(holder.circleImageView);
         holder.username.setText(blogModel.getUserModel().getUserName());
         Picasso.get().load(blogModel.getImageUrl()).into(holder.squareImageView);
         holder.content.setText(blogModel.getContent());

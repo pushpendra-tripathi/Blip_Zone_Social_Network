@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <RelativeLayout
@@ -116,7 +117,9 @@
                 android:layout_height="wrap_content"
                 android:text="Liked by StarLord, and 30 others"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:textSize="15sp"
                 android:id="@+id/image_likes"/>
 
             <TextView
@@ -135,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:text="View all 3 comments"
                 android:textColor="@color/cardview_dark_background"
-                android:textSize="15sp"
+                android:textSize="14dp"
                 android:layout_below="@+id/image_caption"
                 android:id="@+id/image_comments_link"
                 android:layout_marginTop="15dp"/>
@@ -145,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:text="3 DAYS AGO"
                 android:textColor="@color/cardview_dark_background"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:layout_below="@+id/image_comments_link"
                 android:id="@+id/image_time_posted"
                 android:layout_marginTop="15dp"/>

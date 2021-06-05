@@ -65,7 +65,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadProfileInfo();
+        if (GlobalVariables.getInstance(getActivity()).isProfileDataSaved())
+            loadProfileInfo();
+
         loadProfileDetails();
 
         followerLayout.setOnClickListener(v ->{
@@ -96,8 +98,7 @@ public class ProfileFragment extends Fragment {
     private void loadProfileInfo() {
         usernameTxt.setText(GlobalVariables.getInstance(getActivity()).getUserName());
 
-        Picasso.get().load(GlobalVariables.getInstance(getActivity())
-                .getUserProfileImage())
+        Picasso.get().load(GlobalVariables.getInstance(getActivity()).getUserProfileImage())
                 .placeholder(R.drawable.profile_avatar)
                 .into(circleImageView);
         if (!GlobalVariables.getInstance(getActivity()).getUserProfileBio().equals("")) {

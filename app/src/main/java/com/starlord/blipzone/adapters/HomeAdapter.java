@@ -49,14 +49,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
 
         int likeCount = 0;
         String lastLikeBy = "";
-        if (blogModel.getLikeList() != null)
-            likeCount = blogModel.getLikeList().size();
-        if (likeCount > 0){
-            lastLikeBy = blogModel.getLikeList().get(0).getUserName();
-            holder.likesText.setText("Liked by "+ lastLikeBy );
-        } else if (likeCount > 1){
-            lastLikeBy = blogModel.getLikeList().get(0).getUserName();
+        if (blogModel.getLikeModel() != null){
+            holder.likesText.setVisibility(View.VISIBLE);
+            likeCount = blogModel.getLikeModel().getLikeCount();
+        }
+        if (blogModel.getLikeModel() != null && likeCount > 0){
+            lastLikeBy = blogModel.getLikeModel().getUserModel().getUserName();
             holder.likesText.setText("Liked by "+ lastLikeBy +", and " + likeCount + " others");
+        } else if (blogModel.getLikeModel() != null){
+            lastLikeBy = blogModel.getLikeModel().getUserModel().getUserName();
+            holder.likesText.setText("Liked by "+ lastLikeBy );
         }
 
 

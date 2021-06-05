@@ -9,6 +9,7 @@ public class CommentModel {
     String lastUpdatedAt;
     String content;
     int postId;
+    int count;
 
     public int getId() {
         return id;
@@ -56,5 +57,13 @@ public class CommentModel {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

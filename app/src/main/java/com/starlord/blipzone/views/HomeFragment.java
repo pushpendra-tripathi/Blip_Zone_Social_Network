@@ -21,6 +21,7 @@ import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.CommentModel;
+import com.starlord.blipzone.models.LikeModel;
 import com.starlord.blipzone.models.UserModel;
 
 import org.json.JSONArray;
@@ -117,10 +118,9 @@ public class HomeFragment extends Fragment {
 
                     try {
                         JSONArray likesArray = blog.getJSONArray("like");
-                        List<UserModel> likesList = new ArrayList<>();
+                        LikeModel likeModel = new LikeModel();
 
                             JSONObject likesUser = likesArray.getJSONObject(0);
-
                             JSONObject user = likesUser.getJSONObject("user");
                             UserModel userModel = new UserModel();
                             userModel.setId(user.getInt("id"));
@@ -128,9 +128,18 @@ public class HomeFragment extends Fragment {
                             userModel.setFirstName(user.getString("first_name"));
                             userModel.setLastName(user.getString("last_name"));
                             userModel.setProfileImage(user.getString("profile_image"));
-                            likesList.add(userModel);
+                            likeModel.setUserModel(userModel);
 
-                        blogModel.setLikeList(likesList);
+                            //getting the like count
+                            JSONObject likesCount = likesArray.getJSONObject(1);
+                            try {
+                                int count = likesCount.getInt("count");
+                                likeModel.setLikeCount(count);
+                            }catch (Exception e){
+
+                            }
+                            blogModel.setLikeModel(likeModel);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

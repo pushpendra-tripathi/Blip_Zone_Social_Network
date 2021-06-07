@@ -1,5 +1,6 @@
 package com.starlord.blipzone.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -183,8 +184,7 @@ public class HomeFragment extends Fragment {
         homeRecyclerView.setLayoutManager(linearLayoutManager);
         homeRecyclerView.setAdapter(homeAdapter);
         title = homeView.findViewById(R.id.username_feed);
-        title.setText("Feed");
+        title.setText(R.string.feed);
     }
-
 }
 

@@ -1,6 +1,7 @@
 package com.starlord.blipzone.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.utils.SquareImageView;
+import com.starlord.blipzone.views.MainActivity;
+import com.starlord.blipzone.views.OtherProfileActivity;
+import com.starlord.blipzone.views.ProfileFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,10 +27,10 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapter> {
-    Context context;
-    ArrayList<BlogModel> blogModelArrayList;
+    private Context context;
+    private ArrayList<BlogModel> blogModelArrayList;
 
-    public HomeAdapter(Context context, ArrayList<BlogModel> blogModelArrayList){
+    public HomeAdapter(Context context, ArrayList<BlogModel> blogModelArrayList) {
         this.context = context;
         this.blogModelArrayList = blogModelArrayList;
     }
@@ -51,18 +56,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
 
         int likeCount = 0;
         String lastLikeBy = "";
-        if (blogModel.getLikeModel() != null){
+        if (blogModel.getLikeModel() != null) {
             holder.likesText.setVisibility(View.VISIBLE);
             likeCount = blogModel.getLikeModel().getLikeCount();
         }
-        if (blogModel.getLikeModel() != null && likeCount > 0){
+        if (blogModel.getLikeModel() != null && likeCount > 0) {
             lastLikeBy = blogModel.getLikeModel().getUserModel().getUserName();
-            holder.likesText.setText("Liked by "+ lastLikeBy +", and " + likeCount + " others");
-        } else if (blogModel.getLikeModel() != null){
+            holder.likesText.setText("Liked by " + lastLikeBy + ", and " + likeCount + " others");
+        } else if (blogModel.getLikeModel() != null) {
             lastLikeBy = blogModel.getLikeModel().getUserModel().getUserName();
-            holder.likesText.setText("Liked by "+ lastLikeBy );
+            holder.likesText.setText("Liked by " + lastLikeBy);
         }
 
+        holder.circleImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, OtherProfileActivity.class);
+                intent.putExtra("userId", String.valueOf(blogModel.getUserModel().getId()));
+                intent.putExtra("username", blogModel.getUserModel().getUserName());
+                context.startActivity(intent);
+
+        });
 
 
     }
@@ -77,6 +89,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
         TextView username, likesText, content, allComment, postTime;
         ImageView ellipses, redHeart, whiteHeart, comment;
         SquareImageView squareImageView;
+
         public HomeViewAdapter(@NonNull @NotNull View itemView) {
             super(itemView);
             circleImageView = itemView.findViewById(R.id.profile_photo);

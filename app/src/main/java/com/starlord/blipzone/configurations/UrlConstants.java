@@ -3,13 +3,13 @@ package com.starlord.blipzone.configurations;
 public class UrlConstants {
 
     //API connection urls
-    public static final String BASE_URL = "https://87c06727e94e.ngrok.io";
+    public static final String BASE_URL = "https://45ea49e72ef5.ngrok.io";
 
     public static final String REGISTER_USER = BASE_URL + "/api/auth/register/";
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
     public static final String LOGIN_USER = BASE_URL + "/api/auth/login/";
     public static final String PROFILE = BASE_URL + "/api/auth/profile/";
-    public static final String OTHER_PROFILE = BASE_URL + "/api/auth/profile/";
+    public static final String OTHER_PROFILE = BASE_URL + "/api/auth/profile/?id=";
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/list/";
     public static final String FOLLOW_LIST = BASE_URL + "/api/network/followlist/";
     public static final String UNFOLLOW = BASE_URL + "/api/network/unfollow/";

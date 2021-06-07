@@ -1,5 +1,6 @@
 package com.starlord.blipzone.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new HomeFragment());
     }
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    @SuppressLint("NonConstantResourceId")
+    final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         Fragment fragment = null;
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.navigation_camera:
-                //fragment = new QrScanFragment();
+
                 break;
 
             case R.id.navigation_alert:

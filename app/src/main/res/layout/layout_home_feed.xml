@@ -20,6 +20,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/profile_photo"
+                android:src="@drawable/profile_avatar"
                 android:layout_marginTop="20dp"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="0.5dp"
@@ -109,13 +110,13 @@
             android:id="@+id/relLayout3"
             android:layout_below="@+id/relLayout2"
             android:padding="20dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="7dp"
             android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Liked by StarLord, and 30 others"
+                android:text="@string/liked_by"
                 android:textColor="@color/black"
                 android:visibility="gone"
                 tools:visibility="visible"
@@ -125,13 +126,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="starlord moutains #earthporn #mountains"
+                android:text="@string/post_content"
                 android:textColor="@color/black"
                 android:maxLines="2"
                 android:textSize="18sp"
                 android:id="@+id/image_caption"
                 android:layout_below="@+id/image_likes"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="7dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,7 +142,7 @@
                 android:textSize="14dp"
                 android:layout_below="@+id/image_caption"
                 android:id="@+id/image_comments_link"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="7dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -151,7 +152,7 @@
                 android:textSize="11sp"
                 android:layout_below="@+id/image_comments_link"
                 android:id="@+id/image_time_posted"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="7dp"/>
 
         </RelativeLayout>
 

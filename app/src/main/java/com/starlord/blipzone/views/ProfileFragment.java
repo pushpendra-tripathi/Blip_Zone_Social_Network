@@ -53,6 +53,11 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static ProfileFragment newInstance() {
+      ProfileFragment fragment = new ProfileFragment();
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,10 +125,10 @@ public class ProfileFragment extends Fragment {
                 usernameTxt.setText(user.getString("username"));
                 GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
 
-                Picasso.get().load(UrlConstants.BASE_URL + user.getString("profile_image"))
+                Picasso.get().load(user.getString("profile_image"))
                         .placeholder(R.drawable.profile_avatar)
                         .into(circleImageView);
-                GlobalVariables.getInstance(getActivity()).setUserProfileImage(BASE_URL + user.getString("profile_image"));
+                GlobalVariables.getInstance(getActivity()).setUserProfileImage(user.getString("profile_image"));
 
                 if (!user.getString("about").equals("")) {
                     bio.setVisibility(View.VISIBLE);

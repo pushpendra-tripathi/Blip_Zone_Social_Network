@@ -38,7 +38,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ProfileAdapter.ProfileViewHolder holder, int position) {
         BlogModel blogModel = blogModelList.get(position);
         if (blogModel.getImageUrl().length() > 4) {
-            Picasso.get().load(UrlConstants.BASE_URL + blogModel.getImageUrl()).into(holder.imageView);
+            Picasso.get().load(blogModel.getImageUrl()).into(holder.imageView);
         }
     }
 

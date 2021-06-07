@@ -5,4 +5,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="add_a_comment">Add a comment...</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="feed">Feed</string>
+    <string name="liked_by">Liked by StarLord, and 30 others</string>
+    <string name="post_content">starlord moutains #earthporn #mountains</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

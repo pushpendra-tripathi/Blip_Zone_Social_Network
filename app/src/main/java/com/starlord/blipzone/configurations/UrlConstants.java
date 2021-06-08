@@ -13,10 +13,11 @@ public class UrlConstants {
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/list/";
     public static final String FOLLOW_LIST = BASE_URL + "/api/network/followlist/";
     public static final String UNFOLLOW = BASE_URL + "/api/network/unfollow/";
-    public static final String BLOCK_LIST = BASE_URL + "/api/network/blocklist/";
-    public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
     public static final String SEARCH = BASE_URL + "/api/search/";
     public static final String GET_COMMENT = BASE_URL + "/api/blog/comment/";
+    public static final String GET_LIKES = BASE_URL + "/api/blog/like/";
+    public static final String BLOCK_LIST = BASE_URL + "/api/network/blocklist/";
+    public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
 
 
     //Shared Preferences constants

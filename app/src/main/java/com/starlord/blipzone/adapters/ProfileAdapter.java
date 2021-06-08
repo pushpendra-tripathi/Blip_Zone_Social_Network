@@ -40,6 +40,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         if (blogModel.getImageUrl().length() > 4) {
             Picasso.get().load(blogModel.getImageUrl()).into(holder.imageView);
         }
+
+        holder.imageView.setOnClickListener(v -> {
+
+        });
     }
 
     @Override

@@ -16,6 +16,7 @@ public class UrlConstants {
     public static final String BLOCK_LIST = BASE_URL + "/api/network/blocklist/";
     public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
     public static final String SEARCH = BASE_URL + "/api/search/";
+    public static final String GET_COMMENT = BASE_URL + "/api/blog/comment/";
 
 
     //Shared Preferences constants

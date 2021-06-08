@@ -33,21 +33,6 @@ public class GlobalVariables {
         editor = sharedPreferences.edit();
     }
 
-    public void followed(String username){
-        followerRecord.put(username, true);
-    }
-
-    public void unFollowed(String username){
-        followerRecord.put(username, false);
-    }
-
-    public boolean checkFollower(String userName){
-        if (followerRecord.containsKey(userName))
-            return followerRecord.get(userName);
-        return false;
-    }
-
-
     public void setData(String key, String value) {
         editor.putString(key, value);
         editor.apply();
@@ -129,4 +114,18 @@ public class GlobalVariables {
         return sharedPreferences.getString(USER_PROFILE_BIO, "");
     }
     //////////////////////////////////////////////////////////////////////////////
+
+    public void followed(String username){
+        followerRecord.put(username, true);
+    }
+
+    public void unFollowed(String username){
+        followerRecord.put(username, false);
+    }
+
+    public boolean checkFollower(String userName){
+        if (followerRecord.containsKey(userName))
+            return followerRecord.get(userName);
+        return false;
+    }
 }

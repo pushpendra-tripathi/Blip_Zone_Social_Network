@@ -16,6 +16,7 @@ import com.starlord.blipzone.R;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.utils.SquareImageView;
+import com.starlord.blipzone.views.CommentsActivity;
 import com.starlord.blipzone.views.MainActivity;
 import com.starlord.blipzone.views.OtherProfileActivity;
 import com.starlord.blipzone.views.ProfileFragment;
@@ -73,7 +74,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
                 intent.putExtra("userId", String.valueOf(blogModel.getUserModel().getId()));
                 intent.putExtra("username", blogModel.getUserModel().getUserName());
                 context.startActivity(intent);
-
         });
 
         if (blogModel.isLiked()){
@@ -81,6 +81,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
             holder.redHeart.setVisibility(View.VISIBLE);
         }
 
+        holder.comment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("blogId", String.valueOf(blogModel.getId()));
+            context.startActivity(intent);
+        });
 
     }
 

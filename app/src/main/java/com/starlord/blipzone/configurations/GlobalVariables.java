@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashMap;
+
 import static com.starlord.blipzone.configurations.UrlConstants.*;
 
 public class GlobalVariables {
@@ -14,6 +16,7 @@ public class GlobalVariables {
     Context context;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    HashMap<String, Boolean> followerRecord;
 
     public static GlobalVariables getInstance(Context context) {
         if (instance == null) {
@@ -25,8 +28,23 @@ public class GlobalVariables {
     @SuppressLint("CommitPrefEdits")
     private GlobalVariables(Context context) {
         this.context = context.getApplicationContext();
+        followerRecord = new HashMap<>();
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+    }
+
+    public void followed(String username){
+        followerRecord.put(username, true);
+    }
+
+    public void unFollowed(String username){
+        followerRecord.put(username, false);
+    }
+
+    public boolean checkFollower(String userName){
+        if (followerRecord.containsKey(userName))
+            return followerRecord.get(userName);
+        return false;
     }
 
 

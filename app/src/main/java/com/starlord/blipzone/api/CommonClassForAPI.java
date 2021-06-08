@@ -56,45 +56,6 @@ public class CommonClassForAPI {
 
     }
 
-    public static void callAuthPostRequest(Activity context, String url, ApiResponseCallback apiResponseCallback) {
-
-        StringRequest callRequest = new StringRequest
-                (Request.Method.POST, url, response -> {
-                    try {
-                        Log.d(TAG, "onResponse: LoginAPI " + response);
-                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
-                    } catch (JSONException e) {
-                        apiResponseCallback.onApiFailureResult(e);
-                    }
-                },
-                        (VolleyError error) -> {
-                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
-                            if (error != null) {
-                                NetworkResponse networkResponse = error.networkResponse;
-                                Log.d(TAG, "onErrorResponse: LoginAPI " + networkResponse);
-                                apiResponseCallback.onApiErrorResult(error);
-                            }
-                        }) {
-
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
-                return params;
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-        };
-
-        // Access the RequestQueue through your singleton class.
-        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
-
-    }
-
     public static void callSearchRequest(Activity context, String data, ApiResponseCallback apiResponseCallback) {
 
         StringRequest callRequest = new StringRequest
@@ -107,7 +68,7 @@ public class CommonClassForAPI {
                     }
                 },
                         (VolleyError error) -> {
-                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
+                            Log.d(TAG, "onErrorResponse: SearchAPI " + error);
                             if (error != null) {
                                 NetworkResponse networkResponse = error.networkResponse;
                                 Log.d(TAG, "onErrorResponse: SearchAPI " + networkResponse);
@@ -119,6 +80,54 @@ public class CommonClassForAPI {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("data", data);
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return headers;
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
+
+    }
+
+    public static void callFollowUnfollowRequest(Activity context,
+                                                 String url,
+                                                 String id,
+                                                 ApiResponseCallback apiResponseCallback) {
+
+        StringRequest callRequest = new StringRequest
+                (Request.Method.POST, url, response -> {
+                    try {
+                        Log.d(TAG, "onResponse: SearchAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
+                    } catch (JSONException e) {
+                        apiResponseCallback.onApiFailureResult(e);
+                    }
+                },
+                        (VolleyError error) -> {
+                            Log.d(TAG, "onErrorResponse: FollowUnfollowAPI " + error);
+                            if (error != null) {
+                                NetworkResponse networkResponse = error.networkResponse;
+                                Log.d(TAG, "onErrorResponse: FollowUnfollowAPI " + networkResponse);
+                                apiResponseCallback.onApiErrorResult(error);
+                            }
+                        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
                 return params;
             }
 

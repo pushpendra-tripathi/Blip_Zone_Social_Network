@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
+import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
@@ -31,7 +32,10 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.api.CommonClassForAPI.callFollowUnfollowRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.FOLLOW_LIST;
 import static com.starlord.blipzone.configurations.UrlConstants.OTHER_PROFILE;
+import static com.starlord.blipzone.configurations.UrlConstants.UNFOLLOW;
 
 public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView circleImageView;
@@ -59,17 +63,97 @@ public class OtherProfileActivity extends AppCompatActivity {
         initializeViews();
         loadProfileDetails();
 
-        backBtn.setOnClickListener(v ->{
-            onBackPressed();
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         followUnFollowBtn.setOnClickListener(v ->{
             if (userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())){
                 //open edit profile activity
             } else {
                 //handle follow/unfollow here
+                if (followUnFollowBtn.getText().equals("Follow")) {
+                    callFollowUnfollowRequest(OtherProfileActivity.this,
+                            FOLLOW_LIST,
+                            userId,
+                            new ApiResponseCallback() {
+                                @Override
+                                public void onApiSuccessResult(JSONObject jsonObject) {
+                                    processFollowResponse(jsonObject);
+                                }
+
+                                @Override
+                                public void onApiFailureResult(Exception e) {
+
+                                }
+
+                                @Override
+                                public void onApiErrorResult(VolleyError volleyError) {
+
+                                }
+                            });
+                } else if (followUnFollowBtn.getText().equals("Unfollow")) {
+                    callFollowUnfollowRequest(OtherProfileActivity.this,
+                            UNFOLLOW,
+                            userId,
+                            new ApiResponseCallback() {
+                                @Override
+                                public void onApiSuccessResult(JSONObject jsonObject) {
+                                    Log.d(TAG, "onResponse: Success");
+                                    processUnFollowResponse(jsonObject);
+                                }
+
+                                @Override
+                                public void onApiFailureResult(Exception e) {
+                                    Log.d(TAG, "onAPIResultError: " + e.toString());
+                                }
+
+                                @Override
+                                public void onApiErrorResult(VolleyError volleyError) {
+                                    Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                                    Toast.makeText(OtherProfileActivity.this,
+                                            "Something went wrong",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
             }
         });
+    }
+
+    private void processUnFollowResponse(JSONObject jsonObject) {
+        GlobalVariables.getInstance(OtherProfileActivity.this).unFollowed(userName);
+        try {
+            boolean status = jsonObject.getBoolean("status");
+
+            if (status) {
+                followUnFollowBtn.setText(R.string.follow);
+            } else {
+                Toast.makeText(OtherProfileActivity.this,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void processFollowResponse(JSONObject jsonObject) {
+        GlobalVariables.getInstance(OtherProfileActivity.this).followed(userName);
+        try {
+            boolean status = jsonObject.getBoolean("status");
+
+            if (status) {
+                followUnFollowBtn.setText(R.string.unfollow);
+            } else {
+                Toast.makeText(OtherProfileActivity.this,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadProfileDetails() {
@@ -102,7 +186,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 }
                 if (!userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())) {
                     isFollowing = data.getBoolean("is_following");
-                    if (isFollowing) {
+                    if (isFollowing || GlobalVariables.getInstance(OtherProfileActivity.this).checkFollower(userName)) {
                         followUnFollowBtn.setText(R.string.unfollow);
                     } else {
                         followUnFollowBtn.setText(R.string.follow);

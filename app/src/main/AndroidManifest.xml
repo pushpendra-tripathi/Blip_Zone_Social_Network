@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YourZone"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.LikesActivity"></activity>
+        <activity android:name=".views.ViewPostActivity"></activity>
+        <activity android:name=".views.LikesActivity" />
         <activity android:name=".views.CommentsActivity" />
         <activity android:name=".views.FollowingListActivity" />
         <activity android:name=".views.FollowersListActivity" />

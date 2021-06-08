@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
                         .into(circleImageView);
                 GlobalVariables.getInstance(getActivity()).setUserProfileImage(user.getString("profile_image"));
 
-                if (!user.getString("about").equals("")) {
+                if (!user.getString("about").equals("") && user.getString("about").length() > 4) {
                     bio.setVisibility(View.VISIBLE);
                     bio.setText(user.getString("about"));
                     GlobalVariables.getInstance(getActivity()).setUserProfileBio(user.getString("about"));

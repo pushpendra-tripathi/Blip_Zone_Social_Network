@@ -76,6 +76,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
 
         });
 
+        if (blogModel.isLiked()){
+            holder.whiteHeart.setVisibility(View.GONE);
+            holder.redHeart.setVisibility(View.VISIBLE);
+        }
+
 
     }
 

@@ -87,6 +87,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
             context.startActivity(intent);
         });
 
+        holder.allComment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("blogId", String.valueOf(blogModel.getId()));
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

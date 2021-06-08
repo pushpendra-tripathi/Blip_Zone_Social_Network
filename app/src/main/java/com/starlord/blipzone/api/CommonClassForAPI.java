@@ -4,6 +4,9 @@ package com.starlord.blipzone.api;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.SEARCH;
 
 public class CommonClassForAPI {
     private static final String TAG = "CommonClassForAPI";
@@ -83,6 +87,51 @@ public class CommonClassForAPI {
             @Override
             public String getBodyContentType() {
                 return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
+
+    }
+
+    public static void callSearchRequest(Activity context, String data, ApiResponseCallback apiResponseCallback) {
+
+        StringRequest callRequest = new StringRequest
+                (Request.Method.POST, SEARCH, response -> {
+                    try {
+                        Log.d(TAG, "onResponse: SearchAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
+                    } catch (JSONException e) {
+                        apiResponseCallback.onApiFailureResult(e);
+                    }
+                },
+                        (VolleyError error) -> {
+                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
+                            if (error != null) {
+                                NetworkResponse networkResponse = error.networkResponse;
+                                Log.d(TAG, "onErrorResponse: SearchAPI " + networkResponse);
+                                apiResponseCallback.onApiErrorResult(error);
+                            }
+                        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("data", data);
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return headers;
             }
         };
 

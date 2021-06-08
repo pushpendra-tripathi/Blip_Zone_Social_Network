@@ -12,4 +12,9 @@
     <string name="liked_by">Liked by StarLord, and 30 others</string>
     <string name="post_content">starlord moutains #earthporn #mountains</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="posted_at">3 DAYS AGO</string>
+    <string name="view_all_comments">View all 3 comments</string>
+    <string name="starlord">starlord</string>
+    <string name="search_hint">Search…</string>
+    <string name="search_text">Type the name of user you are searching...</string>
 </resources>

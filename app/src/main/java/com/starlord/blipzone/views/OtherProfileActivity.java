@@ -119,7 +119,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                         .placeholder(R.drawable.profile_avatar)
                         .into(circleImageView);
 
-                if (!user.getString("about").equals("")) {
+                if (!user.getString("about").equals("") && user.getString("about").length() > 4) {
                     bio.setVisibility(View.VISIBLE);
                     bio.setText(user.getString("about"));
 

@@ -39,7 +39,7 @@ import static com.starlord.blipzone.configurations.UrlConstants.UNFOLLOW;
 
 public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView circleImageView;
-    TextView followers, following, bio, usernameTxt, blockedText;
+    TextView followers, following, bio, usernameTxt;
     Button followUnFollowBtn;
     ImageView backBtn;
     RecyclerView profileBlogRecyclerView;
@@ -179,11 +179,6 @@ public class OtherProfileActivity extends AppCompatActivity {
             if (status) {
                 JSONObject data = jsonObject.getJSONObject("data");
 
-                isBlocked = data.getBoolean("is_blocked");
-                if (!isBlocked){
-                    blockedText.setVisibility(View.GONE);
-                    profileLayout.setVisibility(View.VISIBLE);
-                }
                 if (!userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())) {
                     isFollowing = data.getBoolean("is_following");
                     if (isFollowing || GlobalVariables.getInstance(OtherProfileActivity.this).checkFollower(userName)) {
@@ -214,6 +209,11 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                 following.setText(count.getString("following"));
 
+                profileAdapter = new ProfileAdapter(OtherProfileActivity.this, blogModelList,
+                        user.getString("username"), user.getString("profile_image"));
+                profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
+                profileBlogRecyclerView.setAdapter(profileAdapter);
+
                 JSONArray blog = data.getJSONArray("blogs");
                 for (int i = 0; i < blog.length(); i++) {
                     JSONObject blogObject = blog.getJSONObject(i);
@@ -223,7 +223,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                     blogModelList.add(blogModel);
                     profileAdapter.notifyDataSetChanged();
                 }
-
 
             } else {
                 Toast.makeText(OtherProfileActivity.this,
@@ -241,7 +240,6 @@ public class OtherProfileActivity extends AppCompatActivity {
         circleImageView = findViewById(R.id.circleImageView);
         backBtn = findViewById(R.id.backBtn_profile);
         followers = findViewById(R.id.follower_txt);
-        blockedText = findViewById(R.id.blocked_text);
         following = findViewById(R.id.following_txt);
         usernameTxt = findViewById(R.id.username_profile);
         bio = findViewById(R.id.bio_txt);
@@ -250,8 +248,6 @@ public class OtherProfileActivity extends AppCompatActivity {
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(false);
         gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);
-        profileAdapter = new ProfileAdapter(OtherProfileActivity.this, blogModelList);
-        profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
-        profileBlogRecyclerView.setAdapter(profileAdapter);
+
     }
 }

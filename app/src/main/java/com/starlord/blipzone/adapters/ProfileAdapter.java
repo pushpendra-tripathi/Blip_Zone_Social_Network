@@ -1,6 +1,8 @@
 package com.starlord.blipzone.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,21 @@ import com.starlord.blipzone.R;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.utils.SquareImageView;
+import com.starlord.blipzone.views.CommentsActivity;
+import com.starlord.blipzone.views.ViewPostActivity;
 
 import java.util.ArrayList;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder> {
     ArrayList<BlogModel> blogModelList;
     Context context;
+    String userName, profileImageUrl;
 
-    public ProfileAdapter(Context context, ArrayList<BlogModel> blogModelList) {
+    public ProfileAdapter(Context context, ArrayList<BlogModel> blogModelList, String userName, String profileImageUrl) {
         this.context = context;
         this.blogModelList = blogModelList;
+        this.userName = userName;
+        this.profileImageUrl = profileImageUrl;
     }
 
     @NonNull
@@ -40,6 +47,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         if (blogModel.getImageUrl().length() > 4) {
             Picasso.get().load(blogModel.getImageUrl()).into(holder.imageView);
         }
+
+        holder.imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ViewPostActivity.class);
+            intent.putExtra("blogModelArray", blogModelList);
+            intent.putExtra("userName", userName);
+            intent.putExtra("profileImage", profileImageUrl);
+            context.startActivity(intent);
+        });
     }
 
     @Override

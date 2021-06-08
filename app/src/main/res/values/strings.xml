@@ -22,4 +22,6 @@
     <string name="like_count">20 likes</string>
     <string name="this_is_comment">this is a comment</string>
     <string name="days_ago">3 d</string>
+    <string name="likes">Likes</string>
+    <string name="user_post">User\'s Posts</string>
 </resources>

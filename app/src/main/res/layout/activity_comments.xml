@@ -24,10 +24,11 @@
             android:id="@+id/ry_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp">
+            android:paddingStart="8dp"
+            tools:ignore="RtlSymmetry">
 
             <ImageView
-                android:id="@+id/backBtn_profile"
+                android:id="@+id/backBtn_comment"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:layout_centerVertical="true"
@@ -39,7 +40,7 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/username_profile"
+                android:id="@+id/comment_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

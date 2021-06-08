@@ -17,4 +17,9 @@
     <string name="starlord">starlord</string>
     <string name="search_hint">Search…</string>
     <string name="search_text">Type the name of user you are searching...</string>
+    <string name="comments">Comments</string>
+    <string name="reply">Reply</string>
+    <string name="like_count">20 likes</string>
+    <string name="this_is_comment">this is a comment</string>
+    <string name="days_ago">3 d</string>
 </resources>

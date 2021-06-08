@@ -11,7 +11,7 @@
         android:layout_height="45dp"
         android:id="@+id/comment_profile_image"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:src="@drawable/profile_avatar"
         app:civ_border_color="@color/black"
         app:civ_border_width="0.5dp"/>
@@ -20,23 +20,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relLayout1"
-        android:layout_toRightOf="@+id/comment_profile_image"
+        android:layout_toEndOf="@+id/comment_profile_image"
         android:layout_marginTop="15dp"
         android:background="@drawable/grey_border_bottom">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp"
             android:layout_marginBottom="20dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="starlord"
+                android:text="@string/starlord"
                 android:id="@+id/comment_username"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -44,42 +44,44 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="this is a comment"
-                android:layout_marginLeft="5dp"
+                android:text="@string/this_is_comment"
+                android:layout_marginStart="5dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:layout_toRightOf="@+id/comment_username"
+                android:layout_toEndOf="@+id/comment_username"
                 android:id="@+id/comment"/>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 d"
+                android:text="@string/days_ago"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="14sp"
                 android:id="@+id/comment_time_posted"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_below="@+id/comment"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20 likes"
+                android:text="@string/like_count"
                 android:textStyle="bold"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:id="@+id/comment_likes"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_below="@+id/comment"
-                android:layout_toRightOf="@+id/comment_time_posted"/>
+                android:layout_toEndOf="@+id/comment_time_posted"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reply"
+                android:text="@string/reply"
                 android:textStyle="bold"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="14sp"
@@ -87,9 +89,9 @@
                 tools:visibility="visible"
                 android:id="@+id/comment_reply"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_below="@+id/comment"
-                android:layout_toRightOf="@+id/comment_likes"/>
+                android:layout_toEndOf="@+id/comment_likes"/>
 
 
         </RelativeLayout>
@@ -100,10 +102,11 @@
             android:id="@+id/comment_like"
             android:visibility="gone"
             tools:visibility="visible"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/ic_baseline_favorite_border_24"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            tools:ignore="ContentDescription" />
 
 
     </RelativeLayout>

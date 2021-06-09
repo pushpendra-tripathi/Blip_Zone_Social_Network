@@ -2,7 +2,7 @@ package com.starlord.blipzone.configurations;
 
 public class UrlConstants {
 
-    //API connection urls
+    //API connection urls------------------------------------------------------------------------------------------------------------------
     public static final String BASE_URL = "https://45ea49e72ef5.ngrok.io";
 
     public static final String REGISTER_USER = BASE_URL + "/api/auth/register/";
@@ -18,9 +18,14 @@ public class UrlConstants {
     public static final String GET_LIKES = BASE_URL + "/api/blog/like/";
     public static final String BLOCK_LIST = BASE_URL + "/api/network/blocklist/";
     public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
+    public static final String NOTIFICATIONS = BASE_URL + "/api/notification/";
 
+    //Web Socket connection urls------------------------------------------------------------------------------------------------------------------
+    public static final String BASE_URL_WS = "wss://45ea49e72ef5.ngrok.io";
 
-    //Shared Preferences constants
+    public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
+
+    //Shared Preferences constants---------------------------------------------------------------------------------------------------------
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String REFRESH_TOKEN = "refreshToken";
     public static final String USER_LOGGED = "userLoggedIn";

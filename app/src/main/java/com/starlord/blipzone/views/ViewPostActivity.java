@@ -1,16 +1,15 @@
 package com.starlord.blipzone.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.HomeAdapter;
-import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.UserModel;
 
@@ -25,7 +24,6 @@ public class ViewPostActivity extends AppCompatActivity {
     RecyclerView homeRecyclerView;
     LinearLayoutManager linearLayoutManager;
     HomeAdapter homeAdapter;
-    String TAG = "ViewPostActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class ViewPostActivity extends AppCompatActivity {
 
         initializeViews();
 
-        for (int i=0; i < blogModelArrayList.size(); i++){
+        for (int i = 0; i < blogModelArrayList.size(); i++) {
             BlogModel blogModel = blogModelArrayList.get(i);
             UserModel userModel = new UserModel();
             userModel.setUserName(userName);
@@ -48,15 +46,13 @@ public class ViewPostActivity extends AppCompatActivity {
             homeAdapter.notifyDataSetChanged();
         }
 
-        backBtn.setOnClickListener(v -> {
-            onBackPressed();
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
     }
 
     private void initializeViews() {
         profileBlogList = new ArrayList<>();
-        homeRecyclerView =findViewById(R.id.home_view_post_rv);
+        homeRecyclerView = findViewById(R.id.home_view_post_rv);
         linearLayoutManager = new LinearLayoutManager(ViewPostActivity.this);
         homeAdapter = new HomeAdapter(ViewPostActivity.this, profileBlogList);
         homeRecyclerView.setLayoutManager(linearLayoutManager);

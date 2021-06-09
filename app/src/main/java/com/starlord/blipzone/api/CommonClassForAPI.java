@@ -4,9 +4,6 @@ package com.starlord.blipzone.api;
 import android.app.Activity;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -23,7 +20,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
 import static com.starlord.blipzone.configurations.UrlConstants.SEARCH;
 
 public class CommonClassForAPI {
@@ -44,10 +40,9 @@ public class CommonClassForAPI {
 
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
-                return params;
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return header;
             }
         };
 

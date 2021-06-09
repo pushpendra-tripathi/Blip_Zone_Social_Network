@@ -24,4 +24,5 @@
     <string name="days_ago">3 d</string>
     <string name="likes">Likes</string>
     <string name="user_post">User\'s Posts</string>
+    <string name="notifications">Notifications</string>
 </resources>

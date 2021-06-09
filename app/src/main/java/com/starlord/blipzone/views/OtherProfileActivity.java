@@ -126,6 +126,8 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             if (status) {
                 followUnFollowBtn.setText(R.string.follow);
+                int count = Integer.parseInt(followers.getText().toString()) - 1;
+                followers.setText(String.valueOf(count));
             } else {
                 Toast.makeText(OtherProfileActivity.this,
                         "Something went wrong",
@@ -145,6 +147,8 @@ public class OtherProfileActivity extends AppCompatActivity {
 
             if (status) {
                 followUnFollowBtn.setText(R.string.unfollow);
+                int count = Integer.parseInt(followers.getText().toString()) + 1;
+                followers.setText(String.valueOf(count));
             } else {
                 Toast.makeText(OtherProfileActivity.this,
                         "Something went wrong",

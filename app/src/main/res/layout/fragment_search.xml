@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/tb_search"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -28,7 +28,8 @@
             android:focusable="true"
             android:padding="12dp"
             android:src="@drawable/ic_backarrow"
-            app:tint="@color/black" />
+            app:tint="@color/black"
+            tools:ignore="ContentDescription" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_search"
@@ -55,7 +56,7 @@
             android:textStyle="bold"
             app:textInputLayoutFocusedRectEnabled="true" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <TextView
         android:id="@+id/search_text"

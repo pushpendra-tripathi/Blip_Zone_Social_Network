@@ -40,9 +40,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //networking library
     implementation 'com.android.volley:volley:1.2.0'
 
+    //library for circular image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //image loading and caching library
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //library for round corners image view
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

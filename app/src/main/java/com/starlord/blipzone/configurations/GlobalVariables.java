@@ -17,6 +17,7 @@ public class GlobalVariables {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     HashMap<String, Boolean> followerRecord;
+    String webSocketUserId;
 
     public static GlobalVariables getInstance(Context context) {
         if (instance == null) {
@@ -31,6 +32,7 @@ public class GlobalVariables {
         followerRecord = new HashMap<>();
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        webSocketUserId = "";
     }
 
     public void setData(String key, String value) {
@@ -127,5 +129,14 @@ public class GlobalVariables {
         if (followerRecord.containsKey(userName))
             return followerRecord.get(userName);
         return false;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+    public void setWebSocketUserId(String userId){
+        webSocketUserId = userId;
+    }
+
+    public String getWebSocketUserId(){
+        return webSocketUserId;
     }
 }

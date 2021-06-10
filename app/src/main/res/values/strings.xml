@@ -25,4 +25,8 @@
     <string name="likes">Likes</string>
     <string name="user_post">User\'s Posts</string>
     <string name="notifications">Notifications</string>
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
+    <string name="gallery_s">Gallery</string>
+    <string name="next">Next</string>
 </resources>

@@ -48,7 +48,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     ConstraintLayout profileLayout;
     String TAG = "OtherProfileActivityLog";
     ArrayList<BlogModel> blogModelList;
-    boolean isFollowing, isBlocked;
+    boolean isFollowing;
     private String userId;
     private String userName;
 

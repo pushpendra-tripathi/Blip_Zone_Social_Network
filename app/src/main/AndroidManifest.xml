@@ -3,7 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.starlord.blipzone">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +22,12 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourZone"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.ViewPostActivity"></activity>
+        <activity android:name=".views.NextActivity" />
+        <activity android:name=".views.EditProfileActivity" />
+        <activity android:name=".views.CreatePostActivity" />
+        <activity android:name=".views.ViewPostActivity" />
         <activity android:name=".views.LikesActivity" />
         <activity android:name=".views.CommentsActivity" />
         <activity android:name=".views.FollowingListActivity" />

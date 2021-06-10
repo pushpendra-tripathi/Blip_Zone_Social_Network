@@ -51,4 +51,7 @@ dependencies {
 
     //library for round corners image view
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //universal image loader
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5';
 }

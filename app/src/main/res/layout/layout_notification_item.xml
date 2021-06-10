@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,38 +15,39 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:scaleType="centerCrop"
+        android:layout_alignParentStart="true"
         android:src="@drawable/notification_announcement"
         app:civ_border_color="@color/border"
         app:civ_border_width="1dp"
         tools:layout_editor_absoluteX="14dp"
         tools:layout_editor_absoluteY="14dp" />
 
+
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:layout_alignStart="@id/iv_left_icon"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="48dp"
         android:paddingHorizontal="8dp"
-        android:layout_marginEnd="42dp"
-        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="18dp"
         tools:layout_editor_absoluteY="26dp"
         tools:text="You have a notification" />
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_right_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
-        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/profile_avatar"
         android:visibility="gone"
-        tools:layout_editor_absoluteX="349dp"
-        tools:layout_editor_absoluteY="12dp"
         tools:visibility="visible" />
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -27,16 +27,15 @@ import com.starlord.blipzone.utils.FilePaths;
 import com.starlord.blipzone.utils.FileSearch;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class GalleryFragment extends Fragment {
 
     private static final String TAG = "GalleryFragment";
 
-
     //constants
     private static final int NUM_GRID_COLUMNS = 3;
-
 
     //widgets
     private GridView gridView;
@@ -67,7 +66,7 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: closing the gallery fragment.");
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
 
@@ -87,7 +86,7 @@ public class GalleryFragment extends Fragment {
                     intent.putExtra("selected_image", mSelectedImage);
                     intent.putExtra("return_to_fragment", "Edit Profile");
                     startActivity(intent);
-                    getActivity().finish();
+                    requireActivity().finish();
                 }
 
             }

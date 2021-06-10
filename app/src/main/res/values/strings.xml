@@ -29,4 +29,6 @@
     <string name="photo">PHOTO</string>
     <string name="gallery_s">Gallery</string>
     <string name="next">Next</string>
+    <string name="string_share">Share</string>
+    <string name="description">Write a description...</string>
 </resources>

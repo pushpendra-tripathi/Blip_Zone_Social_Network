@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadBlogPostsRequest() {
-        callAuthGetRequest(getActivity(), UrlConstants.BLOG_POST, new ApiResultCallback() {
+        callAuthGetRequest(getActivity(), UrlConstants.BLOG_LIST, new ApiResultCallback() {
             @Override
             public void onAPIResultSuccess(JSONObject jsonObject) {
                 Log.d(TAG, "onResponse: Success");

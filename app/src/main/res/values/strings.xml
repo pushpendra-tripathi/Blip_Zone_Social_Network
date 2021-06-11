@@ -31,4 +31,5 @@
     <string name="next">Next</string>
     <string name="string_share">Share</string>
     <string name="description">Write a description...</string>
+    <string name="upload_progress">Your another post is uploading, please wait…</string>
 </resources>

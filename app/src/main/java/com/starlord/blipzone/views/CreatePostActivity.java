@@ -1,21 +1,18 @@
 package com.starlord.blipzone.views;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import com.google.android.material.tabs.TabLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.starlord.blipzone.R;
-
 import com.starlord.blipzone.adapters.SectionsPagerAdapter;
 import com.starlord.blipzone.utils.Permissions;
 import com.starlord.blipzone.utils.UniversalImageLoader;

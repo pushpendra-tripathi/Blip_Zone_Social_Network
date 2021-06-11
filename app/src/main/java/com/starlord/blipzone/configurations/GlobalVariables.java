@@ -1,12 +1,22 @@
 package com.starlord.blipzone.configurations;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashMap;
 
-import static com.starlord.blipzone.configurations.UrlConstants.*;
+import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.FOLLOWERS_COUNT;
+import static com.starlord.blipzone.configurations.UrlConstants.FOLLOWING_COUNT;
+import static com.starlord.blipzone.configurations.UrlConstants.PROFILE_DATA;
+import static com.starlord.blipzone.configurations.UrlConstants.REFRESH_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.USER_LOGGED;
+import static com.starlord.blipzone.configurations.UrlConstants.USER_NAME;
+import static com.starlord.blipzone.configurations.UrlConstants.USER_PROFILE_BIO;
+import static com.starlord.blipzone.configurations.UrlConstants.USER_PROFILE_IMAGE;
 
 public class GlobalVariables {
 
@@ -117,26 +127,43 @@ public class GlobalVariables {
     }
     //////////////////////////////////////////////////////////////////////////////
 
-    public void followed(String username){
+    public void followed(String username) {
         followerRecord.put(username, true);
     }
 
-    public void unFollowed(String username){
+    public void unFollowed(String username) {
         followerRecord.put(username, false);
     }
 
-    public boolean checkFollower(String userName){
+    public boolean checkFollower(String userName) {
         if (followerRecord.containsKey(userName))
             return followerRecord.get(userName);
         return false;
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public void setWebSocketUserId(String userId){
+    public void setWebSocketUserId(String userId) {
         webSocketUserId = userId;
     }
 
-    public String getWebSocketUserId(){
+    public String getWebSocketUserId() {
         return webSocketUserId;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
+        if (context != null) {
+            ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.getName().equals(service.service.getClassName())) {
+                    Log.i("isMyServiceRunning?", true + "");
+                    return true;
+                }
+            }
+            Log.i("isMyServiceRunning?", false + "");
+            return false;
+        }
+        return false;
     }
 }

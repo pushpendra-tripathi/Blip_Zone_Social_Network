@@ -8,16 +8,10 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.android.volley.VolleyError;
-import com.starlord.blipzone.api.CommonClassForAPI;
-import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.callbacks.ServiceCallback;
-
-import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -81,30 +75,8 @@ public class UploadService extends Service {
                     return START_NOT_STICKY;
                 else hasUploadedStarted = true;
 
-                new Thread(() -> CommonClassForAPI.callBlogPostRequest(context,
-                        caption,
-                        uploadImage,
-                        "1",
-                        new ApiResponseCallback() {
-                            @Override
-                            public void onApiSuccessResult(JSONObject jsonObject) {
-                                Log.d(TAG, "Service-> onResponse: Success");
-                                sendUploadingSuccessBroadcast();
-                            }
-
-                            @Override
-                            public void onApiFailureResult(Exception e) {
-                                Log.d(TAG, "Service-> onAPIResultErrorCode: " + e.toString());
-                                sendUploadingErrorBroadcast();
-                            }
-
-                            @Override
-                            public void onApiErrorResult(VolleyError volleyError) {
-                                Log.d(TAG, "Service-> onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
-                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                sendUploadingErrorBroadcast();
-                            }
-                        })).start();
+//                new Thread(() ->
+//                        ).start();
 
             } else if (Objects.equals(intent.getAction(), "STOP_SERVICE")) {
                 stopForeground(true);

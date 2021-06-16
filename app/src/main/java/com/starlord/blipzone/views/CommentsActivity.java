@@ -1,35 +1,44 @@
 package com.starlord.blipzone.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.CommentsAdapter;
-import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
-import com.starlord.blipzone.configurations.UrlConstants;
-import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.CommentModel;
-import com.starlord.blipzone.models.LikeModel;
 import com.starlord.blipzone.models.UserModel;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.starlord.blipzone.api.CommonClassForAPI.*;
-import static com.starlord.blipzone.configurations.UrlConstants.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.COMMENT_ACTION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.COMMENT_CONTENT_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.GET_COMMENT;
+import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.POST_ID_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
 
 public class CommentsActivity extends AppCompatActivity {
     String blogId;
@@ -40,6 +49,8 @@ public class CommentsActivity extends AppCompatActivity {
     EditText commentBox;
     ArrayList<CommentModel> commentModelArrayList;
     CommentsAdapter commentsAdapter;
+    private String userId;
+    private WebSocket webSocket;
 
 
     @Override
@@ -47,14 +58,44 @@ public class CommentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
+        // Getting the userId and blogId of the requested post
         blogId = getIntent().getStringExtra("blogId");
+        userId = String.valueOf(getIntent().getIntExtra("userId", 0));
+
+        initiateSocketConnection(userId);
 
         initializeViews();
 
         loadCommentsRequest();
 
-        backBtn.setOnClickListener(v -> {
-            onBackPressed();
+        backBtn.setOnClickListener(v -> onBackPressed());
+
+        sendBtn.setOnClickListener(v -> {
+
+            String comment = commentBox.getText().toString().trim();
+            if (TextUtils.isEmpty(comment)) {
+                commentBox.setError("Please enter a comment.");
+                return;
+            }
+            //make a web socket connection and send the comment.
+            JSONObject jsonObject = new JSONObject();
+            try {
+
+                jsonObject.put(TYPE_WS, COMMENT_ACTION_WS);
+                jsonObject.put(POST_ID_WS, blogId);
+                jsonObject.put(COMMENT_CONTENT_WS, comment);
+
+                webSocket.send(jsonObject.toString());
+
+                resetCommentBox();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //Resetting comment box and loading new comment.
+            resetCommentBox();
+            loadCommentsRequest();
         });
     }
 
@@ -75,6 +116,8 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void processCommentsResponse(JSONObject jsonObject) {
+        if (commentModelArrayList.size() != 0)
+            commentModelArrayList.clear();
         try {
             boolean status = jsonObject.getBoolean("status");
 
@@ -120,5 +163,57 @@ public class CommentsActivity extends AppCompatActivity {
         commentsAdapter = new CommentsAdapter(CommentsActivity.this, commentModelArrayList);
         commentsRecyclerView.setLayoutManager(linearLayoutManager);
         commentsRecyclerView.setAdapter(commentsAdapter);
+    }
+
+    private void resetCommentBox() {
+        commentBox.setText("");
+    }
+
+    private void initiateSocketConnection(String userID) {
+        String SERVER_PATH = NOTIFICATION_WS + userId + "/?user_token="
+                + GlobalVariables.getInstance(CommentsActivity.this).getUserToken();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(SERVER_PATH).build();
+        webSocket = client.newWebSocket(request, new CommentWebSocketListener());
+    }
+
+    private class CommentWebSocketListener extends WebSocketListener {
+
+        @Override
+        public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
+            super.onOpen(webSocket, response);
+
+//            runOnUiThread(() -> Toast.makeText(CommentsActivity.this,
+//                    "Socket Connection Successful!",
+//                    Toast.LENGTH_SHORT).show());
+
+        }
+
+        @Override
+        public void onMessage(@NotNull WebSocket webSocket, @NotNull String textResponse) {
+            super.onMessage(webSocket, textResponse);
+
+            runOnUiThread(() -> {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(textResponse);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            });
+
+        }
+
+        @Override
+        public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
+            super.onFailure(webSocket, t, response);
+            runOnUiThread(() -> Toast.makeText(CommentsActivity.this,
+                    "Connection Failed, retrying...",
+                    Toast.LENGTH_SHORT).show());
+
+            initiateSocketConnection(userId);
+        }
     }
 }

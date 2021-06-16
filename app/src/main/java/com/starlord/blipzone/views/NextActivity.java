@@ -15,11 +15,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.api.CommonClassForAPI;
+import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.callbacks.ServiceCallback;
-import com.starlord.blipzone.configurations.GlobalVariables;
-import com.starlord.blipzone.services.UploadService;
 import com.starlord.blipzone.utils.UniversalImageLoader;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,23 +90,32 @@ public class NextActivity extends AppCompatActivity implements ServiceCallback {
     }
 
     public void callBlogPostService(Bitmap uploadBitmap) {
-        serviceCallback = (ServiceCallback) NextActivity.this;
-        UploadService mService = new UploadService(NextActivity.this, serviceCallback);
+        CommonClassForAPI.callBlogPostRequest(NextActivity.this,
+                caption,
+                uploadBitmap,
+                "1",
+                new ApiResponseCallback() {
+                    @Override
+                    public void onApiSuccessResult(JSONObject jsonObject) {
+                        Log.d(TAG, "Service-> onResponse: Success");
 
-        if (!GlobalVariables.getInstance(NextActivity.this).isMyServiceRunning(mService.getClass())) {
-            Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
+                    }
 
-            mServiceIntent.setAction("START_SERVICE");
-            mServiceIntent.putExtra("caption", caption);
-            mServiceIntent.putExtra("uploadImage", uploadBitmap);
+                    @Override
+                    public void onApiFailureResult(Exception e) {
+                        Log.d(TAG, "Service-> onAPIResultErrorCode: " + e.toString());
 
-            startService(mServiceIntent);
+                    }
 
-            startActivity(new Intent(NextActivity.this, MainActivity.class));
+                    @Override
+                    public void onApiErrorResult(VolleyError volleyError) {
+                        Log.d(TAG, "Service-> onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                        Toast.makeText(NextActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
-        } else {
-            Toast.makeText(this, getString(R.string.upload_progress), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
+
+        startActivity(new Intent(NextActivity.this, MainActivity.class));
 
     }
 

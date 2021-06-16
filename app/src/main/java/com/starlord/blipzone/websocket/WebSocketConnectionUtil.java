@@ -1,4 +1,4 @@
-package com.starlord.blipzone.utils;
+package com.starlord.blipzone.websocket;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,8 +12,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
-import static com.starlord.blipzone.configurations.UrlConstants.BASE_URL_WS;
-
 public class WebSocketConnectionUtil {
     private static final String TAG = "WebSocketConnectionUtil";
     public static OkHttpClient okHttpClient;
@@ -26,13 +24,12 @@ public class WebSocketConnectionUtil {
     private static WebSocketConnectionUtil webSocketConnectionUtil;
 
 
-    private HandlerThread mHandlerThread;
-    private Handler mHandler;
+    private final Handler mHandler;
 
 
     public WebSocketConnectionUtil(Context context) {
         customWebSocketListener = new CustomWebSocketListener(mContext);
-        mHandlerThread = new HandlerThread("HandlerThread");
+        HandlerThread mHandlerThread = new HandlerThread("HandlerThread");
         mHandlerThread.start();
         mHandler = new Handler(mHandlerThread.getLooper());
     }
@@ -49,14 +46,15 @@ public class WebSocketConnectionUtil {
         return webSocketConnectionUtil;
     }
 
-    public void startWebSocket() {
+    public void startWebSocket(String url) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "run: token " + GlobalVariables.getInstance(mContext).getUserToken());
                 okHttpClient = new OkHttpClient();
                 request = new Request.Builder()
-                        .url(BASE_URL_WS + "/" + GlobalVariables.getInstance(mContext).getWebSocketUserId() + "/?token=" )
+                        //.url(BASE_URL_WS + "/ws/notification/" + GlobalVariables.getInstance(mContext).getWebSocketUserId() + "/?token=" )
+                        .url(url)
                         .build();
                 activityWebSocket = okHttpClient.newWebSocket(request, customWebSocketListener);
             }
@@ -69,25 +67,25 @@ public class WebSocketConnectionUtil {
         }
     }
 
-    public boolean isWebSocketConnected(){
+    public boolean isWebSocketConnected() {
         return customWebSocketListener.isWebSocketConnected();
     }
 
 
-    public void onDestroy(){
-        if(mContext != null){
+    public void onDestroy() {
+        if (mContext != null) {
             mContext = null;
         }
     }
 
-    public void onDestroyCustomWebSocketListener(){
+    public void onDestroyCustomWebSocketListener() {
         webSocketConnectionUtil = null;
 
-        if(mContext != null){
+        if (mContext != null) {
             mContext = null;
         }
 
-        if(customWebSocketListener != null){
+        if (customWebSocketListener != null) {
             customWebSocketListener.onDestroy();
             customWebSocketListener = null;
         }

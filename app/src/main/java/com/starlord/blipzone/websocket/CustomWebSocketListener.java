@@ -1,4 +1,4 @@
-package com.starlord.blipzone.utils;
+package com.starlord.blipzone.websocket;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.starlord.blipzone.callbacks.IActivityWebSocket;
+import com.starlord.blipzone.configurations.GlobalVariables;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,7 @@ public class CustomWebSocketListener extends WebSocketListener implements IActiv
         Log.d(TAG, "onFailure: response "+response);
 
         isWebSocketConnected = false;
-        WebSocketConnectionUtil.getInstance(mContext).startWebSocket();
+        WebSocketConnectionUtil.getInstance(mContext).startWebSocket(GlobalVariables.getInstance(mContext).getWebSocketUrl());
     }
 
     @Override

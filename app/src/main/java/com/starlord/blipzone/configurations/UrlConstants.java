@@ -3,7 +3,7 @@ package com.starlord.blipzone.configurations;
 public class UrlConstants {
 
     //API connection urls------------------------------------------------------------------------------------------------------------------
-    public static final String BASE_URL = "https://b16588e30a24.ngrok.io";
+    public static final String BASE_URL = "https://a22fe016fd29.ngrok.io";
 
     public static final String REGISTER_USER = BASE_URL + "/api/auth/register/";
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
@@ -22,7 +22,7 @@ public class UrlConstants {
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/";
 
     //Web Socket connection urls------------------------------------------------------------------------------------------------------------------
-    public static final String BASE_URL_WS = "wss://45ea49e72ef5.ngrok.io";
+    public static final String BASE_URL_WS = "wss://a22fe016fd29.ngrok.io";
 
     public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
 
@@ -42,4 +42,11 @@ public class UrlConstants {
     public static final String BROADCAST_NEW_BLOG = "BROADCAST_NEW_BLOG";
     public static final String BROADCAST_NEW_BLOG_UPLOAD_SUCCESSFULLY = "BROADCAST_NEW_BLOG_UPLOAD_SUCCESSFULLY";
     public static final String BROADCAST_BLOG_UPLOADING_ERROR = "BROADCAST_BLOG_UPLOADING_ERROR";
+
+    //WEB_SOCKET_CONSTANTS ---------------------------------------------------------------------------------------------------------------
+    public static final String COMMENT_ACTION_WS = "COMMENT";
+    public static final String LIKE_ACTION_WS = "LIKE";
+    public static final String POST_ID_WS = "id";
+    public static final String COMMENT_CONTENT_WS = "content";
+    public static final String TYPE_WS = "type";
 }

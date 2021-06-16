@@ -27,7 +27,7 @@ public class GlobalVariables {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     HashMap<String, Boolean> followerRecord;
-    String webSocketUserId;
+    String webSocketUrl;
 
     public static GlobalVariables getInstance(Context context) {
         if (instance == null) {
@@ -42,9 +42,10 @@ public class GlobalVariables {
         followerRecord = new HashMap<>();
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        webSocketUserId = "";
+        webSocketUrl = "";
     }
 
+    // Methods --------------------------------------------------------------------------------------------------------------------------
     public void setData(String key, String value) {
         editor.putString(key, value);
         editor.apply();
@@ -59,7 +60,7 @@ public class GlobalVariables {
         editor.apply();
     }
 
-    //Access tokens ////////////////////////////////////////////////////////////////////////////////////
+    //Access tokens ---------------------------------------------------------------------------------------------------------------------
     public String getUserToken() {
         return sharedPreferences.getString(ACCESS_TOKEN, "");
     }
@@ -68,21 +69,21 @@ public class GlobalVariables {
         return sharedPreferences.getString(REFRESH_TOKEN, "");
     }
 
-    public void setUserName(String userName) {
-        editor.putString(USER_NAME, userName);
-        editor.apply();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //-----------------------------------------------------------------------------------------------------------------------------------
 
 
-    //User profile data shared preferences ////////////////////////////////////////////////////
+    //User profile data shared preferences ---------------------------------------------------------------------------------------------
     public boolean isProfileDataSaved() {
         return sharedPreferences.getBoolean(PROFILE_DATA, false);
     }
 
     public void saveProfileData() {
         editor.putBoolean(PROFILE_DATA, true);
+        editor.apply();
+    }
+
+    public void setUserName(String userName) {
+        editor.putString(USER_NAME, userName);
         editor.apply();
     }
 
@@ -125,7 +126,7 @@ public class GlobalVariables {
     public String getUserProfileBio() {
         return sharedPreferences.getString(USER_PROFILE_BIO, "");
     }
-    //////////////////////////////////////////////////////////////////////////////
+    //-----------------------------------------------------------------------------------------------------------------------------------
 
     public void followed(String username) {
         followerRecord.put(username, true);
@@ -142,12 +143,12 @@ public class GlobalVariables {
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------
-    public void setWebSocketUserId(String userId) {
-        webSocketUserId = userId;
+    public void setWebSocketUrl(String url) {
+        webSocketUrl = url;
     }
 
-    public String getWebSocketUserId() {
-        return webSocketUserId;
+    public String getWebSocketUrl() {
+        return webSocketUrl;
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------

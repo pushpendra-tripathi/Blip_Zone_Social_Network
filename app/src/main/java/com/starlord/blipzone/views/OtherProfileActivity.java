@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
+import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
@@ -31,11 +32,14 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.api.CommonClassForAPI.callFollowUnfollowRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.FOLLOW_LIST;
 import static com.starlord.blipzone.configurations.UrlConstants.OTHER_PROFILE;
+import static com.starlord.blipzone.configurations.UrlConstants.UNFOLLOW;
 
 public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView circleImageView;
-    TextView followers, following, bio, usernameTxt, blockedText;
+    TextView followers, following, bio, usernameTxt;
     Button followUnFollowBtn;
     ImageView backBtn;
     RecyclerView profileBlogRecyclerView;
@@ -44,7 +48,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     ConstraintLayout profileLayout;
     String TAG = "OtherProfileActivityLog";
     ArrayList<BlogModel> blogModelList;
-    boolean isFollowing, isBlocked;
+    boolean isFollowing;
     private String userId;
     private String userName;
 
@@ -59,17 +63,101 @@ public class OtherProfileActivity extends AppCompatActivity {
         initializeViews();
         loadProfileDetails();
 
-        backBtn.setOnClickListener(v ->{
-            onBackPressed();
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         followUnFollowBtn.setOnClickListener(v ->{
             if (userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())){
                 //open edit profile activity
             } else {
                 //handle follow/unfollow here
+                if (followUnFollowBtn.getText().equals("Follow")) {
+                    callFollowUnfollowRequest(OtherProfileActivity.this,
+                            FOLLOW_LIST,
+                            userId,
+                            new ApiResponseCallback() {
+                                @Override
+                                public void onApiSuccessResult(JSONObject jsonObject) {
+                                    processFollowResponse(jsonObject);
+                                }
+
+                                @Override
+                                public void onApiFailureResult(Exception e) {
+
+                                }
+
+                                @Override
+                                public void onApiErrorResult(VolleyError volleyError) {
+
+                                }
+                            });
+                } else if (followUnFollowBtn.getText().equals("Unfollow")) {
+                    callFollowUnfollowRequest(OtherProfileActivity.this,
+                            UNFOLLOW,
+                            userId,
+                            new ApiResponseCallback() {
+                                @Override
+                                public void onApiSuccessResult(JSONObject jsonObject) {
+                                    Log.d(TAG, "onResponse: Success");
+                                    processUnFollowResponse(jsonObject);
+                                }
+
+                                @Override
+                                public void onApiFailureResult(Exception e) {
+                                    Log.d(TAG, "onAPIResultError: " + e.toString());
+                                }
+
+                                @Override
+                                public void onApiErrorResult(VolleyError volleyError) {
+                                    Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
+                                    Toast.makeText(OtherProfileActivity.this,
+                                            "Something went wrong",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
             }
         });
+    }
+
+    private void processUnFollowResponse(JSONObject jsonObject) {
+        GlobalVariables.getInstance(OtherProfileActivity.this).unFollowed(userName);
+        try {
+            boolean status = jsonObject.getBoolean("status");
+
+            if (status) {
+                followUnFollowBtn.setText(R.string.follow);
+                int count = Integer.parseInt(followers.getText().toString()) - 1;
+                followers.setText(String.valueOf(count));
+            } else {
+                Toast.makeText(OtherProfileActivity.this,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void processFollowResponse(JSONObject jsonObject) {
+        GlobalVariables.getInstance(OtherProfileActivity.this).followed(userName);
+        try {
+            boolean status = jsonObject.getBoolean("status");
+
+            if (status) {
+                followUnFollowBtn.setText(R.string.unfollow);
+                int count = Integer.parseInt(followers.getText().toString()) + 1;
+                followers.setText(String.valueOf(count));
+            } else {
+                Toast.makeText(OtherProfileActivity.this,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadProfileDetails() {
@@ -95,14 +183,9 @@ public class OtherProfileActivity extends AppCompatActivity {
             if (status) {
                 JSONObject data = jsonObject.getJSONObject("data");
 
-                isBlocked = data.getBoolean("is_blocked");
-                if (!isBlocked){
-                    blockedText.setVisibility(View.GONE);
-                    profileLayout.setVisibility(View.VISIBLE);
-                }
                 if (!userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())) {
                     isFollowing = data.getBoolean("is_following");
-                    if (isFollowing) {
+                    if (isFollowing || GlobalVariables.getInstance(OtherProfileActivity.this).checkFollower(userName)) {
                         followUnFollowBtn.setText(R.string.unfollow);
                     } else {
                         followUnFollowBtn.setText(R.string.follow);
@@ -130,6 +213,11 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                 following.setText(count.getString("following"));
 
+                profileAdapter = new ProfileAdapter(OtherProfileActivity.this, blogModelList,
+                        user.getString("username"), user.getString("profile_image"));
+                profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
+                profileBlogRecyclerView.setAdapter(profileAdapter);
+
                 JSONArray blog = data.getJSONArray("blogs");
                 for (int i = 0; i < blog.length(); i++) {
                     JSONObject blogObject = blog.getJSONObject(i);
@@ -139,7 +227,6 @@ public class OtherProfileActivity extends AppCompatActivity {
                     blogModelList.add(blogModel);
                     profileAdapter.notifyDataSetChanged();
                 }
-
 
             } else {
                 Toast.makeText(OtherProfileActivity.this,
@@ -157,7 +244,6 @@ public class OtherProfileActivity extends AppCompatActivity {
         circleImageView = findViewById(R.id.circleImageView);
         backBtn = findViewById(R.id.backBtn_profile);
         followers = findViewById(R.id.follower_txt);
-        blockedText = findViewById(R.id.blocked_text);
         following = findViewById(R.id.following_txt);
         usernameTxt = findViewById(R.id.username_profile);
         bio = findViewById(R.id.bio_txt);
@@ -166,8 +252,6 @@ public class OtherProfileActivity extends AppCompatActivity {
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(false);
         gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);
-        profileAdapter = new ProfileAdapter(OtherProfileActivity.this, blogModelList);
-        profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
-        profileBlogRecyclerView.setAdapter(profileAdapter);
+
     }
 }

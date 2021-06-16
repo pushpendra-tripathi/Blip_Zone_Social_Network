@@ -1,11 +1,12 @@
 package com.starlord.blipzone.models;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class BlogModel {
+public class BlogModel implements Serializable {
     int id;
     List<CommentModel> commentList;
     LikeModel likeModel;

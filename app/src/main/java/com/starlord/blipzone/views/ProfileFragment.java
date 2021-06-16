@@ -154,6 +154,10 @@ public class ProfileFragment extends Fragment {
                     GlobalVariables.getInstance(getActivity()).setFollowing(count.getString("following"));
                 }
 
+                profileAdapter = new ProfileAdapter(getActivity(), blogModelList,
+                        user.getString("username"), user.getString("profile_image"));
+                profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
+                profileBlogRecyclerView.setAdapter(profileAdapter);
 
                 JSONArray blog = data.getJSONArray("blogs");
                 for (int i = 0; i < blog.length(); i++) {
@@ -191,8 +195,6 @@ public class ProfileFragment extends Fragment {
         profileBlogRecyclerView = view.findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(false);
         gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        profileAdapter = new ProfileAdapter(getActivity(), blogModelList);
-        profileBlogRecyclerView.setLayoutManager(gridLayoutManager);
-        profileBlogRecyclerView.setAdapter(profileAdapter);
+
     }
 }

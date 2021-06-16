@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             } else{
                                 Toast.makeText(LoginActivity.this,
-                                        "Either username or email is already registered",
+                                        "Something went wrong",
                                         Toast.LENGTH_SHORT).show();
                             }
                             progressDialog.dismiss();

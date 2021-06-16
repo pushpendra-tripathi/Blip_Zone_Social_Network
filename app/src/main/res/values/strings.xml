@@ -17,4 +17,19 @@
     <string name="starlord">starlord</string>
     <string name="search_hint">Search…</string>
     <string name="search_text">Type the name of user you are searching...</string>
+    <string name="comments">Comments</string>
+    <string name="reply">Reply</string>
+    <string name="like_count">20 likes</string>
+    <string name="this_is_comment">this is a comment</string>
+    <string name="days_ago">3 d</string>
+    <string name="likes">Likes</string>
+    <string name="user_post">User\'s Posts</string>
+    <string name="notifications">Notifications</string>
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
+    <string name="gallery_s">Gallery</string>
+    <string name="next">Next</string>
+    <string name="string_share">Share</string>
+    <string name="description">Write a description...</string>
+    <string name="upload_progress">Your another post is uploading, please wait…</string>
 </resources>

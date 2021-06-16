@@ -1,6 +1,7 @@
 package com.starlord.blipzone.views;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +17,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       initializeViews();
+        initializeViews();
 
     }
 
     private void initializeViews() {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        loadFragment(new HomeFragment());
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment())
+                .commit();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.navigation_camera:
-
+                startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
                 break;
 
             case R.id.navigation_alert:
@@ -62,9 +67,19 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 }

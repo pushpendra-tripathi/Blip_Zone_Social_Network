@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dimGray">#606060</color>
     <color name="Text60">#99000000</color>
+    <color name="border">#12000000</color>
 </resources>

@@ -2,11 +2,9 @@ package com.starlord.blipzone.api;
 
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -20,10 +18,11 @@ import com.starlord.blipzone.configurations.UrlConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.BLOG_POST;
 import static com.starlord.blipzone.configurations.UrlConstants.SEARCH;
 
 public class CommonClassForAPI {
@@ -44,10 +43,9 @@ public class CommonClassForAPI {
 
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
-                return params;
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return header;
             }
         };
 
@@ -56,44 +54,71 @@ public class CommonClassForAPI {
 
     }
 
-    public static void callAuthPostRequest(Activity context, String url, ApiResponseCallback apiResponseCallback) {
 
-        StringRequest callRequest = new StringRequest
-                (Request.Method.POST, url, response -> {
+    public static void callBlogPostRequest(Activity context,
+                                           String content,
+                                           Bitmap image,
+                                           String viewType,
+                                           ApiResponseCallback apiResponseCallback) {
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, BLOG_POST,
+                response -> {
                     try {
-                        Log.d(TAG, "onResponse: LoginAPI " + response);
-                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
+                        Log.d(TAG, "onResponse: BlogPostAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(new String(response.data)));
                     } catch (JSONException e) {
                         apiResponseCallback.onApiFailureResult(e);
                     }
                 },
-                        (VolleyError error) -> {
-                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
-                            if (error != null) {
-                                NetworkResponse networkResponse = error.networkResponse;
-                                Log.d(TAG, "onErrorResponse: LoginAPI " + networkResponse);
-                                apiResponseCallback.onApiErrorResult(error);
-                            }
-                        }) {
+                error -> {
+                    Log.d(TAG, "onErrorResponse: BlogPostAPI " + error);
+                    if (error != null) {
+                        NetworkResponse networkResponse = error.networkResponse;
+                        Log.d(TAG, "onErrorResponse: BlogPostAPI " + networkResponse);
+                        apiResponseCallback.onApiErrorResult(error);
+                    }
+                }) {
 
+            /*
+             * If you want to add more parameters with the image
+             * you can do it here
+             * here we have only one parameter with the image
+             * which is tags
+             * */
             @Override
-            public Map<String, String> getHeaders() {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                params.put("content", content);
+                params.put("view_type", viewType);
+                return params;
+            }
+
+            /*
+             * Here we are passing image by renaming it with a unique name
+             * */
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imageName = System.currentTimeMillis();
+                params.put("image", new DataPart(imageName + ".png", getFileDataFromDrawable(image)));
                 return params;
             }
 
             @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return headers;
             }
         };
 
-        // Access the RequestQueue through your singleton class.
-        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
+        //adding the request to volley
+        //Volley.newRequestQueue(context).add(volleyMultipartRequest);
+
+        VolleyClient.getInstance(context).addToRequestQueue(volleyMultipartRequest);
 
     }
+
 
     public static void callSearchRequest(Activity context, String data, ApiResponseCallback apiResponseCallback) {
 
@@ -107,7 +132,7 @@ public class CommonClassForAPI {
                     }
                 },
                         (VolleyError error) -> {
-                            Log.d(TAG, "onErrorResponse: LoginAPI " + error);
+                            Log.d(TAG, "onErrorResponse: SearchAPI " + error);
                             if (error != null) {
                                 NetworkResponse networkResponse = error.networkResponse;
                                 Log.d(TAG, "onErrorResponse: SearchAPI " + networkResponse);
@@ -139,6 +164,56 @@ public class CommonClassForAPI {
         VolleyClient.getInstance(context).addToRequestQueue(callRequest);
 
     }
+
+
+    public static void callFollowUnfollowRequest(Activity context,
+                                                 String url,
+                                                 String id,
+                                                 ApiResponseCallback apiResponseCallback) {
+
+        StringRequest callRequest = new StringRequest
+                (Request.Method.POST, url, response -> {
+                    try {
+                        Log.d(TAG, "onResponse: SearchAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(response));
+                    } catch (JSONException e) {
+                        apiResponseCallback.onApiFailureResult(e);
+                    }
+                },
+                        (VolleyError error) -> {
+                            Log.d(TAG, "onErrorResponse: FollowUnfollowAPI " + error);
+                            if (error != null) {
+                                NetworkResponse networkResponse = error.networkResponse;
+                                Log.d(TAG, "onErrorResponse: FollowUnfollowAPI " + networkResponse);
+                                apiResponseCallback.onApiErrorResult(error);
+                            }
+                        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return headers;
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(callRequest);
+
+    }
+
 
     public static void callRegisterRequest(Activity context, String username, String email,
                                            String password, ApiResponseCallback apiResponseCallback) {
@@ -182,6 +257,7 @@ public class CommonClassForAPI {
 
     }
 
+
     public static void callVerificationRequest(Activity context, String email, String otp,
                                                ApiResponseCallback apiResponseCallback) {
 
@@ -223,6 +299,7 @@ public class CommonClassForAPI {
 
     }
 
+
     public static void callLoginRequest(Activity context, String loginData, String password,
                                         ApiResponseCallback apiResponseCallback) {
 
@@ -262,5 +339,11 @@ public class CommonClassForAPI {
         // Access the RequestQueue through your singleton class.
         VolleyClient.getInstance(context).addToRequestQueue(callRequest);
 
+    }
+
+    public static byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }

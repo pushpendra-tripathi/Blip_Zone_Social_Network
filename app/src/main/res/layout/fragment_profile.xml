@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -23,7 +24,8 @@
             android:id="@+id/ry_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp">
+            android:paddingStart="8dp"
+            tools:ignore="RtlSymmetry">
 
             <ImageView
                 android:id="@+id/backBtn_profile"
@@ -35,7 +37,8 @@
                 android:visibility="gone"
                 android:padding="12dp"
                 android:src="@drawable/ic_backarrow"
-                app:tint="@color/black" />
+                app:tint="@color/black"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/username_profile"
@@ -51,20 +54,22 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:visibility="visible"
-                tools:text="StarLord" />
+                tools:text="StarLord"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:id="@+id/iv_menu"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingVertical="8dp"
                 android:src="@drawable/ic_baseline_more_vert_24"
-                app:tint="@color/black" />
+                app:tint="@color/black"
+                tools:ignore="ContentDescription" />
         </RelativeLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 

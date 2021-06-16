@@ -1,6 +1,5 @@
 package com.starlord.blipzone.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,11 +58,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadBlogPosts();
+        loadBlogPostsRequest();
     }
 
-    private void loadBlogPosts() {
-        callAuthGetRequest(getActivity(), UrlConstants.BLOG_POST, new ApiResultCallback() {
+    private void loadBlogPostsRequest() {
+        callAuthGetRequest(getActivity(), UrlConstants.BLOG_LIST, new ApiResultCallback() {
             @Override
             public void onAPIResultSuccess(JSONObject jsonObject) {
                 Log.d(TAG, "onResponse: Success");

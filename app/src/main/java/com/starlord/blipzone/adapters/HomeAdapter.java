@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
-import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.utils.SquareImageView;
-import com.starlord.blipzone.views.MainActivity;
+import com.starlord.blipzone.views.CommentsActivity;
+import com.starlord.blipzone.views.LikesActivity;
 import com.starlord.blipzone.views.OtherProfileActivity;
-import com.starlord.blipzone.views.ProfileFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -69,18 +68,35 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
         }
 
         holder.circleImageView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, OtherProfileActivity.class);
-                intent.putExtra("userId", String.valueOf(blogModel.getUserModel().getId()));
-                intent.putExtra("username", blogModel.getUserModel().getUserName());
-                context.startActivity(intent);
-
+            Intent intent = new Intent(context, OtherProfileActivity.class);
+            intent.putExtra("userId", String.valueOf(blogModel.getUserModel().getId()));
+            intent.putExtra("username", blogModel.getUserModel().getUserName());
+            context.startActivity(intent);
         });
 
-        if (blogModel.isLiked()){
+        if (blogModel.isLiked()) {
             holder.whiteHeart.setVisibility(View.GONE);
             holder.redHeart.setVisibility(View.VISIBLE);
         }
 
+        holder.comment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("blogId", String.valueOf(blogModel.getId()));
+            intent.putExtra("userId", blogModel.getUserModel().getId());
+            context.startActivity(intent);
+        });
+
+        holder.allComment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("blogId", String.valueOf(blogModel.getId()));
+            context.startActivity(intent);
+        });
+
+        holder.likesText.setOnClickListener(v -> {
+            Intent intent = new Intent(context, LikesActivity.class);
+            intent.putExtra("blogId", String.valueOf(blogModel.getId()));
+            context.startActivity(intent);
+        });
 
     }
 

@@ -3,7 +3,7 @@ package com.starlord.blipzone.configurations;
 public class UrlConstants {
 
     //API connection urls------------------------------------------------------------------------------------------------------------------
-    public static final String BASE_URL = "https://a22fe016fd29.ngrok.io";
+    public static final String BASE_URL = "http://13.126.42.158";
 
     public static final String REGISTER_USER = BASE_URL + "/api/auth/register/";
     public static final String VERIFY_USER = BASE_URL + "/api/auth/emailverify/";
@@ -22,7 +22,7 @@ public class UrlConstants {
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/";
 
     //Web Socket connection urls------------------------------------------------------------------------------------------------------------------
-    public static final String BASE_URL_WS = "wss://a22fe016fd29.ngrok.io";
+    public static final String BASE_URL_WS = "ws:/13.126.42.158";
 
     public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
 

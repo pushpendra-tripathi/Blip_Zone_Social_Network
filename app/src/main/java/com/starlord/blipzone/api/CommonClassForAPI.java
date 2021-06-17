@@ -54,6 +54,32 @@ public class CommonClassForAPI {
 
     }
 
+    public static void callAuthPostRequest(Activity context, String url, ApiResultCallback apiResultCallback) {
+        Log.d(TAG, "callAuthPostAPI: url  " + url);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, null, response -> {
+                    Log.d(TAG, "onResponse: callAuthPostAPI JSONObject " + response);
+                    apiResultCallback.onAPIResultSuccess(response);
+                }, error -> {
+                    Log.d(TAG, "onErrorResponse: callAuthPostAPI JSONObject " + error);
+                    apiResultCallback.onAPIResultError(error);
+
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return header;
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
 
     public static void callBlogPostRequest(Activity context,
                                            String content,

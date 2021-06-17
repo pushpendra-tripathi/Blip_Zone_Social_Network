@@ -40,10 +40,12 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthPostRequest;
 import static com.starlord.blipzone.configurations.UrlConstants.LIKE_ACTION_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.POST_ID_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.UNLIKE;
 
 
 public class HomeFragment extends Fragment {
@@ -206,12 +208,29 @@ public class HomeFragment extends Fragment {
                 }
             } else {
                 //implement api call for unlike the post
+                callUnlikeRequest(blogId);
             }
         });
         homeRecyclerView.setLayoutManager(linearLayoutManager);
         homeRecyclerView.setAdapter(homeAdapter);
         title = homeView.findViewById(R.id.username_feed);
         title.setText(R.string.feed);
+    }
+
+    private void callUnlikeRequest(String blogId) {
+        callAuthPostRequest(getActivity(), UNLIKE + blogId, new ApiResultCallback() {
+            @Override
+            public void onAPIResultSuccess(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onAPIResultError(VolleyError volleyError) {
+                Toast.makeText(getActivity(),
+                        "Something went wrong, please check your internet connectivity",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -20,9 +20,10 @@ public class UrlConstants {
     public static final String UNBLOCK = BASE_URL + "/api/network/unblock/";
     public static final String NOTIFICATIONS = BASE_URL + "/api/notification/";
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/";
+    public static final String UNLIKE = BASE_URL + "/api/blog/unlike/?id=";
 
     //Web Socket connection urls------------------------------------------------------------------------------------------------------------------
-    public static final String BASE_URL_WS = "ws:/13.126.42.158";
+    public static final String BASE_URL_WS = "ws://13.126.42.158";
 
     public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
 

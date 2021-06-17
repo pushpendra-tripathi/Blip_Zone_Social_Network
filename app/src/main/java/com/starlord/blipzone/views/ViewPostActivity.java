@@ -3,13 +3,16 @@ package com.starlord.blipzone.views;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.HomeAdapter;
+import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.UserModel;
@@ -26,10 +29,12 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthPostRequest;
 import static com.starlord.blipzone.configurations.UrlConstants.LIKE_ACTION_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.POST_ID_WS;
 import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.UNLIKE;
 
 public class ViewPostActivity extends AppCompatActivity {
     ArrayList<BlogModel> blogModelArrayList;
@@ -85,6 +90,7 @@ public class ViewPostActivity extends AppCompatActivity {
                 }
             } else {
                 //implement api call for unlike the post
+                callUnlikeRequest(blogId);
             }
         });
         homeRecyclerView.setLayoutManager(linearLayoutManager);
@@ -92,6 +98,22 @@ public class ViewPostActivity extends AppCompatActivity {
         title = findViewById(R.id.username_view_post);
         title.setText(R.string.user_post);
         backBtn = findViewById(R.id.backBtn_view_post);
+    }
+
+    private void callUnlikeRequest(String blogId) {
+        callAuthPostRequest(ViewPostActivity.this, UNLIKE + blogId, new ApiResultCallback() {
+            @Override
+            public void onAPIResultSuccess(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onAPIResultError(VolleyError volleyError) {
+                Toast.makeText(ViewPostActivity.this,
+                        "Something went wrong, please check your internet connectivity",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initiateSocketConnection(String userID) {

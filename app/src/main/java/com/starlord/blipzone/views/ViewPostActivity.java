@@ -10,10 +10,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.HomeAdapter;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.UserModel;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+
+import static com.starlord.blipzone.configurations.UrlConstants.LIKE_ACTION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.POST_ID_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
 
 public class ViewPostActivity extends AppCompatActivity {
     ArrayList<BlogModel> blogModelArrayList;
@@ -24,6 +40,7 @@ public class ViewPostActivity extends AppCompatActivity {
     RecyclerView homeRecyclerView;
     LinearLayoutManager linearLayoutManager;
     HomeAdapter homeAdapter;
+    private WebSocket webSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +71,56 @@ public class ViewPostActivity extends AppCompatActivity {
         profileBlogList = new ArrayList<>();
         homeRecyclerView = findViewById(R.id.home_view_post_rv);
         linearLayoutManager = new LinearLayoutManager(ViewPostActivity.this);
-        homeAdapter = new HomeAdapter(ViewPostActivity.this, profileBlogList);
+        homeAdapter = new HomeAdapter(ViewPostActivity.this, profileBlogList, (userId, blogId, liked) -> {
+            if (!liked){
+                initiateSocketConnection(userId);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put(TYPE_WS, LIKE_ACTION_WS);
+                    jsonObject.put(POST_ID_WS, blogId);
+
+                    webSocket.send(jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //implement api call for unlike the post
+            }
+        });
         homeRecyclerView.setLayoutManager(linearLayoutManager);
         homeRecyclerView.setAdapter(homeAdapter);
         title = findViewById(R.id.username_view_post);
         title.setText(R.string.user_post);
         backBtn = findViewById(R.id.backBtn_view_post);
+    }
+
+    private void initiateSocketConnection(String userID) {
+        String SERVER_PATH = NOTIFICATION_WS + userID + "/?user_token="
+                + GlobalVariables.getInstance(ViewPostActivity.this).getUserToken();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(SERVER_PATH).build();
+        webSocket = client.newWebSocket(request, new CommentWebSocketListener());
+    }
+
+    private static class CommentWebSocketListener extends WebSocketListener {
+
+        @Override
+        public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
+            super.onOpen(webSocket, response);
+
+        }
+
+        @Override
+        public void onMessage(@NotNull WebSocket webSocket, @NotNull String textResponse) {
+            super.onMessage(webSocket, textResponse);
+
+        }
+
+        @Override
+        public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
+            super.onFailure(webSocket, t, response);
+
+        }
     }
 }

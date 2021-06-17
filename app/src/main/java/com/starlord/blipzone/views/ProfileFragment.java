@@ -23,7 +23,6 @@ import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
-import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 
 import org.json.JSONArray;
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
-import static com.starlord.blipzone.configurations.UrlConstants.BASE_URL;
 import static com.starlord.blipzone.configurations.UrlConstants.PROFILE;
 
 public class ProfileFragment extends Fragment {
@@ -193,7 +191,7 @@ public class ProfileFragment extends Fragment {
         blogModelList = new ArrayList<>();
         followUnFollowProfileEdit = view.findViewById(R.id.follow_unfollow_editprofile_btn);
         profileBlogRecyclerView = view.findViewById(R.id.profile_blog_rv);
-        profileBlogRecyclerView.setHasFixedSize(false);
+        profileBlogRecyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(getActivity(), 3);
 
     }

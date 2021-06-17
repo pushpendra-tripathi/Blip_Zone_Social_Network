@@ -18,12 +18,14 @@ import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.HomeAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.CommentModel;
 import com.starlord.blipzone.models.LikeModel;
 import com.starlord.blipzone.models.UserModel;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +33,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.LIKE_ACTION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.POST_ID_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
 
 
 public class HomeFragment extends Fragment {
@@ -41,6 +53,7 @@ public class HomeFragment extends Fragment {
     HomeAdapter homeAdapter;
     TextView title;
     String TAG = "HomeFragmentLog";
+    private WebSocket webSocket;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -120,25 +133,25 @@ public class HomeFragment extends Fragment {
                         JSONArray likesArray = blog.getJSONArray("like");
                         LikeModel likeModel = new LikeModel();
 
-                            JSONObject likesUser = likesArray.getJSONObject(0);
-                            JSONObject user = likesUser.getJSONObject("user");
-                            UserModel userModel = new UserModel();
-                            userModel.setId(user.getInt("id"));
-                            userModel.setUserName(user.getString("username"));
-                            userModel.setFirstName(user.getString("first_name"));
-                            userModel.setLastName(user.getString("last_name"));
-                            userModel.setProfileImage(user.getString("profile_image"));
-                            likeModel.setUserModel(userModel);
+                        JSONObject likesUser = likesArray.getJSONObject(0);
+                        JSONObject user = likesUser.getJSONObject("user");
+                        UserModel userModel = new UserModel();
+                        userModel.setId(user.getInt("id"));
+                        userModel.setUserName(user.getString("username"));
+                        userModel.setFirstName(user.getString("first_name"));
+                        userModel.setLastName(user.getString("last_name"));
+                        userModel.setProfileImage(user.getString("profile_image"));
+                        likeModel.setUserModel(userModel);
 
-                            //getting the like count
-                            JSONObject likesCount = likesArray.getJSONObject(1);
-                            try {
-                                int count = likesCount.getInt("count");
-                                likeModel.setLikeCount(count);
-                            }catch (Exception e){
+                        //getting the like count
+                        JSONObject likesCount = likesArray.getJSONObject(1);
+                        try {
+                            int count = likesCount.getInt("count");
+                            likeModel.setLikeCount(count);
+                        } catch (Exception e) {
 
-                            }
-                            blogModel.setLikeModel(likeModel);
+                        }
+                        blogModel.setLikeModel(likeModel);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -179,11 +192,57 @@ public class HomeFragment extends Fragment {
         blogModelArrayList = new ArrayList<>();
         homeRecyclerView = homeView.findViewById(R.id.home_feed_rv);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        homeAdapter = new HomeAdapter(getActivity(), blogModelArrayList);
+        homeAdapter = new HomeAdapter(getActivity(), blogModelArrayList, (userId, blogId, liked) -> {
+            if (!liked) {
+                initiateSocketConnection(userId);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put(TYPE_WS, LIKE_ACTION_WS);
+                    jsonObject.put(POST_ID_WS, blogId);
+
+                    webSocket.send(jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //implement api call for unlike the post
+            }
+        });
         homeRecyclerView.setLayoutManager(linearLayoutManager);
         homeRecyclerView.setAdapter(homeAdapter);
         title = homeView.findViewById(R.id.username_feed);
         title.setText(R.string.feed);
+    }
+
+
+    private void initiateSocketConnection(String userID) {
+        String SERVER_PATH = NOTIFICATION_WS + userID + "/?user_token="
+                + GlobalVariables.getInstance(getActivity()).getUserToken();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(SERVER_PATH).build();
+        webSocket = client.newWebSocket(request, new CommentWebSocketListener());
+    }
+
+    private static class CommentWebSocketListener extends WebSocketListener {
+
+        @Override
+        public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
+            super.onOpen(webSocket, response);
+
+        }
+
+        @Override
+        public void onMessage(@NotNull WebSocket webSocket, @NotNull String textResponse) {
+            super.onMessage(webSocket, textResponse);
+
+        }
+
+        @Override
+        public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
+            super.onFailure(webSocket, t, response);
+
+        }
     }
 }
 

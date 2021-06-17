@@ -250,7 +250,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         blogModelList = new ArrayList<>();
         followUnFollowBtn = findViewById(R.id.follow_unfollow_editprofile_btn);
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
-        profileBlogRecyclerView.setHasFixedSize(false);
+        profileBlogRecyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);
 
     }

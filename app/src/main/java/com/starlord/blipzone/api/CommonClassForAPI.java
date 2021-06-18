@@ -62,7 +62,7 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onResponse: callAuthPostAPI JSONObject " + response);
                     apiResultCallback.onAPIResultSuccess(response);
                 }, error -> {
-                    Log.d(TAG, "onErrorResponse: callAuthPostAPI JSONObject " + error);
+                    Log.d(TAG, "onErrorResponse: callAuthPostAPI " + error.networkResponse.statusCode);
                     apiResultCallback.onAPIResultError(error);
 
                 }) {
@@ -100,17 +100,11 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onErrorResponse: BlogPostAPI " + error);
                     if (error != null) {
                         NetworkResponse networkResponse = error.networkResponse;
-                        Log.d(TAG, "onErrorResponse: BlogPostAPI " + networkResponse);
+                        Log.d(TAG, "onErrorResponse: BlogPostAPI " + networkResponse.statusCode);
                         apiResponseCallback.onApiErrorResult(error);
                     }
                 }) {
 
-            /*
-             * If you want to add more parameters with the image
-             * you can do it here
-             * here we have only one parameter with the image
-             * which is tags
-             * */
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

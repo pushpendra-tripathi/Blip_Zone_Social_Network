@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.activities;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -16,6 +16,8 @@ import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.SectionsPagerAdapter;
 import com.starlord.blipzone.utils.Permissions;
 import com.starlord.blipzone.utils.UniversalImageLoader;
+import com.starlord.blipzone.views.fragments.GalleryFragment;
+import com.starlord.blipzone.views.fragments.PhotoFragment;
 
 public class CreatePostActivity extends AppCompatActivity {
     private static final String TAG = "CreatePostActivity";

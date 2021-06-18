@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.utils.Permissions;
-
-import java.util.Objects;
+import com.starlord.blipzone.views.activities.CreatePostActivity;
+import com.starlord.blipzone.views.activities.EditProfileActivity;
+import com.starlord.blipzone.views.activities.NextActivity;
 
 
 public class PhotoFragment extends Fragment {

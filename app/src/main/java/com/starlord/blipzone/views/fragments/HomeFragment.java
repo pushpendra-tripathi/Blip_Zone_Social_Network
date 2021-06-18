@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.fragments;
 
 import android.os.Bundle;
 import android.util.Log;

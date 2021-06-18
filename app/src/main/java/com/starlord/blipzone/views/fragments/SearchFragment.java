@@ -1,13 +1,6 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,11 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.google.android.material.textfield.TextInputEditText;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.PersonsAdapter;
-import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.models.UserModel;
 
@@ -32,9 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-import static com.starlord.blipzone.api.CommonClassForAPI.*;
+import static com.starlord.blipzone.api.CommonClassForAPI.callSearchRequest;
 
 public class SearchFragment extends Fragment {
     TextInputEditText searchBar;

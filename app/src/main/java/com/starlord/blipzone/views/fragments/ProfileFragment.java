@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,8 @@ import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.views.activities.FollowersListActivity;
+import com.starlord.blipzone.views.activities.FollowingListActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

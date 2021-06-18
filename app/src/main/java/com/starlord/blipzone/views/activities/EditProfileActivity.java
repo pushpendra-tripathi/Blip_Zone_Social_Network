@@ -1,8 +1,8 @@
-package com.starlord.blipzone.views;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.starlord.blipzone.views.activities;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.starlord.blipzone.R;
 

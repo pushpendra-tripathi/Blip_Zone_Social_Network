@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,8 +18,6 @@ import com.starlord.blipzone.callbacks.ApiResponseCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Objects;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callRegisterRequest;
 

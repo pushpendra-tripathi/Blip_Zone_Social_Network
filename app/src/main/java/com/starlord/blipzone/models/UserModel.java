@@ -9,6 +9,7 @@ public class UserModel {
     String lastName;
     String profileImage;
     String about;
+    boolean isActive;
     boolean blueTick;
     int followers;
     int following;
@@ -60,6 +61,14 @@ public class UserModel {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public boolean isBlueTick() {

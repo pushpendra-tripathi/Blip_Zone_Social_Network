@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,53 +24,54 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FollowersListActivity extends AppCompatActivity {
+public class FollowingListActivity extends AppCompatActivity {
+
     ImageView backBtn, ellipseMenu;
     RecyclerView followersRecyclerView;
     TextView title;
     LinearLayoutManager linearLayoutManager;
-    ArrayList<UserModel> followersList;
-    String TAG = "FollowersListActivityLog";
+    ArrayList<UserModel> followingList;
+    String TAG = "FollowingListActivityLog";
     PersonsAdapter personsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follwers_list);
+        setContentView(R.layout.activity_following_list);
 
         initializeViews();
-        loadFollowersRequest();
+        loadFollowingRequest();
 
         backBtn.setOnClickListener(v -> {
             onBackPressed();
         });
     }
 
-    private void loadFollowersRequest() {
-        CommonClassForAPI.callAuthGetRequest(FollowersListActivity.this,
+    private void loadFollowingRequest() {
+        CommonClassForAPI.callAuthGetRequest(FollowingListActivity.this,
                 UrlConstants.FOLLOW_LIST,
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {
                         Log.d(TAG, "onResponse: Success");
-                        processFollowersResponse(jsonObject);
+                        processFollowingResponse(jsonObject);
                     }
 
                     @Override
                     public void onAPIResultError(VolleyError volleyError) {
                         Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
-                        Toast.makeText(FollowersListActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FollowingListActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void processFollowersResponse(JSONObject jsonObject) {
+    private void processFollowingResponse(JSONObject jsonObject) {
         try {
             boolean status = jsonObject.getBoolean("status");
 
             if (status) {
                 JSONObject data = jsonObject.getJSONObject("data");
-                JSONArray followers = data.getJSONArray("follower");
+                JSONArray followers = data.getJSONArray("following");
                 for (int i = 0; i < followers.length(); i++) {
 
                     try {
@@ -81,7 +82,7 @@ public class FollowersListActivity extends AppCompatActivity {
                         userModel.setFirstName(user.getString("first_name"));
                         userModel.setLastName(user.getString("last_name"));
                         userModel.setProfileImage(user.getString("profile_image"));
-                        followersList.add(userModel);
+                        followingList.add(userModel);
                         personsAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -89,7 +90,7 @@ public class FollowersListActivity extends AppCompatActivity {
 
                 }
             } else {
-                Toast.makeText(FollowersListActivity.this,
+                Toast.makeText(FollowingListActivity.this,
                         "Something went wrong",
                         Toast.LENGTH_SHORT).show();
             }
@@ -99,14 +100,14 @@ public class FollowersListActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        title = findViewById(R.id.title_follower);
-        title.setText(R.string.followers);
-        backBtn = findViewById(R.id.backBtn_followers);
-        ellipseMenu = findViewById(R.id.iv_menu_followers);
-        followersList = new ArrayList<>();
-        followersRecyclerView = findViewById(R.id.followers_rv);
-        linearLayoutManager = new LinearLayoutManager(FollowersListActivity.this);
-        personsAdapter = new PersonsAdapter(FollowersListActivity.this, followersList);
+        title = findViewById(R.id.title_following);
+        title.setText(R.string.following);
+        backBtn = findViewById(R.id.backBtn_following);
+        ellipseMenu = findViewById(R.id.iv_menu_following);
+        followingList = new ArrayList<>();
+        followersRecyclerView = findViewById(R.id.following_rv);
+        linearLayoutManager = new LinearLayoutManager(FollowingListActivity.this);
+        personsAdapter = new PersonsAdapter(FollowingListActivity.this, followingList);
         followersRecyclerView.setLayoutManager(linearLayoutManager);
         followersRecyclerView.setAdapter(personsAdapter);
     }

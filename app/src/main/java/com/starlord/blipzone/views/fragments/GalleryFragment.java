@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,9 +25,11 @@ import com.starlord.blipzone.adapters.GridImageAdapter;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.utils.FilePaths;
 import com.starlord.blipzone.utils.FileSearch;
+import com.starlord.blipzone.views.activities.CreatePostActivity;
+import com.starlord.blipzone.views.activities.EditProfileActivity;
+import com.starlord.blipzone.views.activities.NextActivity;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class GalleryFragment extends Fragment {

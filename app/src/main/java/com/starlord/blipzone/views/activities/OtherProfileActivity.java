@@ -1,5 +1,6 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +41,7 @@ import static com.starlord.blipzone.configurations.UrlConstants.UNFOLLOW;
 public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     TextView followers, following, bio, usernameTxt;
-    Button followUnFollowBtn;
+    Button followUnFollowBtn, initiateChatBtn;
     ImageView backBtn;
     RecyclerView profileBlogRecyclerView;
     GridLayoutManager gridLayoutManager;
@@ -51,6 +52,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     boolean isFollowing;
     private String userId;
     private String userName;
+    private String profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +118,14 @@ public class OtherProfileActivity extends AppCompatActivity {
                             });
                 }
             }
+        });
+
+        initiateChatBtn.setOnClickListener(v-> {
+            //opening the chat between users.
+            Intent chatIntent = new Intent(OtherProfileActivity.this, ChatActivity.class);
+            chatIntent.putExtra("username", userName);
+            chatIntent.putExtra("profileImage", profileImage);
+            startActivity(chatIntent);
         });
     }
 
@@ -201,6 +211,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                 Picasso.get().load(UrlConstants.BASE_URL + user.getString("profile_image"))
                         .placeholder(R.drawable.profile_avatar)
                         .into(circleImageView);
+                profileImage = UrlConstants.BASE_URL + user.getString("profile_image");
 
                 if (!user.getString("about").equals("") && user.getString("about").length() > 4) {
                     bio.setVisibility(View.VISIBLE);
@@ -249,6 +260,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         bio = findViewById(R.id.bio_txt);
         blogModelList = new ArrayList<>();
         followUnFollowBtn = findViewById(R.id.follow_unfollow_editprofile_btn);
+        initiateChatBtn = findViewById(R.id.initiate_chat_btn);
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);

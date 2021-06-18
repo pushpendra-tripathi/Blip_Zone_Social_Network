@@ -32,4 +32,7 @@
     <string name="string_share">Share</string>
     <string name="description">Write a description...</string>
     <string name="upload_progress">Your another post is uploading, please wait…</string>
+    <string name="message_here">Message here...</string>
+    <string name="sent_message">Hello this is a sample message</string>
+    <string name="message">Message</string>
 </resources>

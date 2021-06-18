@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.models.UserModel;
-import com.starlord.blipzone.views.OtherProfileActivity;
+import com.starlord.blipzone.views.activities.OtherProfileActivity;
 
 import org.jetbrains.annotations.NotNull;
 

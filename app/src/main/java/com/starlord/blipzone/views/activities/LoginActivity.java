@@ -1,6 +1,4 @@
-package com.starlord.blipzone.views;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.starlord.blipzone.views.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,18 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.api.CommonClassForAPI;
 import com.starlord.blipzone.callbacks.ApiResponseCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
-import com.starlord.blipzone.configurations.UrlConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.starlord.blipzone.configurations.UrlConstants.*;
+import static com.starlord.blipzone.configurations.UrlConstants.ACCESS_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.REFRESH_TOKEN;
 
 public class LoginActivity extends AppCompatActivity {
     EditText loginData, password;

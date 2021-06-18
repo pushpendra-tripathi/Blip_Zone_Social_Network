@@ -1,4 +1,4 @@
-package com.starlord.blipzone.views;
+package com.starlord.blipzone.views.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,6 +9,10 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.views.fragments.AlertFragment;
+import com.starlord.blipzone.views.fragments.HomeFragment;
+import com.starlord.blipzone.views.fragments.ProfileFragment;
+import com.starlord.blipzone.views.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 

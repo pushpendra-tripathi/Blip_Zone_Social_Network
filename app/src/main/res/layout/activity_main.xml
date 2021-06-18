@@ -6,7 +6,7 @@
     android:background="#F3F8FC"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.starlord.blipzone.views.MainActivity">
+    tools:context="com.starlord.blipzone.views.activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"

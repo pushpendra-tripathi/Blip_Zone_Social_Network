@@ -1,8 +1,4 @@
-package com.starlord.blipzone.views;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.starlord.blipzone.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +6,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.PersonsAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
-import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.UserModel;
 
 import org.json.JSONArray;
@@ -23,8 +22,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.starlord.blipzone.api.CommonClassForAPI.*;
-import static com.starlord.blipzone.configurations.UrlConstants.*;
+import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.GET_LIKES;
 
 public class LikesActivity extends AppCompatActivity {
     ImageView backBtn, ellipseMenu;

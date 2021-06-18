@@ -7,7 +7,7 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".views.SignUpActivity">
+    tools:context=".views.activities.SignUpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -58,6 +58,7 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/edittext_bg"
             android:textSize="25sp"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv2" />
@@ -81,6 +82,7 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/edittext_bg"
             android:textSize="25sp"
+            android:inputType="textPassword"
             app:layout_constraintCircleRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

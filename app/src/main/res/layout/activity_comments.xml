@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.CommentsActivity">
+    tools:context=".views.activities.CommentsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -64,7 +64,7 @@
         android:id="@+id/comments_rv"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="60dp"
-        tools:listitem="@layout/layout_comments"/>
+        tools:listitem="@layout/layout_item_comments"/>
 
     <RelativeLayout
         android:id="@+id/relLayout3"

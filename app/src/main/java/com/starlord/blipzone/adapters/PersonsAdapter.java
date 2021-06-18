@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.models.UserModel;
-import com.starlord.blipzone.views.OtherProfileActivity;
+import com.starlord.blipzone.views.activities.OtherProfileActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +37,7 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.PersonVi
     @Override
     public PersonViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_persons, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_persons, null);
         return new PersonViewHolder(view);
     }
 

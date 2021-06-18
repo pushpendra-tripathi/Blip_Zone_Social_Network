@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.starlord.blipzone">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -18,26 +20,28 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourZone"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.NextActivity" />
-        <activity android:name=".views.EditProfileActivity" />
-        <activity android:name=".views.CreatePostActivity" />
-        <activity android:name=".views.ViewPostActivity" />
-        <activity android:name=".views.LikesActivity" />
-        <activity android:name=".views.CommentsActivity" />
-        <activity android:name=".views.FollowingListActivity" />
-        <activity android:name=".views.FollowersListActivity" />
-        <activity android:name=".views.OtherProfileActivity" />
-        <activity android:name=".views.MainActivity" />
-        <activity android:name=".views.VerificationActivity" />
-        <activity android:name=".views.SignUpActivity" />
-        <activity android:name=".views.LoginActivity" />
-        <activity android:name=".views.SplashActivity">
+        <activity android:name=".views.activities.UserChatListActivity"></activity>
+        <activity android:name=".views.activities.ChatActivity" />
+        <activity android:name=".views.activities.NextActivity" />
+        <activity android:name=".views.activities.EditProfileActivity" />
+        <activity android:name=".views.activities.CreatePostActivity" />
+        <activity android:name=".views.activities.ViewPostActivity" />
+        <activity android:name=".views.activities.LikesActivity" />
+        <activity android:name=".views.activities.CommentsActivity" />
+        <activity android:name=".views.activities.FollowingListActivity" />
+        <activity android:name=".views.activities.FollowersListActivity" />
+        <activity android:name=".views.activities.OtherProfileActivity" />
+        <activity android:name=".views.activities.MainActivity" />
+        <activity android:name=".views.activities.VerificationActivity" />
+        <activity android:name=".views.activities.SignUpActivity" />
+        <activity android:name=".views.activities.LoginActivity" />
+        <activity android:name=".views.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

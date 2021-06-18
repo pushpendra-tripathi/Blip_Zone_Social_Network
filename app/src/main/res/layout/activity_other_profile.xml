@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".views.activities.OtherProfileActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -35,7 +36,8 @@
                 android:focusable="true"
                 android:padding="12dp"
                 android:src="@drawable/ic_backarrow"
-                app:tint="@color/black" />
+                app:tint="@color/black"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/username_profile"
@@ -51,15 +53,17 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:visibility="visible"
-                tools:text="StarLord" />
+                tools:text="StarLord"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:id="@+id/iv_menu"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingVertical="8dp"
@@ -91,14 +95,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleImageView"
             app:layout_constraintTop_toTopOf="@+id/circleImageView">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/followersLayout_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -118,7 +121,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Followers"
+                    android:text="@string/followers"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -127,10 +130,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
+                android:id="@+id/followingLayout_other"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/linearLayout"
+                app:layout_constraintStart_toEndOf="@id/followersLayout_other"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -145,23 +149,52 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Following"
+                    android:text="@string/following"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/follow_unfollow_editprofile_btn"
+                android:id="@+id/editprofile_btn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:background="@drawable/button_bg"
-                android:text="Follow"
+                android:text="Edit Profile"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
+
+            <Button
+                android:id="@+id/follow_unfollow_editprofile_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="100dp"
+                android:background="@drawable/button_bg"
+                android:text="@string/follow"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/initiate_chat_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
+
+            <Button
+                android:id="@+id/initiate_chat_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="100dp"
+                android:background="@drawable/button_bg"
+                android:text="@string/message"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/follow_unfollow_editprofile_btn"
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -183,9 +216,13 @@
         android:id="@+id/profile_blog_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/layout_card_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        />
+        app:spanCount="3"
+        android:layout_marginBottom="5dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,7 +36,33 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onResponse: callAuthAPI JSONObject " + response);
                     apiResultCallback.onAPIResultSuccess(response);
                 }, error -> {
-                    Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error);
+                    Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error.networkResponse.statusCode);
+                    apiResultCallback.onAPIResultError(error);
+
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = new HashMap<>();
+                header.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return header;
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        VolleyClient.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public static void callAuthPostRequest(Activity context, String url, ApiResultCallback apiResultCallback) {
+        Log.d(TAG, "callAuthPostAPI: url  " + url);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, null, response -> {
+                    Log.d(TAG, "onResponse: callAuthPostAPI JSONObject " + response);
+                    apiResultCallback.onAPIResultSuccess(response);
+                }, error -> {
+                    Log.d(TAG, "onErrorResponse: callAuthPostAPI " + error.networkResponse.statusCode);
                     apiResultCallback.onAPIResultError(error);
 
                 }) {
@@ -74,17 +100,11 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onErrorResponse: BlogPostAPI " + error);
                     if (error != null) {
                         NetworkResponse networkResponse = error.networkResponse;
-                        Log.d(TAG, "onErrorResponse: BlogPostAPI " + networkResponse);
+                        Log.d(TAG, "onErrorResponse: BlogPostAPI " + networkResponse.statusCode);
                         apiResponseCallback.onApiErrorResult(error);
                     }
                 }) {
 
-            /*
-             * If you want to add more parameters with the image
-             * you can do it here
-             * here we have only one parameter with the image
-             * which is tags
-             * */
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

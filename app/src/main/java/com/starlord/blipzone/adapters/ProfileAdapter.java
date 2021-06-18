@@ -2,22 +2,18 @@ package com.starlord.blipzone.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
-import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.utils.SquareImageView;
-import com.starlord.blipzone.views.CommentsActivity;
-import com.starlord.blipzone.views.ViewPostActivity;
+import com.starlord.blipzone.views.activities.ViewPostActivity;
 
 import java.util.ArrayList;
 

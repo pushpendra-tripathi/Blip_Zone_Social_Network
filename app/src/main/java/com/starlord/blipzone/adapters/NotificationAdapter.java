@@ -5,19 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.configurations.UrlConstants;
 import com.starlord.blipzone.models.NotificationModel;
-import com.starlord.blipzone.views.OtherProfileActivity;
+import com.starlord.blipzone.views.activities.OtherProfileActivity;
 
 import org.jetbrains.annotations.NotNull;
 

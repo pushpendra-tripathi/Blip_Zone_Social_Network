@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activities.ChatActivity">
+
+    <RelativeLayout
+        android:id="@+id/relLayout1"
+        android:layout_width="match_parent"
+        android:elevation="7dp"
+        android:layout_height="50dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_photo_chat"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/profile_avatar"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="0.5dp" />
+
+
+        <TextView
+            android:id="@+id/username_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/profile_photo_chat"
+            android:text="@string/starlord"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="RelativeOverlap" />
+
+
+        <ImageView
+            android:id="@+id/ivEllipses"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_ellipses"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/messageEditLayout"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginBottom="-2dp"
+        android:padding="10dp"
+        tools:listitem="@layout/layout_item_messages_received" />
+
+    <RelativeLayout
+        android:id="@+id/messageEditLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_alignParentBottom="true">
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="40dp"
+            app:boxStrokeWidth="0dp"
+            android:layout_centerVertical="true"
+            android:textColorHint="@color/Text60"
+            app:hintEnabled="false"
+            app:hintTextColor="@color/dimGray"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/messageEdit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:background="@drawable/button_bg"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:maxLines="6"
+                android:textColorHint="@color/Text60"
+                android:hint="@string/message_here"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/sendBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_send"
+            app:tint="@color/dimGray"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

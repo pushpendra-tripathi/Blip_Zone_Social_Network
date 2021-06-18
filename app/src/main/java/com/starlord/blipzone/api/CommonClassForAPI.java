@@ -36,7 +36,7 @@ public class CommonClassForAPI {
                     Log.d(TAG, "onResponse: callAuthAPI JSONObject " + response);
                     apiResultCallback.onAPIResultSuccess(response);
                 }, error -> {
-                    Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error);
+                    Log.d(TAG, "onErrorResponse: callAuthAPI JSONObject " + error.networkResponse.statusCode);
                     apiResultCallback.onAPIResultError(error);
 
                 }) {

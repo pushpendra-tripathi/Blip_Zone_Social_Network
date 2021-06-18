@@ -84,11 +84,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         switch (viewType) {
             case TYPE_MESSAGE_SENT:
-                view = inflater.inflate(R.layout.item_messages_sent, parent, false);
+                view = inflater.inflate(R.layout.layout_item_messages_sent, parent, false);
                 return new SentMessageHolder(view);
 
             case TYPE_MESSAGE_RECEIVED:
-                view = inflater.inflate(R.layout.item_messages_received, parent, false);
+                view = inflater.inflate(R.layout.layout_item_messages_received, parent, false);
                 return new ReceivedMessageHolder(view);
 
         }

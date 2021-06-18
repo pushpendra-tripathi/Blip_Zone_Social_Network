@@ -22,7 +22,7 @@ public class UrlConstants {
     public static final String BLOG_POST = BASE_URL + "/api/blog/post/";
     public static final String UNLIKE = BASE_URL + "/api/blog/unlike/?id=";
     public static final String CHAT_MESSAGES = BASE_URL + "/api/chat/";
-    public static final String GET_CHAT_LIST = BASE_URL + "/chat/get/chatlist/";
+    public static final String GET_CHAT_LIST = BASE_URL + "/api/chat/get/chatlist/";
 
     //Web Socket connection urls------------------------------------------------------------------------------------------------------------------
     public static final String BASE_URL_WS = "ws://13.126.42.158";

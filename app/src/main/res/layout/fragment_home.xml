@@ -56,7 +56,7 @@
                 tools:text="Feed" />
 
             <ImageView
-                android:id="@+id/iv_menu"
+                android:id="@+id/iv_menu_home"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:layout_alignParentRight="true"
@@ -65,7 +65,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingVertical="8dp"
-                android:src="@drawable/ic_baseline_more_vert_24"
+                android:src="@drawable/ic_send"
                 app:tint="@color/black" />
         </RelativeLayout>
     </com.google.android.material.appbar.MaterialToolbar>

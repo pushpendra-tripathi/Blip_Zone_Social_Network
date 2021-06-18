@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,13 @@ import static com.starlord.blipzone.configurations.UrlConstants.UNFOLLOW;
 public class OtherProfileActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     TextView followers, following, bio, usernameTxt;
-    Button followUnFollowBtn, initiateChatBtn;
+    Button followUnFollowBtn, initiateChatBtn, editProfile;
     ImageView backBtn;
     RecyclerView profileBlogRecyclerView;
     GridLayoutManager gridLayoutManager;
     ProfileAdapter profileAdapter;
     ConstraintLayout profileLayout;
+    LinearLayout followerLayout, followingLayout;
     String TAG = "OtherProfileActivityLog";
     ArrayList<BlogModel> blogModelList;
     boolean isFollowing;
@@ -64,6 +66,20 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         initializeViews();
         loadProfileDetails();
+
+        if (userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())){
+            initiateChatBtn.setVisibility(View.GONE);
+            followUnFollowBtn.setVisibility(View.GONE);
+            editProfile.setVisibility(View.VISIBLE);
+        }
+
+        followerLayout.setOnClickListener(v ->{
+            startActivity(new Intent(OtherProfileActivity.this, FollowersListActivity.class));
+        });
+
+        followingLayout.setOnClickListener(v ->{
+            startActivity(new Intent(OtherProfileActivity.this, FollowingListActivity.class));
+        });
 
         backBtn.setOnClickListener(v -> onBackPressed());
 
@@ -251,6 +267,8 @@ public class OtherProfileActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        followerLayout = findViewById(R.id.followersLayout_other);
+        followingLayout = findViewById(R.id.followingLayout_other);
         profileLayout = findViewById(R.id.profileLayout);
         circleImageView = findViewById(R.id.circleImageView);
         backBtn = findViewById(R.id.backBtn_profile);
@@ -261,6 +279,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         blogModelList = new ArrayList<>();
         followUnFollowBtn = findViewById(R.id.follow_unfollow_editprofile_btn);
         initiateChatBtn = findViewById(R.id.initiate_chat_btn);
+        editProfile = findViewById(R.id.editprofile_btn);
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);

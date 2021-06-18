@@ -101,7 +101,7 @@
             app:layout_constraintTop_toTopOf="@+id/circleImageView">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/followersLayout_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -130,10 +130,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
+                android:id="@+id/followingLayout_other"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/linearLayout"
+                app:layout_constraintStart_toEndOf="@id/followersLayout_other"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -154,6 +155,20 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/editprofile_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:background="@drawable/button_bg"
+                android:text="Edit Profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
+
+            <Button
                 android:id="@+id/follow_unfollow_editprofile_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
@@ -165,7 +180,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/initiate_chat_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
 
             <Button
                 android:id="@+id/initiate_chat_btn"
@@ -179,7 +194,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/follow_unfollow_editprofile_btn"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/followersLayout_other" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

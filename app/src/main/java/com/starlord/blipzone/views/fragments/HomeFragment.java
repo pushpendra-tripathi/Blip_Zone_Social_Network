@@ -1,10 +1,12 @@
 package com.starlord.blipzone.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.models.CommentModel;
 import com.starlord.blipzone.models.LikeModel;
 import com.starlord.blipzone.models.UserModel;
+import com.starlord.blipzone.views.activities.UserChatListActivity;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment {
     TextView title;
     String TAG = "HomeFragmentLog";
     private WebSocket webSocket;
+    ImageView chatList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -74,6 +78,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadBlogPostsRequest();
+
+        chatList.setOnClickListener(v->{
+            startActivity(new Intent(getActivity(), UserChatListActivity.class));
+        });
     }
 
     private void loadBlogPostsRequest() {
@@ -192,6 +200,7 @@ public class HomeFragment extends Fragment {
 
     private void initializeViews(View homeView) {
         blogModelArrayList = new ArrayList<>();
+        chatList = homeView.findViewById(R.id.iv_menu_home);
         homeRecyclerView = homeView.findViewById(R.id.home_feed_rv);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         homeAdapter = new HomeAdapter(getActivity(), blogModelArrayList, (userId, blogId, liked) -> {

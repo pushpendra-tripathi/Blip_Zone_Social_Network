@@ -57,7 +57,7 @@
         android:layout_marginTop="?actionBarSize"
         android:layout_marginBottom="-2dp"
         android:padding="10dp"
-        tools:listitem="@layout/item_messages_received" />
+        tools:listitem="@layout/layout_item_messages_received" />
 
     <RelativeLayout
         android:id="@+id/messageEditLayout"

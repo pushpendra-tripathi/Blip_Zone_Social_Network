@@ -75,7 +75,7 @@
         android:layout_height="match_parent"
         android:id="@+id/search_rv"
         android:layout_marginTop="?attr/actionBarSize"
-        tools:listitem="@layout/layout_persons"/>
+        tools:listitem="@layout/layout_item_persons"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,7 +37,7 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.PersonVi
     @Override
     public PersonViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_persons, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_persons, null);
         return new PersonViewHolder(view);
     }
 

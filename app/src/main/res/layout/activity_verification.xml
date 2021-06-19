@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:letterSpacing="0.05"
-            android:text="A verification otp has been sent on your registered email. Please enter to verify."
+            android:text="@string/verification_text"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
-            android:text="Verify OTP"
+            android:text="@string/verify_otp"
             android:textAllCaps="false"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -58,6 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="35dp"
+            android:visibility="invisible"
+            tools:visibility="visible"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/verify_btn">
@@ -66,7 +68,7 @@
                 android:id="@+id/resent_otp_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You can resend the \nOTP after: "
+                android:text="@string/resend_otp_message"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <View
@@ -81,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:enabled="false"
-                android:text="Resend OTP"
+                android:text="@string/resend_otp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 

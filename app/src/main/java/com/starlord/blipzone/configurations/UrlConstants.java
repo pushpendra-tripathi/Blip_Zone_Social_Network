@@ -12,6 +12,7 @@ public class UrlConstants {
     public static final String OTHER_PROFILE = BASE_URL + "/api/auth/profile/?id=";
     public static final String BLOG_LIST = BASE_URL + "/api/blog/post/list/";
     public static final String FOLLOW_LIST = BASE_URL + "/api/network/followlist/";
+    public static final String OTHERS_FOLLOW_LIST = BASE_URL + "/api/network/followlist/?id=";
     public static final String UNFOLLOW = BASE_URL + "/api/network/unfollow/";
     public static final String SEARCH = BASE_URL + "/api/search/";
     public static final String GET_COMMENT = BASE_URL + "/api/blog/comment/";

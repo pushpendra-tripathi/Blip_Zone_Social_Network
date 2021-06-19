@@ -3,6 +3,7 @@ package com.starlord.blipzone.views.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,13 +47,15 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private ChatAdapter messageAdapter;
     private TextView userNameTxt;
     CircleImageView profileImageView;
+    String userName;
+    String TAG = "ChatActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        String userName = getIntent().getStringExtra("username");
+        userName = getIntent().getStringExtra("username");
         String profileImage = getIntent().getStringExtra("profileImage");
 
         initializeView();
@@ -169,7 +172,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         userNameTxt = findViewById(R.id.username_chat);
         profileImageView = findViewById(R.id.profile_photo_chat);
 
-        messageAdapter = new ChatAdapter(ChatActivity.this ,getLayoutInflater());
+        messageAdapter = new ChatAdapter(ChatActivity.this, userName ,getLayoutInflater());
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -206,6 +209,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
             runOnUiThread(() -> {
 
                 try {
+                    Log.d(TAG, "On Chat Message Received: " + textResponse);
                     JSONObject jsonObject = new JSONObject(textResponse);
                     messageAdapter.addItem(jsonObject);
                     recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);

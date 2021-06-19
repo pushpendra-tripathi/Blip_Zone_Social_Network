@@ -78,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this,
                                         "Either username or email is already registered",
                                         Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, VerificationActivity.class);
+                                intent.putExtra("email", loginData.getText().toString());
+                                startActivity(intent);
                             } else{
                                 Toast.makeText(LoginActivity.this,
                                         "Something went wrong",

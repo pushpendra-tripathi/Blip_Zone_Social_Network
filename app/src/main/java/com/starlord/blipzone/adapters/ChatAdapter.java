@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.starlord.blipzone.R;
-import com.starlord.blipzone.configurations.GlobalVariables;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,11 +23,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     private final LayoutInflater inflater;
     private final Context context;
+    String userName;
     private final List<JSONObject> messages = new ArrayList<>();
 
-    public ChatAdapter(Context context, LayoutInflater inflater) {
+    public ChatAdapter(Context context, String userName, LayoutInflater inflater) {
         this.inflater = inflater;
         this.context = context;
+        this.userName = userName;
     }
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
@@ -59,7 +60,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         JSONObject message = messages.get(position);
 
         try {
-            if (message.getString("username").equals(String.valueOf(GlobalVariables.getInstance(context).getUserName()))) {
+            if (!message.getString("username").equals(userName)) {
 
                 if (message.has("text"))
                     return TYPE_MESSAGE_SENT;
@@ -102,7 +103,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         JSONObject message = messages.get(position);
 
         try {
-            if (message.getString("username").equals(String.valueOf(GlobalVariables.getInstance(context).getUserName()))) {
+            if (!message.getString("username").equals(userName)) {
 
                 if (message.has("text")) {
 

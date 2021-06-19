@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:letterSpacing="0.05"
-            android:text="Username or Email"
+            android:text="@string/email"
             android:textColor="@color/black"
             android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:inputType="textEmailAddress"
             android:background="@drawable/edittext_bg"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:letterSpacing="0.05"
-            android:text="Password"
+            android:text="@string/password"
             android:textColor="@color/black"
             android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +91,7 @@
                 android:id="@+id/signup_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Account"
+                android:text="@string/create_account"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <View
@@ -104,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Forget Password"
+                android:text="@string/forgot_password"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 

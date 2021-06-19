@@ -32,23 +32,31 @@ public class FollowersListActivity extends AppCompatActivity {
     ArrayList<UserModel> followersList;
     String TAG = "FollowersListActivityLog";
     PersonsAdapter personsAdapter;
+    String url;
+    String userId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follwers_list);
 
+        userId = getIntent().getStringExtra("userId");
+        if (!userId.equals(""))
+            url = UrlConstants.OTHERS_FOLLOW_LIST + userId;
+        else
+            url = UrlConstants.FOLLOW_LIST;
+
         initializeViews();
-        loadFollowersRequest();
+        loadFollowersRequest(url);
 
         backBtn.setOnClickListener(v -> {
             onBackPressed();
         });
     }
 
-    private void loadFollowersRequest() {
+    private void loadFollowersRequest(String url) {
         CommonClassForAPI.callAuthGetRequest(FollowersListActivity.this,
-                UrlConstants.FOLLOW_LIST,
+                url,
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {

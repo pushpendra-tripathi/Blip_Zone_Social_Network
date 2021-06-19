@@ -60,6 +60,10 @@ public class GlobalVariables {
         editor.apply();
     }
 
+    public void userLogOut(){
+        sharedPreferences.edit().clear().apply();
+    }
+
     //Access tokens ---------------------------------------------------------------------------------------------------------------------
     public String getUserToken() {
         return sharedPreferences.getString(ACCESS_TOKEN, "");

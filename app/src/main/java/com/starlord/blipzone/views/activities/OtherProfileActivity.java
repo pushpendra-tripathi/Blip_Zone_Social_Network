@@ -74,11 +74,15 @@ public class OtherProfileActivity extends AppCompatActivity {
         }
 
         followerLayout.setOnClickListener(v ->{
-            startActivity(new Intent(OtherProfileActivity.this, FollowersListActivity.class));
+            Intent intent = new Intent(OtherProfileActivity.this, FollowersListActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
 
         followingLayout.setOnClickListener(v ->{
-            startActivity(new Intent(OtherProfileActivity.this, FollowingListActivity.class));
+            Intent intent = new Intent(OtherProfileActivity.this, FollowingListActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
 
         backBtn.setOnClickListener(v -> onBackPressed());

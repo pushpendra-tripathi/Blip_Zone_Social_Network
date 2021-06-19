@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ProfileAdapter;
@@ -26,6 +28,7 @@ import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
 import com.starlord.blipzone.views.activities.FollowersListActivity;
 import com.starlord.blipzone.views.activities.FollowingListActivity;
+import com.starlord.blipzone.views.activities.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +47,7 @@ public class ProfileFragment extends Fragment {
     Button followUnFollowProfileEdit;
     RecyclerView profileBlogRecyclerView;
     GridLayoutManager gridLayoutManager;
+    ImageView logOutBtn;
     ProfileAdapter profileAdapter;
     LinearLayout followerLayout, followingLayout;
     String TAG = "ProfileFragmentLog";
@@ -81,6 +85,23 @@ public class ProfileFragment extends Fragment {
 
         followingLayout.setOnClickListener(v ->{
             startActivity(new Intent(getActivity(), FollowingListActivity.class));
+        });
+
+        logOutBtn.setOnClickListener(v-> {
+            Log.d(TAG, "Log Out button pressed.");
+            new MaterialAlertDialogBuilder(requireActivity())
+                    .setTitle("Sign Out")
+                    .setMessage("Do you want to log out!")
+                    .setPositiveButton("Log Out", (dialogInterface, i) -> {
+                        Log.d(TAG, "User Logged out successfully");
+                        GlobalVariables.getInstance(getActivity()).userLogOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    })
+                    .show();
         });
     }
 
@@ -184,6 +205,7 @@ public class ProfileFragment extends Fragment {
 
     private void initializeViews(View view) {
         circleImageView = view.findViewById(R.id.circleImageView);
+        logOutBtn = view.findViewById(R.id.iv_menu_logout);
         followers = view.findViewById(R.id.follower_txt);
         following = view.findViewById(R.id.following_txt);
         usernameTxt = view.findViewById(R.id.username_profile);

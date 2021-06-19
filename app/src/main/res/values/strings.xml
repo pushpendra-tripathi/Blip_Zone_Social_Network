@@ -11,7 +11,6 @@
     <string name="feed">Feed</string>
     <string name="liked_by">Liked by StarLord, and 30 others</string>
     <string name="post_content">starlord moutains #earthporn #mountains</string>
-    <string name="edit_profile">Edit Profile</string>
     <string name="posted_at">3 DAYS AGO</string>
     <string name="view_all_comments">View all 3 comments</string>
     <string name="starlord">starlord</string>
@@ -36,4 +35,13 @@
     <string name="sent_message">Hello this is a sample message</string>
     <string name="message">Message</string>
     <string name="chats">Chats</string>
+    <string name="verification_text">A verification otp has been sent on your registered email. Please enter to verify.</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="resend_otp_message">You can resend the \nOTP after:</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forget Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

@@ -81,29 +81,33 @@ public class UserChatListActivity extends AppCompatActivity {
                     chatListModel.setLastMessageTimeStamp(chat.getString("last_message"));
                     UserModel userModel = new UserModel();
                     JSONArray userArray = chat.getJSONArray("user");
-                    JSONObject user1 = userArray.getJSONObject(0);
-                    JSONObject user2 = userArray.getJSONObject(1);
-                    try {
-                        if (!user1.getString("username").equals(GlobalVariables.getInstance(UserChatListActivity.this).getUserName())) {
-                            userModel.setId(user1.getInt("id"));
-                            userModel.setUserName(user1.getString("username"));
-                            userModel.setFirstName(user1.getString("first_name"));
-                            userModel.setLastName(user1.getString("last_name"));
-                            userModel.setActive(user1.getBoolean("is_active"));
-                            userModel.setProfileImage(user1.getString("profile_image"));
-                        } else {
-                            userModel.setId(user2.getInt("id"));
-                            userModel.setUserName(user2.getString("username"));
-                            userModel.setFirstName(user2.getString("first_name"));
-                            userModel.setLastName(user2.getString("last_name"));
-                            userModel.setActive(user2.getBoolean("is_active"));
-                            userModel.setProfileImage(user2.getString("profile_image"));
+                    if (userArray.length() == 2) {
+                        JSONObject user1 = userArray.getJSONObject(0);
+                        JSONObject user2 = userArray.getJSONObject(1);
+                        try {
+                            if (!user1.getString("username").equals(GlobalVariables.getInstance(UserChatListActivity.this).getUserName())) {
+                                userModel.setId(user1.getInt("id"));
+                                userModel.setUserName(user1.getString("username"));
+                                userModel.setFirstName(user1.getString("first_name"));
+                                userModel.setLastName(user1.getString("last_name"));
+                                userModel.setActive(user1.getBoolean("is_active"));
+                                userModel.setProfileImage(user1.getString("profile_image"));
+                            } else {
+                                userModel.setId(user2.getInt("id"));
+                                userModel.setUserName(user2.getString("username"));
+                                userModel.setFirstName(user2.getString("first_name"));
+                                userModel.setLastName(user2.getString("last_name"));
+                                userModel.setActive(user2.getBoolean("is_active"));
+                                userModel.setProfileImage(user2.getString("profile_image"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                    chatListModel.setUserModel(userModel);
+                        chatListModel.setUserModel(userModel);
+                    } else {
+                        continue;
+                    }
 
                     JSONObject messageDetail = chat.getJSONObject("last_message_data");
                     chatListModel.setSender(messageDetail.getString("sender"));

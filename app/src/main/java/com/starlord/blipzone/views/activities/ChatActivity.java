@@ -64,6 +64,8 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         initiateChatWebSocketConnection(userName);
 
+        initiateGlobalChatWebSocketConnection(userName);
+
         loadChatMessagesRequest(userName);
 
         userNameTxt.setText(userName);

@@ -30,6 +30,7 @@ public class UrlConstants {
 
     public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
     public static final String INITIATE_CHAT_WS = BASE_URL_WS + "/ws/chat/";
+    public static final String INITIATE_GLOBAL_HAT_WS = BASE_URL_WS + "/ws/chat/global/";
 
     //Shared Preferences constants---------------------------------------------------------------------------------------------------------
     public static final String ACCESS_TOKEN = "accessToken";

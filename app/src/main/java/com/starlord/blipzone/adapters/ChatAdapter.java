@@ -32,7 +32,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         this.userName = userName;
     }
 
-    private class SentMessageHolder extends RecyclerView.ViewHolder {
+    private static class SentMessageHolder extends RecyclerView.ViewHolder {
 
         TextView messageTxt;
 
@@ -43,7 +43,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+    private static class ReceivedMessageHolder extends RecyclerView.ViewHolder {
 
         TextView messageTxt;
 

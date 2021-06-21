@@ -3,7 +3,10 @@ package com.starlord.blipzone.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,6 +34,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
     private final Context context;
     private final ArrayList<BlogModel> blogModelArrayList;
     private WebSocket webSocket;
+    String TAG = "HomeAdapterLog";
+    private boolean isLiked;
     private final OnHeartClickListener onHeartClickListener;
 
     public HomeAdapter(Context context, ArrayList<BlogModel> blogModelArrayList, OnHeartClickListener onHeartClickListener) {
@@ -47,7 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
         return new HomeViewAdapter(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(@NonNull @NotNull HomeAdapter.HomeViewAdapter holder, int position) {
         BlogModel blogModel = blogModelArrayList.get(position);
@@ -81,6 +86,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
         });
 
         if (blogModel.isLiked()) {
+            isLiked = blogModel.isLiked();
             holder.whiteHeart.setVisibility(View.GONE);
             holder.redHeart.setVisibility(View.VISIBLE);
         }
@@ -111,6 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
                     false);
             holder.whiteHeart.setVisibility(View.GONE);
             holder.redHeart.setVisibility(View.VISIBLE);
+            isLiked = true;
         });
 
         holder.redHeart.setOnClickListener(v -> {
@@ -120,6 +127,42 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
                     true);
             holder.whiteHeart.setVisibility(View.VISIBLE);
             holder.redHeart.setVisibility(View.GONE);
+            isLiked = false;
+        });
+
+        // Double tap to like feature
+        holder.squareImageView.setOnTouchListener(new View.OnTouchListener() {
+            private final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    Log.d(TAG, "onDoubleTap");
+                    if (isLiked) {
+                        // for unliking the post
+                        onHeartClickListener.onHeartClick(String.valueOf(blogModel.getUserModel().getId()),
+                                String.valueOf(blogModel.getId()),
+                                true);
+                        holder.whiteHeart.setVisibility(View.VISIBLE);
+                        holder.redHeart.setVisibility(View.GONE);
+                        isLiked = false;
+                    } else {
+                        // for liking the post
+                        onHeartClickListener.onHeartClick(String.valueOf(blogModel.getUserModel().getId()),
+                                String.valueOf(blogModel.getId()),
+                                false);
+                        holder.whiteHeart.setVisibility(View.GONE);
+                        holder.redHeart.setVisibility(View.VISIBLE);
+                        isLiked = true;
+                    }
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
         });
 
     }

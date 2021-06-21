@@ -55,18 +55,41 @@
 
         </RelativeLayout>
 
-        <com.starlord.blipzone.utils.SquareImageView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/post_image"
-            android:layout_below="@id/relLayout1"
-            android:scaleType="centerCrop"/>
+            android:id="@+id/post_layout"
+            android:layout_below="@id/relLayout1">
+
+            <com.starlord.blipzone.utils.SquareImageView
+                android:id="@+id/post_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/animatedHeart"
+                android:src="@drawable/animated_heart"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/post_image"
+                app:layout_constraintEnd_toEndOf="@+id/post_image"
+                app:layout_constraintStart_toStartOf="@+id/post_image"
+                app:layout_constraintTop_toTopOf="@+id/post_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/relLayout2"
-            android:layout_below="@+id/post_image"
+            android:layout_below="@+id/post_layout"
             android:background="@color/white">
 
             <RelativeLayout

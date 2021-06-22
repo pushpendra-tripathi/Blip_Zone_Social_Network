@@ -44,4 +44,11 @@
     <string name="forgot_password">Forget Password</string>
     <string name="create_account">Create Account</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="username">username</string>
+    <string name="about_yourself">About yourself</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="account_information">Account Information</string>
+    <string name="phone_number">Phone Number</string>
 </resources>

@@ -26,6 +26,7 @@ import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.views.activities.EditProfileActivity;
 import com.starlord.blipzone.views.activities.FollowersListActivity;
 import com.starlord.blipzone.views.activities.FollowingListActivity;
 import com.starlord.blipzone.views.activities.LoginActivity;
@@ -102,6 +103,10 @@ public class ProfileFragment extends Fragment {
                         dialogInterface.dismiss();
                     })
                     .show();
+        });
+
+        followUnFollowProfileEdit.setOnClickListener(v-> {
+            startActivity(new Intent(getActivity(), EditProfileActivity.class));
         });
     }
 

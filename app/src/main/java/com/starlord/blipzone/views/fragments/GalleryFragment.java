@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
 
-    private static final String TAG = "GalleryFragment";
+    private static final String TAG = "GalleryFragmentLog";
 
     //constants
     private static final int NUM_GRID_COLUMNS = 3;
@@ -61,7 +61,9 @@ public class GalleryFragment extends Fragment {
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
         directories = new ArrayList<>();
-        Log.d(TAG, "onCreateView: started.");
+        Log.d(TAG, "onCreateView: started. ");
+
+        Intent incomingIntent = requireActivity().getIntent();
 
         ImageView shareClose = (ImageView) view.findViewById(R.id.ivCloseShare);
         shareClose.setOnClickListener(v -> {
@@ -81,7 +83,16 @@ public class GalleryFragment extends Fragment {
             } else {
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("selected_image", mSelectedImage);
-                intent.putExtra("return_to_fragment", "Edit Profile");
+
+                if (incomingIntent.hasExtra("firstName"))
+                    intent.putExtra("firstName", incomingIntent.getStringExtra("firstName"));
+
+                if (incomingIntent.hasExtra("lastName"))
+                    intent.putExtra("lastName", incomingIntent.getStringExtra("lastName"));
+
+                if (incomingIntent.hasExtra("about"))
+                    intent.putExtra("about", incomingIntent.getStringExtra("about"));
+
                 startActivity(intent);
                 requireActivity().finish();
             }

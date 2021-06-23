@@ -80,6 +80,12 @@ public class EditProfileActivity extends AppCompatActivity {
             Log.d(TAG, "onClick: changing profile photo");
             Intent intent = new Intent(EditProfileActivity.this, CreatePostActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (!firstName.getText().toString().equals(""))
+                intent.putExtra("firstName", firstName.getText().toString());
+            if (!lastName.getText().toString().equals(""))
+                intent.putExtra("lastName", lastName.getText().toString());
+            if (!about.getText().toString().equals(""))
+                intent.putExtra("about", about.getText().toString());
             startActivity(intent);
             finish();
         });

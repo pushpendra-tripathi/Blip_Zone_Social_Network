@@ -51,6 +51,7 @@ public class OtherProfileActivity extends AppCompatActivity {
     LinearLayout followerLayout, followingLayout;
     String TAG = "OtherProfileActivityLog";
     ArrayList<BlogModel> blogModelList;
+    String about = "", firstName = "", lastName = "";
     boolean isFollowing;
     private String userId;
     private String userName;
@@ -86,6 +87,19 @@ public class OtherProfileActivity extends AppCompatActivity {
         });
 
         backBtn.setOnClickListener(v -> onBackPressed());
+
+        editProfile.setOnClickListener(v-> {
+            Intent intent = new Intent(OtherProfileActivity.this, EditProfileActivity.class);
+            if (!firstName.equals(""))
+                intent.putExtra("firstName", firstName);
+            if (!lastName.equals(""))
+                intent.putExtra("lastName", lastName);
+            if (!about.equals(""))
+                intent.putExtra("about", about);
+            if (!profileImage.equals(""))
+                intent.putExtra("profileImage", profileImage);
+            startActivity(intent);
+        });
 
         followUnFollowBtn.setOnClickListener(v ->{
             if (userName.equals(GlobalVariables.getInstance(OtherProfileActivity.this).getUserName())){
@@ -236,8 +250,15 @@ public class OtherProfileActivity extends AppCompatActivity {
                 if (!user.getString("about").equals("") && user.getString("about").length() > 4) {
                     bio.setVisibility(View.VISIBLE);
                     bio.setText(user.getString("about"));
-
+                    about = user.getString("about");
                 }
+
+                if (!user.getString("first_name").equals(""))
+                    firstName = user.getString("first_name");
+
+                if (!user.getString("last_name").equals(""))
+                    lastName = user.getString("last_name");
+
                 JSONObject count = data.getJSONObject("count");
 
                 followers.setText(count.getString("follower"));

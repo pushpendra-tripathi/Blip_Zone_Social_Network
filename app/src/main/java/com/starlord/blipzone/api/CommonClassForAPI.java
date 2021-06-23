@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.starlord.blipzone.configurations.UrlConstants.BLOG_POST;
+import static com.starlord.blipzone.configurations.UrlConstants.PROFILE;
 import static com.starlord.blipzone.configurations.UrlConstants.SEARCH;
 
 public class CommonClassForAPI {
@@ -121,6 +122,66 @@ public class CommonClassForAPI {
                 Map<String, DataPart> params = new HashMap<>();
                 long imageName = System.currentTimeMillis();
                 params.put("image", new DataPart(imageName + ".png", getFileDataFromDrawable(image)));
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.getInstance(context).getUserToken());
+                return headers;
+            }
+        };
+
+        //adding the request to volley
+
+        VolleyClient.getInstance(context).addToRequestQueue(volleyMultipartRequest);
+
+    }
+
+
+    public static void callSaveProfileDataRequest(Activity context,
+                                           String firstName,
+                                           String lastName,
+                                           String about,
+                                           Bitmap image,
+                                           ApiResponseCallback apiResponseCallback) {
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, PROFILE,
+                response -> {
+                    try {
+                        Log.d(TAG, "onResponse: SaveProfileDataAPI " + response);
+                        apiResponseCallback.onApiSuccessResult(new JSONObject(new String(response.data)));
+                    } catch (JSONException e) {
+                        apiResponseCallback.onApiFailureResult(e);
+                    }
+                },
+                error -> {
+                    Log.d(TAG, "onErrorResponse: SaveProfileDataAPI " + error);
+                    if (error != null) {
+                        NetworkResponse networkResponse = error.networkResponse;
+                        Log.d(TAG, "onErrorResponse: SaveProfileDataAPI " + networkResponse.statusCode);
+                        apiResponseCallback.onApiErrorResult(error);
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", firstName);
+                params.put("last_name", lastName);
+                params.put("about", about);
+                return params;
+            }
+
+            /*
+             * Here we are passing image by renaming it with a unique name
+             * */
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imageName = System.currentTimeMillis();
+                params.put("profile_image", new DataPart(imageName + ".png", getFileDataFromDrawable(image)));
                 return params;
             }
 

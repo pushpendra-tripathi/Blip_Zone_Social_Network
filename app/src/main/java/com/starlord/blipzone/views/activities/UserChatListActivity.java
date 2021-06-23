@@ -34,7 +34,7 @@ public class UserChatListActivity extends AppCompatActivity {
     TextView title;
     ArrayList<ChatListModel> chatListModelArrayList;
     ChatListAdapter chatListAdapter;
-    String TAG = "UserChatListActivity";
+    String TAG = "UserChatListActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -26,6 +26,7 @@ import com.starlord.blipzone.adapters.ProfileAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.models.BlogModel;
+import com.starlord.blipzone.views.activities.EditProfileActivity;
 import com.starlord.blipzone.views.activities.FollowersListActivity;
 import com.starlord.blipzone.views.activities.FollowingListActivity;
 import com.starlord.blipzone.views.activities.LoginActivity;
@@ -39,11 +40,13 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.BASE_URL;
 import static com.starlord.blipzone.configurations.UrlConstants.PROFILE;
 
 public class ProfileFragment extends Fragment {
     CircleImageView circleImageView;
     TextView followers, following, bio, usernameTxt;
+    String about = "", firstName = "", lastName = "", profileImage = "";
     Button followUnFollowProfileEdit;
     RecyclerView profileBlogRecyclerView;
     GridLayoutManager gridLayoutManager;
@@ -103,6 +106,19 @@ public class ProfileFragment extends Fragment {
                     })
                     .show();
         });
+
+        followUnFollowProfileEdit.setOnClickListener(v-> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            if (!firstName.equals(""))
+                intent.putExtra("firstName", firstName);
+            if (!lastName.equals(""))
+                intent.putExtra("lastName", lastName);
+            if (!about.equals(""))
+                intent.putExtra("about", about);
+            if (!profileImage.equals(""))
+                intent.putExtra("profileImage", profileImage);
+            startActivity(intent);
+        });
     }
 
     private void loadProfileDetails() {
@@ -146,7 +162,8 @@ public class ProfileFragment extends Fragment {
                 usernameTxt.setText(user.getString("username"));
                 GlobalVariables.getInstance(getActivity()).setUserName(user.getString("username"));
 
-                Picasso.get().load(user.getString("profile_image"))
+                profileImage = BASE_URL + user.getString("profile_image");
+                Picasso.get().load(BASE_URL + user.getString("profile_image"))
                         .placeholder(R.drawable.profile_avatar)
                         .into(circleImageView);
                 GlobalVariables.getInstance(getActivity()).setUserProfileImage(user.getString("profile_image"));
@@ -154,9 +171,17 @@ public class ProfileFragment extends Fragment {
                 if (!user.getString("about").equals("") && user.getString("about").length() > 4) {
                     bio.setVisibility(View.VISIBLE);
                     bio.setText(user.getString("about"));
+                    about = user.getString("about");
                     GlobalVariables.getInstance(getActivity()).setUserProfileBio(user.getString("about"));
 
                 }
+
+                if (!user.getString("first_name").equals(""))
+                    firstName = user.getString("first_name");
+
+                if (!user.getString("last_name").equals(""))
+                    lastName = user.getString("last_name");
+
                 JSONObject count = data.getJSONObject("count");
 
                 if (count.getString("follower").equals("")) {

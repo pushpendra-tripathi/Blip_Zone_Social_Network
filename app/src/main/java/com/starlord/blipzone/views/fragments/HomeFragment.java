@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,9 +59,13 @@ public class HomeFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     HomeAdapter homeAdapter;
     TextView title;
+    private ProgressBar loadingPB;
+    private NestedScrollView nestedSV;
     String TAG = "HomeFragmentLog";
     private WebSocket webSocket;
-    ImageView chatList;
+    ImageView chatListBtn;
+    boolean firstCall = true;
+    private int page = 1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,8 +85,24 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         loadBlogPostsRequest();
 
-        chatList.setOnClickListener(v->{
+        chatListBtn.setOnClickListener(v->{
             startActivity(new Intent(getActivity(), UserChatListActivity.class));
+        });
+
+        // Pagination for loading more data from server
+        nestedSV.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (!firstCall) {
+                    if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                        // in this method we are incrementing page number,
+                        // making progress bar visible and calling get data method.
+                        page++;
+                        loadingPB.setVisibility(View.VISIBLE);
+                        loadMoreBlogPostsRequest(page);
+                    }
+                }
+            }
         });
     }
 
@@ -88,14 +110,33 @@ public class HomeFragment extends Fragment {
         callAuthGetRequest(getActivity(), UrlConstants.BLOG_LIST, new ApiResultCallback() {
             @Override
             public void onAPIResultSuccess(JSONObject jsonObject) {
-                Log.d(TAG, "onResponse: Success");
+                Log.d(TAG, "loadBlogPostsRequest: Success-> " + jsonObject);
                 processBlogRequest(jsonObject);
             }
 
             @Override
             public void onAPIResultError(VolleyError volleyError) {
-                Log.d(TAG, "onAPIResultErrorCode: " + volleyError.networkResponse.statusCode);
-                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "loadBlogPostsRequest: Error-> " + volleyError.networkResponse.statusCode);
+                Toast.makeText(getActivity(), "Please check your internet connectivity...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadMoreBlogPostsRequest(int page) {
+        // For loading more blogs from server
+        callAuthGetRequest(getActivity(), UrlConstants.MORE_BLOG_LIST + page, new ApiResultCallback() {
+            @Override
+            public void onAPIResultSuccess(JSONObject jsonObject) {
+                Log.d(TAG, "loadMoreBlogPostsRequest: Success-> " + jsonObject);
+                processBlogRequest(jsonObject);
+            }
+
+            @Override
+            public void onAPIResultError(VolleyError volleyError) {
+                Log.d(TAG, "loadMoreBlogPostsRequest:  Error-> " + volleyError.networkResponse.statusCode);
+                Toast.makeText(getActivity(), "That's all the post..", Toast.LENGTH_SHORT).show();
+                // hiding our progress bar.
+                loadingPB.setVisibility(View.GONE);
             }
         });
     }
@@ -188,6 +229,7 @@ public class HomeFragment extends Fragment {
                     blogModelArrayList.add(blogModel);
                     homeAdapter.notifyDataSetChanged();
                 }
+                firstCall = false;
             } else {
                 Toast.makeText(getActivity(),
                         "Something went wrong",
@@ -200,7 +242,9 @@ public class HomeFragment extends Fragment {
 
     private void initializeViews(View homeView) {
         blogModelArrayList = new ArrayList<>();
-        chatList = homeView.findViewById(R.id.iv_menu_home);
+        chatListBtn = homeView.findViewById(R.id.iv_menu_home);
+        loadingPB = homeView.findViewById(R.id.idPBLoading);
+        nestedSV = homeView.findViewById(R.id.idNestedSV);
         homeRecyclerView = homeView.findViewById(R.id.home_feed_rv);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         homeAdapter = new HomeAdapter(getActivity(), blogModelArrayList, (userId, blogId, liked) -> {

@@ -3,9 +3,17 @@ package com.starlord.blipzone.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
     private final Context context;
     private final ArrayList<BlogModel> blogModelArrayList;
     private WebSocket webSocket;
+    String TAG = "HomeAdapterLog";
     private final OnHeartClickListener onHeartClickListener;
 
     public HomeAdapter(Context context, ArrayList<BlogModel> blogModelArrayList, OnHeartClickListener onHeartClickListener) {
@@ -47,7 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
         return new HomeViewAdapter(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(@NonNull @NotNull HomeAdapter.HomeViewAdapter holder, int position) {
         BlogModel blogModel = blogModelArrayList.get(position);
@@ -122,6 +131,63 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
             holder.redHeart.setVisibility(View.GONE);
         });
 
+        // Double tap to like feature
+        holder.squareImageView.setOnTouchListener(new View.OnTouchListener() {
+            private final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    Log.d(TAG, "onDoubleTap");
+                    // for liking the post
+                    onHeartClickListener.onHeartClick(String.valueOf(blogModel.getUserModel().getId()),
+                            String.valueOf(blogModel.getId()),
+                            false);
+                    holder.whiteHeart.setVisibility(View.GONE);
+                    holder.redHeart.setVisibility(View.VISIBLE);
+                    holder.animatedHrat.setVisibility(View.VISIBLE);
+                    animateHeart(holder.animatedHrat);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            holder.animatedHrat.setVisibility(View.GONE);
+                        }
+                    }, 600);
+
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+    }
+
+    // Heart animation
+    public void animateHeart(final ImageView view) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        prepareAnimation(scaleAnimation);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        prepareAnimation(alphaAnimation);
+
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alphaAnimation);
+        animation.addAnimation(scaleAnimation);
+        animation.setDuration(500);
+        animation.setFillAfter(true);
+
+        view.startAnimation(animation);
+
+    }
+
+    private void prepareAnimation(Animation animation) {
+        animation.setRepeatCount(1);
+        animation.setRepeatMode(Animation.REVERSE);
     }
 
     @Override
@@ -132,7 +198,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
     public static class HomeViewAdapter extends RecyclerView.ViewHolder {
         CircleImageView circleImageView;
         TextView username, likesText, content, allComment, postTime;
-        ImageView ellipses, redHeart, whiteHeart, comment;
+        ImageView ellipses, redHeart, whiteHeart, comment, animatedHrat;
         SquareImageView squareImageView;
 
         public HomeViewAdapter(@NonNull @NotNull View itemView) {
@@ -148,6 +214,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewAdapte
             content = itemView.findViewById(R.id.image_caption);
             allComment = itemView.findViewById(R.id.image_comments_link);
             postTime = itemView.findViewById(R.id.image_time_posted);
+            animatedHrat = itemView.findViewById(R.id.animatedHeart);
         }
     }
 

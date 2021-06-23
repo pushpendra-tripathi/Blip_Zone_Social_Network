@@ -64,34 +64,28 @@ public class GalleryFragment extends Fragment {
         Log.d(TAG, "onCreateView: started.");
 
         ImageView shareClose = (ImageView) view.findViewById(R.id.ivCloseShare);
-        shareClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: closing the gallery fragment.");
-                requireActivity().finish();
-            }
+        shareClose.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: closing the gallery fragment.");
+            requireActivity().finish();
         });
 
 
         TextView nextScreen = (TextView) view.findViewById(R.id.tvNext);
-        nextScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating to the final share screen.");
+        nextScreen.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: navigating to the final share screen.");
 
-                if (isRootTask()) {
-                    Intent intent = new Intent(getActivity(), NextActivity.class);
-                    intent.putExtra("selected_image", mSelectedImage);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                    intent.putExtra("selected_image", mSelectedImage);
-                    intent.putExtra("return_to_fragment", "Edit Profile");
-                    startActivity(intent);
-                    requireActivity().finish();
-                }
-
+            if (isRootTask()) {
+                Intent intent = new Intent(getActivity(), NextActivity.class);
+                intent.putExtra("selected_image", mSelectedImage);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("selected_image", mSelectedImage);
+                intent.putExtra("return_to_fragment", "Edit Profile");
+                startActivity(intent);
+                requireActivity().finish();
             }
+
         });
 
         init();
@@ -170,14 +164,11 @@ public class GalleryFragment extends Fragment {
             Log.e(TAG, "setupGridView: ArrayIndexOutOfBoundsException: " + e.getMessage());
         }
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            Log.d(TAG, "onItemClick: selected an image: " + imgURLs.get(position));
 
-                setImage(imgURLs.get(position), galleryImage, mAppend);
-                mSelectedImage = imgURLs.get(position);
-            }
+            setImage(imgURLs.get(position), galleryImage, mAppend);
+            mSelectedImage = imgURLs.get(position);
         });
 
     }

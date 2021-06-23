@@ -11,6 +11,7 @@ public class UrlConstants {
     public static final String PROFILE = BASE_URL + "/api/auth/profile/";
     public static final String OTHER_PROFILE = BASE_URL + "/api/auth/profile/?id=";
     public static final String BLOG_LIST = BASE_URL + "/api/blog/post/list/";
+    public static final String MORE_BLOG_LIST = BASE_URL + "/api/blog/post/list/?page=";
     public static final String FOLLOW_LIST = BASE_URL + "/api/network/followlist/";
     public static final String OTHERS_FOLLOW_LIST = BASE_URL + "/api/network/followlist/?id=";
     public static final String UNFOLLOW = BASE_URL + "/api/network/unfollow/";
@@ -30,6 +31,7 @@ public class UrlConstants {
 
     public static final String NOTIFICATION_WS = BASE_URL_WS + "/ws/notification/";
     public static final String INITIATE_CHAT_WS = BASE_URL_WS + "/ws/chat/";
+    public static final String INITIATE_GLOBAL_HAT_WS = BASE_URL_WS + "/ws/chat/global/";
 
     //Shared Preferences constants---------------------------------------------------------------------------------------------------------
     public static final String ACCESS_TOKEN = "accessToken";

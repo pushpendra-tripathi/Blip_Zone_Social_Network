@@ -26,6 +26,7 @@ import com.starlord.blipzone.views.activities.NextActivity;
 
 public class PhotoFragment extends Fragment {
     private static final String TAG = "PhotoFragment";
+    Intent incomingIntent;
 
     //constant
     private static final int PHOTO_FRAGMENT_NUM = 1;
@@ -35,6 +36,8 @@ public class PhotoFragment extends Fragment {
         Log.d(TAG, "onCreateView: started.");
 
         Log.d(TAG, "onClick: launching camera.");
+
+        incomingIntent = requireActivity().getIntent();
 
         if (((CreatePostActivity) getActivity()).getCurrentTabNumber() == PHOTO_FRAGMENT_NUM) {
             if (((CreatePostActivity) getActivity()).checkPermissions(Permissions.CAMERA_PERMISSION[0])) {
@@ -91,9 +94,18 @@ public class PhotoFragment extends Fragment {
                                 Log.d(TAG, "onActivityResult: received new bitmap from camera: " + bitmap);
                                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                                 intent.putExtra("selected_bitmap", bitmap);
-                                intent.putExtra("return_to_fragment", "Edit Profile");
+                                if (incomingIntent.hasExtra("firstName"))
+                                    intent.putExtra("firstName", incomingIntent.getStringExtra("firstName"));
+
+                                if (incomingIntent.hasExtra("lastName"))
+                                    intent.putExtra("lastName", incomingIntent.getStringExtra("lastName"));
+
+                                if (incomingIntent.hasExtra("about"))
+                                    intent.putExtra("about", incomingIntent.getStringExtra("about"));
+
                                 startActivity(intent);
                                 requireActivity().finish();
+
                             } catch (NullPointerException e) {
                                 Log.d(TAG, "onActivityResult: NullPointerException: " + e.getMessage());
                             }

@@ -33,23 +33,32 @@ public class FollowingListActivity extends AppCompatActivity {
     ArrayList<UserModel> followingList;
     String TAG = "FollowingListActivityLog";
     PersonsAdapter personsAdapter;
+    String url;
+    String userId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following_list);
 
+        if (getIntent().hasExtra("userId")) {
+            userId = getIntent().getStringExtra("userId");
+            url = UrlConstants.OTHERS_FOLLOW_LIST + userId;
+        }
+        else
+            url = UrlConstants.FOLLOW_LIST;
+
         initializeViews();
-        loadFollowingRequest();
+        loadFollowingRequest(url);
 
         backBtn.setOnClickListener(v -> {
             onBackPressed();
         });
     }
 
-    private void loadFollowingRequest() {
+    private void loadFollowingRequest(String url) {
         CommonClassForAPI.callAuthGetRequest(FollowingListActivity.this,
-                UrlConstants.FOLLOW_LIST,
+                url,
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {

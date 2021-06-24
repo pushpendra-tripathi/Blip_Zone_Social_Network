@@ -40,9 +40,10 @@ public class FollowersListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follwers_list);
 
-        userId = getIntent().getStringExtra("userId");
-        if (!userId.equals(""))
+        if (getIntent().hasExtra("userId")) {
+            userId = getIntent().getStringExtra("userId");
             url = UrlConstants.OTHERS_FOLLOW_LIST + userId;
+        }
         else
             url = UrlConstants.FOLLOW_LIST;
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F2FF"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.fragments.HomeFragment"
     android:orientation="vertical">
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
         android:visibility="visible"
+        android:background="@drawable/grey_border_bottom"
         app:contentInsetStart="0dp"
         app:elevation="0dp"
         app:layout_collapseMode="none"

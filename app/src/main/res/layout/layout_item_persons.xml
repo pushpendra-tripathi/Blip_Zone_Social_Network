@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
+    android:background="#F0F2FF"
     android:paddingHorizontal="12dp"
     android:paddingVertical="8dp"
     android:visibility="visible">

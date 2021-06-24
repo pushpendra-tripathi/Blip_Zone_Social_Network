@@ -307,7 +307,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         editProfile = findViewById(R.id.editprofile_btn);
         profileBlogRecyclerView = findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 3);
+        gridLayoutManager = new GridLayoutManager(OtherProfileActivity.this, 2);
 
     }
 }

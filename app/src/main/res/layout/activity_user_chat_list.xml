@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F2FF"
     tools:context=".views.activities.UserChatListActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
+        android:background="@drawable/grey_border_bottom"
         android:visibility="visible"
         app:contentInsetStart="0dp"
         app:elevation="7dp"

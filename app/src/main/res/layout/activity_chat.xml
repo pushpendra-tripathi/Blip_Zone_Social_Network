@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F2FF"
     tools:context=".views.activities.ChatActivity">
 
     <RelativeLayout
         android:id="@+id/relLayout1"
         android:layout_width="match_parent"
         android:elevation="7dp"
+        android:background="@drawable/grey_border_bottom"
         android:layout_height="50dp">
 
         <de.hdodenhof.circleimageview.CircleImageView

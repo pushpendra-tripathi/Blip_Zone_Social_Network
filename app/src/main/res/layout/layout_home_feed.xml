@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F2FF"
     xmlns:tools="http://schemas.android.com/tools">
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -89,14 +89,12 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/relLayout2"
-            android:layout_below="@+id/post_layout"
-            android:background="@color/white">
+            android:layout_below="@+id/post_layout">
 
             <RelativeLayout
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:id="@+id/heartLayout"
-                android:background="@color/white">
+                android:id="@+id/heartLayout">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -141,8 +139,7 @@
             android:padding="3dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:layout_marginBottom="7dp"
-            android:background="@color/white">
+            android:layout_marginBottom="7dp">
 
             <TextView
                 android:layout_width="wrap_content"

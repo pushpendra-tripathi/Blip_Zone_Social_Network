@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/recieved_message_corner_radius"
-        android:backgroundTint="#F1EDED"
+        android:backgroundTint="#DFDDDD"
         android:textColor="@color/black"
         android:padding="15dp"
         android:layout_marginEnd="64dp"

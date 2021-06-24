@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileLayout"
+    android:background="#F0F2FF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.activities.OtherProfileActivity">
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
+        android:background="@drawable/grey_border_bottom"
         android:visibility="visible"
         app:contentInsetStart="0dp"
         app:elevation="0dp"
@@ -71,8 +72,6 @@
                 app:tint="@color/black" />
         </RelativeLayout>
     </com.google.android.material.appbar.MaterialToolbar>
-
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -202,7 +201,8 @@
             android:id="@+id/bio_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
+            android:padding="7dp"
             android:visibility="gone"
             tools:visibility="visible"
             android:text="@string/bio"
@@ -222,7 +222,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:spanCount="3"
+        app:spanCount="2"
         android:layout_marginBottom="5dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

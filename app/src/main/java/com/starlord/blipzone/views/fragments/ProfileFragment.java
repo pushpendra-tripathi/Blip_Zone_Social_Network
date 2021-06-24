@@ -241,7 +241,7 @@ public class ProfileFragment extends Fragment {
         followUnFollowProfileEdit = view.findViewById(R.id.follow_unfollow_editprofile_btn);
         profileBlogRecyclerView = view.findViewById(R.id.profile_blog_rv);
         profileBlogRecyclerView.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
     }
 }

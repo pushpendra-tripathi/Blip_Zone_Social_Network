@@ -1,15 +1,13 @@
 package com.starlord.blipzone.models;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class BlogModel implements Serializable {
     int id;
     List<CommentModel> commentList;
     LikeModel likeModel;
+    int commentCount;
     boolean isLiked;
     boolean owner;
     UserModel userModel;
@@ -42,6 +40,14 @@ public class BlogModel implements Serializable {
 
     public void setLikeModel(LikeModel likeModel) {
         this.likeModel = likeModel;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public boolean isLiked() {

@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     new ApiResponseCallback() {
                         @Override
                         public void onApiSuccessResult(JSONObject jsonObject) {
-                            Log.d(TAG, "onResponse: Success");
+                            Log.d(TAG, "onResponse: Success-> " + jsonObject);
                             progressDialog.dismiss();
                             processLoginResponse(jsonObject);
                         }
@@ -105,12 +105,17 @@ public class LoginActivity extends AppCompatActivity {
             boolean status = jsonObject.getBoolean("status");
             String details = jsonObject.getString("detail");
             JSONObject data = jsonObject.getJSONObject("data");
-            String refreshToken = data.getString("refresh");
-            String accessToken = data.getString("access");
+            JSONObject token = data.getJSONObject("token");
+            String refreshToken = token.getString("refresh");
+            String accessToken = token.getString("access");
+            String userName = data.getString("username");
+            String userId = data.getString("user_id");
 
             if (status) {
                 GlobalVariables.getInstance(LoginActivity.this).setData(ACCESS_TOKEN, accessToken);
                 GlobalVariables.getInstance(LoginActivity.this).setData(REFRESH_TOKEN, refreshToken);
+                GlobalVariables.getInstance(LoginActivity.this).setUserName(userName);
+                GlobalVariables.getInstance(LoginActivity.this).setUserId(userId);
                 GlobalVariables.getInstance(LoginActivity.this).userLoggedIN();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

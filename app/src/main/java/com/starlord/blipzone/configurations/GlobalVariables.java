@@ -13,6 +13,7 @@ import static com.starlord.blipzone.configurations.UrlConstants.FOLLOWERS_COUNT;
 import static com.starlord.blipzone.configurations.UrlConstants.FOLLOWING_COUNT;
 import static com.starlord.blipzone.configurations.UrlConstants.PROFILE_DATA;
 import static com.starlord.blipzone.configurations.UrlConstants.REFRESH_TOKEN;
+import static com.starlord.blipzone.configurations.UrlConstants.USER_ID;
 import static com.starlord.blipzone.configurations.UrlConstants.USER_LOGGED;
 import static com.starlord.blipzone.configurations.UrlConstants.USER_NAME;
 import static com.starlord.blipzone.configurations.UrlConstants.USER_PROFILE_BIO;
@@ -91,8 +92,17 @@ public class GlobalVariables {
         editor.apply();
     }
 
+    public void setUserId(String userId) {
+        editor.putString(USER_ID, userId);
+        editor.apply();
+    }
+
     public String getUserName() {
         return sharedPreferences.getString(USER_NAME, "");
+    }
+
+    public String getUserId() {
+        return sharedPreferences.getString(USER_ID, "");
     }
 
     public void setFollowers(String followersCount) {

@@ -126,24 +126,6 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         }
     }
 
-    private void initiateChatWebSocketConnection(String userName) {
-        String SERVER_PATH = UrlConstants.INITIATE_CHAT_WS + userName + "/?user_token="
-                + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(SERVER_PATH).build();
-        chatWebSocket = client.newWebSocket(request, new ChatWebSocketListener());
-
-    }
-
-    private void initiateGlobalChatWebSocketConnection(String userName) {
-        String SERVER_PATH = UrlConstants.INITIATE_GLOBAL_HAT_WS + userName + "/?user_token="
-                + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(SERVER_PATH).build();
-        globalChatWebSocket = client.newWebSocket(request, new GlobalChatWebSocketListener());
-
-    }
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -174,6 +156,26 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         messageEdit.setText("");
         sendBtn.setVisibility(View.INVISIBLE);
         messageEdit.addTextChangedListener(this);
+
+    }
+
+    private void initiateChatWebSocketConnection(String userName) {
+        String SERVER_PATH = UrlConstants.INITIATE_CHAT_WS + userName + "/?user_token="
+                + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(SERVER_PATH).build();
+        chatWebSocket = client.newWebSocket(request, new ChatWebSocketListener());
+        Log.d(TAG, "ChatWebSocketAddress: " + SERVER_PATH);
+
+    }
+
+    private void initiateGlobalChatWebSocketConnection(String userName) {
+        String SERVER_PATH = UrlConstants.INITIATE_GLOBAL_HAT_WS + userName + "/?user_token="
+                + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(SERVER_PATH).build();
+        globalChatWebSocket = client.newWebSocket(request, new GlobalChatWebSocketListener());
+        Log.d(TAG, "GlobalChatWebSocketAddress: " + SERVER_PATH);
 
     }
 
@@ -212,10 +214,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
             super.onOpen(webSocket, response);
 
             runOnUiThread(() -> {
-//                Toast.makeText(ChatActivity.this,
-//                        "Socket Connection Successful!",
-//                        Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "ChatWebSocket onOpen: " + response.message());
             });
 
         }
@@ -227,10 +226,11 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
             runOnUiThread(() -> {
 
                 try {
-                    Log.d(TAG, "On Chat Message Received: " + textResponse);
+                    Log.d(TAG, "ChatWebSocket onMessage: " + textResponse);
                     JSONObject jsonObject = new JSONObject(textResponse);
-                    if (jsonObject.has("in_screen"))
-                        inScreen = jsonObject.getBoolean("in_screen");
+                    if (jsonObject.has(userName))
+                        inScreen = jsonObject.getBoolean(userName);
+                    //Log.d(TAG, userName + " " + inScreen);
                     if (jsonObject.has("text")) {
                         messageAdapter.addItem(jsonObject);
                         recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
@@ -248,6 +248,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
             super.onFailure(webSocket, t, response);
             runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show());
+            Log.d(TAG, "ChatWebSocket onFailure: " + response.message());
 
         }
     }
@@ -259,9 +260,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
             super.onOpen(webSocket, response);
 
             runOnUiThread(() -> {
-//                Toast.makeText(ChatActivity.this,
-//                        "Socket Connection Successful!",
-//                        Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "GlobalChatWebSocket onOpen: " + response.message());
 
             });
 
@@ -274,10 +273,11 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
             runOnUiThread(() -> {
 
                 try {
-                    Log.d(TAG, "On Global Chat Message Received: " + textResponse);
+                    Log.d(TAG, "GlobalChatWebSocket onMessage: " + textResponse);
                     JSONObject jsonObject = new JSONObject(textResponse);
-                    if (jsonObject.has("in_screen"))
-                        inScreen = jsonObject.getBoolean("in_screen");
+                    if (jsonObject.has(userName))
+                        inScreen = jsonObject.getBoolean(userName);
+                    Log.d(TAG, userName + " " + inScreen);
                     if (jsonObject.has("text")) {
                         messageAdapter.addItem(jsonObject);
                         recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
@@ -295,7 +295,15 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
             super.onFailure(webSocket, t, response);
             runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show());
+            Log.d(TAG, "GlobalChatWebSocket onFailure: " + response.message());
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        chatWebSocket.close(1000, "User exited the chat screen");
+        globalChatWebSocket.close(1000, "User exited the chat screen");
     }
 }

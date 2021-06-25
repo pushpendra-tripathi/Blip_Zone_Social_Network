@@ -208,7 +208,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         callAuthGetRequest(OtherProfileActivity.this, OTHER_PROFILE + userId, new ApiResultCallback() {
             @Override
             public void onAPIResultSuccess(JSONObject jsonObject) {
-                Log.d(TAG, "onResponse: Success");
+                Log.d(TAG, "onResponse: Success-> " + jsonObject);
                 processProfileRequest(jsonObject);
             }
 

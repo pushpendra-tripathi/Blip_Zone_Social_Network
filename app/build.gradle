@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -54,4 +58,11 @@ dependencies {
 
     //universal image loader
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5';
+
+    //firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:28.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-perf'
+
 }

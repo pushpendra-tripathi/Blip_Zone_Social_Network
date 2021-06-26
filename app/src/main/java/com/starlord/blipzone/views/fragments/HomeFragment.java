@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment {
         homeRecyclerView.setLayoutManager(linearLayoutManager);
         homeRecyclerView.setAdapter(homeAdapter);
         title = homeView.findViewById(R.id.username_feed);
-        title.setText(R.string.feed);
+        title.setText(R.string.app_name);
     }
 
     private void callUnlikeRequest(String blogId) {

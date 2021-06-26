@@ -11,7 +11,7 @@ import com.starlord.blipzone.configurations.GlobalVariables;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIME_OUT=2000;
+    private static int SPLASH_SCREEN_TIME_OUT=1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

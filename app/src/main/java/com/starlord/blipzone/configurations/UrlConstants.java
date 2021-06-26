@@ -41,6 +41,7 @@ public class UrlConstants {
     public static final String USER_PROFILE_IMAGE = "userProfileImage";
     public static final String USER_PROFILE_BIO = "userProfileBio";
     public static final String USER_NAME = "userName";
+    public static final String USER_ID = "userId";
     public static final String FOLLOWERS_COUNT = "followersCount";
     public static final String FOLLOWING_COUNT = "FollowingCount";
 

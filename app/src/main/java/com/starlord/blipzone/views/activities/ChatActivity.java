@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private WebSocket chatWebSocket;
     private WebSocket globalChatWebSocket;
     private EditText messageEdit;
-    private ImageView sendBtn;
+    private ImageView sendBtn, backBtn;
     private RecyclerView recyclerView;
     private ChatAdapter messageAdapter;
     private TextView userNameTxt;
@@ -72,6 +72,10 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         Picasso.get().load(profileImage)
                 .placeholder(R.drawable.profile_avatar)
                 .into(profileImageView);
+
+        backBtn.setOnClickListener(v-> {
+            onBackPressed();
+        });
     }
 
     private void loadChatMessagesRequest(String userName) {
@@ -184,6 +188,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         messageEdit = findViewById(R.id.messageEdit);
         sendBtn = findViewById(R.id.sendBtn);
+        backBtn = findViewById(R.id.backBtn_chat);
         recyclerView = findViewById(R.id.recyclerView);
         userNameTxt = findViewById(R.id.username_chat);
         profileImageView = findViewById(R.id.profile_photo_chat);

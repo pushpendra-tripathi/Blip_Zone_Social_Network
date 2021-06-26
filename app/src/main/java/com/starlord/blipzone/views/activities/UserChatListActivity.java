@@ -57,9 +57,7 @@ public class UserChatListActivity extends AppCompatActivity {
 
         initiateGlobalChatWebSocketConnection(GlobalVariables.getInstance(UserChatListActivity.this).getUserName());
 
-        backBtn.setOnClickListener(v-> {
-            onBackPressed();
-        });
+        backBtn.setOnClickListener(v-> onBackPressed());
     }
 
     private void loadChatListRequest() {
@@ -166,10 +164,7 @@ public class UserChatListActivity extends AppCompatActivity {
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             super.onOpen(webSocket, response);
 
-            runOnUiThread(() -> {
-                Log.d(TAG, "GlobalChatWebSocket onOpen: " + response.message());
-
-            });
+            runOnUiThread(() -> Log.d(TAG, "GlobalChatWebSocket onOpen: " + response.message()));
 
         }
 
@@ -185,7 +180,7 @@ public class UserChatListActivity extends AppCompatActivity {
                     if (jsonObject.has("text")) {
                        String senderUserName = jsonObject.getString("username");
                        ChatListModel model = chatListModelArrayList.get(chatMap.get(senderUserName));
-                       chatListModelArrayList.remove(chatMap.get(senderUserName));
+                       chatListModelArrayList.remove(model);
                        model.setText(jsonObject.getString("text"));
                        chatListModelArrayList.add(0, model);
                        chatListAdapter.notifyDataSetChanged();

@@ -177,13 +177,28 @@ public class UserChatListActivity extends AppCompatActivity {
                 try {
                     Log.d(TAG, "GlobalChatWebSocket onMessage: " + textResponse);
                     JSONObject jsonObject = new JSONObject(textResponse);
-                    if (jsonObject.has("text")) {
-                       String senderUserName = jsonObject.getString("username");
-                       ChatListModel model = chatListModelArrayList.get(chatMap.get(senderUserName));
-                       chatListModelArrayList.remove(model);
-                       model.setText(jsonObject.getString("text"));
-                       chatListModelArrayList.add(0, model);
-                       chatListAdapter.notifyDataSetChanged();
+                    JSONObject message = jsonObject.getJSONObject("message");
+                    if (message.has("text")) {
+                       String senderUserName = message.getString("username");
+                       if (chatMap.containsKey(senderUserName)) {
+                           ChatListModel model = chatListModelArrayList.get(chatMap.get(senderUserName));
+                           chatListModelArrayList.remove(model);
+                           model.setText(message.getString("text"));
+                           chatListModelArrayList.add(0, model);
+                           chatListAdapter.notifyDataSetChanged();
+                       } else {
+                           ChatListModel model = new ChatListModel();
+                           model.setText(message.getString("text"));
+                           model.setSender(message.getString("username"));
+                           model.setLastMessageTimeStamp(message.getString("time"));
+                           UserModel userModel = new UserModel();
+                           userModel.setUserName(message.getString("username"));
+                           userModel.setId(Integer.parseInt(message.getString("id")));
+                           model.setUserModel(userModel);
+                           chatListModelArrayList.add(0, model);
+                           chatMap.put(message.getString("username"), 0);
+                           chatListAdapter.notifyDataSetChanged();
+                       }
                     }
 
 
@@ -199,6 +214,7 @@ public class UserChatListActivity extends AppCompatActivity {
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
             super.onFailure(webSocket, t, response);
             runOnUiThread(() -> Toast.makeText(UserChatListActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show());
+            assert response != null;
             Log.d(TAG, "GlobalChatWebSocket onFailure: " + response.message());
 
         }

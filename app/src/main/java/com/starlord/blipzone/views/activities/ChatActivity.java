@@ -20,7 +20,6 @@ import com.starlord.blipzone.R;
 import com.starlord.blipzone.adapters.ChatAdapter;
 import com.starlord.blipzone.callbacks.ApiResultCallback;
 import com.starlord.blipzone.configurations.GlobalVariables;
-import com.starlord.blipzone.configurations.UrlConstants;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -37,11 +36,15 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import static com.starlord.blipzone.api.CommonClassForAPI.callAuthGetRequest;
+import static com.starlord.blipzone.configurations.UrlConstants.CHAT_MESSAGES;
+import static com.starlord.blipzone.configurations.UrlConstants.CONTENT_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.INITIATE_CHAT_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.MESSAGE_ACTION_WS;
+import static com.starlord.blipzone.configurations.UrlConstants.TYPE_WS;
 
 public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     private WebSocket chatWebSocket;
-    private WebSocket globalChatWebSocket;
     private EditText messageEdit;
     private ImageView sendBtn, backBtn;
     private RecyclerView recyclerView;
@@ -64,8 +67,6 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         initiateChatWebSocketConnection(userName);
 
-        initiateGlobalChatWebSocketConnection(userName);
-
         loadChatMessagesRequest(userName);
 
         userNameTxt.setText(userName);
@@ -73,14 +74,12 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
                 .placeholder(R.drawable.profile_avatar)
                 .into(profileImageView);
 
-        backBtn.setOnClickListener(v-> {
-            onBackPressed();
-        });
+        backBtn.setOnClickListener(v-> onBackPressed());
     }
 
     private void loadChatMessagesRequest(String userName) {
         callAuthGetRequest(ChatActivity.this,
-                UrlConstants.CHAT_MESSAGES + userName,
+                CHAT_MESSAGES + userName +"/",
                 new ApiResultCallback() {
                     @Override
                     public void onAPIResultSuccess(JSONObject jsonObject) {
@@ -164,22 +163,12 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     }
 
     private void initiateChatWebSocketConnection(String userName) {
-        String SERVER_PATH = UrlConstants.INITIATE_CHAT_WS + userName + "/?user_token="
+        String SERVER_PATH = INITIATE_CHAT_WS + userName + "/?user_token="
                 + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(SERVER_PATH).build();
         chatWebSocket = client.newWebSocket(request, new ChatWebSocketListener());
         Log.d(TAG, "ChatWebSocketAddress: " + SERVER_PATH);
-
-    }
-
-    private void initiateGlobalChatWebSocketConnection(String userName) {
-        String SERVER_PATH = UrlConstants.INITIATE_GLOBAL_HAT_WS + userName + "/?user_token="
-                + GlobalVariables.getInstance(ChatActivity.this).getUserToken();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(SERVER_PATH).build();
-        globalChatWebSocket = client.newWebSocket(request, new GlobalChatWebSocketListener());
-        Log.d(TAG, "GlobalChatWebSocketAddress: " + SERVER_PATH);
 
     }
 
@@ -201,11 +190,18 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         sendBtn.setOnClickListener(view -> {
             // Sending messages to respective web socket connections
-            if (inScreen)
-                chatWebSocket.send(messageEdit.getText().toString());
-            else
-                globalChatWebSocket.send(messageEdit.getText().toString());
-            resetMessageEdit();
+            try {
+                JSONObject message = new JSONObject();
+                message.put(TYPE_WS, MESSAGE_ACTION_WS);
+                message.put(CONTENT_WS, messageEdit.getText().toString());
+                //if (inScreen)
+                    chatWebSocket.send(message.toString());
+                //else
+                    //globalChatWebSocket.send(messageEdit.getText().toString());
+                resetMessageEdit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         });
 
@@ -218,9 +214,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             super.onOpen(webSocket, response);
 
-            runOnUiThread(() -> {
-                Log.d(TAG, "ChatWebSocket onOpen: " + response.message());
-            });
+            runOnUiThread(() -> Log.d(TAG, "ChatWebSocket onOpen: " + response.message()));
 
         }
 
@@ -253,54 +247,8 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
             super.onFailure(webSocket, t, response);
             runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show());
+            assert response != null;
             Log.d(TAG, "ChatWebSocket onFailure: " + response.message());
-
-        }
-    }
-
-    private class GlobalChatWebSocketListener extends WebSocketListener {
-
-        @Override
-        public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
-            super.onOpen(webSocket, response);
-
-            runOnUiThread(() -> {
-                Log.d(TAG, "GlobalChatWebSocket onOpen: " + response.message());
-
-            });
-
-        }
-
-        @Override
-        public void onMessage(@NotNull WebSocket webSocket, @NotNull String textResponse) {
-            super.onMessage(webSocket, textResponse);
-
-            runOnUiThread(() -> {
-
-                try {
-                    Log.d(TAG, "GlobalChatWebSocket onMessage: " + textResponse);
-                    JSONObject jsonObject = new JSONObject(textResponse);
-                    if (jsonObject.has(userName))
-                        inScreen = jsonObject.getBoolean(userName);
-                    Log.d(TAG, userName + " " + inScreen);
-                    if (jsonObject.has("text")) {
-                        messageAdapter.addItem(jsonObject);
-                        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            });
-
-        }
-
-        @Override
-        public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @org.jetbrains.annotations.Nullable Response response) {
-            super.onFailure(webSocket, t, response);
-            runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show());
-            Log.d(TAG, "GlobalChatWebSocket onFailure: " + response.message());
 
         }
     }
@@ -309,6 +257,5 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     protected void onDestroy() {
         super.onDestroy();
         chatWebSocket.close(1000, "User exited the chat screen");
-        globalChatWebSocket.close(1000, "User exited the chat screen");
     }
 }

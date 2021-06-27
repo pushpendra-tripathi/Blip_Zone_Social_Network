@@ -54,7 +54,10 @@ public class UrlConstants {
     //WEB_SOCKET_CONSTANTS ---------------------------------------------------------------------------------------------------------------
     public static final String COMMENT_ACTION_WS = "COMMENT";
     public static final String LIKE_ACTION_WS = "LIKE";
+    public static final String MESSAGE_ACTION_WS = "MESSAGE";
+    public static final String POST_ACTION_WS = "POST";
     public static final String POST_ID_WS = "id";
     public static final String COMMENT_CONTENT_WS = "content";
     public static final String TYPE_WS = "type";
+    public static final String CONTENT_WS = "content";
 }

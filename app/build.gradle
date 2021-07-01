@@ -53,17 +53,14 @@ dependencies {
     //image loading and caching library
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //library for round corners image view
-    implementation 'com.makeramen:roundedimageview:2.3.0'
-
     //universal image loader
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5';
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     //firebase dependencies
     implementation platform('com.google.firebase:firebase-bom:28.2.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-perf'
-    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'     //for analytics
+    implementation 'com.google.firebase:firebase-crashlytics'   //for crashlytics
+    implementation 'com.google.firebase:firebase-perf'          //for performance monitoring
+    implementation 'com.google.firebase:firebase-messaging'     //for fcm notifications
 
 }

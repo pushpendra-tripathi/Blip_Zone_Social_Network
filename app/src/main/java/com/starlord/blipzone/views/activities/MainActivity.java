@@ -3,18 +3,32 @@ package com.starlord.blipzone.views.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.starlord.blipzone.R;
+import com.starlord.blipzone.configurations.GlobalVariables;
 import com.starlord.blipzone.views.fragments.AlertFragment;
 import com.starlord.blipzone.views.fragments.HomeFragment;
 import com.starlord.blipzone.views.fragments.ProfileFragment;
 import com.starlord.blipzone.views.fragments.SearchFragment;
+import com.starlord.blipzone.websocket.NotificationsWebSocketConnectionUtil;
+
+import static com.starlord.blipzone.configurations.UrlConstants.INITIATE_CHAT_WS;
 
 public class MainActivity extends AppCompatActivity {
+
+    NotificationsWebSocketConnectionUtil notificationsWebSocketConnectionUtil;
+
+    //close two time back press
+    private long backPressedTime;
+    private final long backPressedOffsetTime = 2000;
+
+    private final String TAG = "MainActivityLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
         initializeViews();
 
+        //Starting the global web socket for notifications.
+        initiateGlobalNotificationWebSocket();
+
+    }
+
+    private void initiateGlobalNotificationWebSocket() {
+        String SERVER_PATH = INITIATE_CHAT_WS +
+                GlobalVariables.getInstance(MainActivity.this).getUserName()
+                + "/?user_token="
+                + GlobalVariables.getInstance(MainActivity.this).getUserToken();
+        GlobalVariables.getInstance(MainActivity.this).setWebSocketUrl(SERVER_PATH);
+        Log.d(TAG, "GlobalNotificationWebSocket address: " + SERVER_PATH);
+        notificationsWebSocketConnectionUtil.startWebSocket(SERVER_PATH);
     }
 
     private void initializeViews() {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        notificationsWebSocketConnectionUtil = NotificationsWebSocketConnectionUtil.getInstance(MainActivity.this);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -71,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
                     .commit();
             return true;
         }
@@ -81,9 +109,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
-            getSupportFragmentManager().popBackStack();
-        else
-            super.onBackPressed();
+        if ((System.currentTimeMillis() - backPressedTime) < backPressedOffsetTime && (System.currentTimeMillis() - backPressedTime) > 0) {
+            finish();
+        } else {
+
+            Toast.makeText(MainActivity.this,
+                    "Tap again to exit."
+                    , Toast.LENGTH_SHORT).show();
+            backPressedTime = System.currentTimeMillis();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notificationsWebSocketConnectionUtil.closeWebSocket(1000, "User exited the app.");
+        notificationsWebSocketConnectionUtil.onDestroy();
     }
 }

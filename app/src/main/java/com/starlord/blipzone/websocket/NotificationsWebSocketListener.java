@@ -15,16 +15,16 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-public class CustomWebSocketListener extends WebSocketListener implements IActivityWebSocket {
-    private static final String TAG = "CustomWebSocketListener";
+public class NotificationsWebSocketListener extends WebSocketListener implements IActivityWebSocket {
+    private final String TAG = "Notifications_WS_Log";
     private Context mContext;
     private boolean isWebSocketConnected;
 
     private OnActivityWebSocketListener onActivityWebsocketListener;
 
-    public CustomWebSocketListener(Context context) {
+    public NotificationsWebSocketListener(Context context) {
         mContext = context;
-        Log.d(TAG, "CustomWebSocketListener: ");
+        Log.d(TAG, "NotificationsWebSocketListener: ");
     }
 
     @Override
@@ -44,11 +44,11 @@ public class CustomWebSocketListener extends WebSocketListener implements IActiv
     @Override
     public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
-        Log.d(TAG, "onFailure: t "+t );
+        Log.d(TAG, "onFailure: t "+ t );
         Log.d(TAG, "onFailure: response "+response);
 
         isWebSocketConnected = false;
-        WebSocketConnectionUtil.getInstance(mContext).startWebSocket(GlobalVariables.getInstance(mContext).getWebSocketUrl());
+        NotificationsWebSocketConnectionUtil.getInstance(mContext).startWebSocket(GlobalVariables.getInstance(mContext).getWebSocketUrl());
     }
 
     @Override

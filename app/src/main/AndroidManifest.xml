@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YourZone"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activities.UserChatListActivity"></activity>
+        <activity android:name=".views.activities.UserChatListActivity" />
         <activity android:name=".views.activities.ChatActivity" />
         <activity android:name=".views.activities.NextActivity" />
         <activity android:name=".views.activities.EditProfileActivity" />
@@ -52,11 +52,20 @@
         <service
             android:name=".services.UploadService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="startservice" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".services.FirebaseCloudMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

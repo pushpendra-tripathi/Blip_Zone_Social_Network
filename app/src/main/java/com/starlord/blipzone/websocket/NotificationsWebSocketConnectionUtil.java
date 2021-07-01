@@ -12,38 +12,38 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
-public class WebSocketConnectionUtil {
-    private static final String TAG = "WebSocketConnectionUtil";
-    public static OkHttpClient okHttpClient;
-    public static WebSocket activityWebSocket;
-    public static CustomWebSocketListener customWebSocketListener;
-    public static Request request;
+public class NotificationsWebSocketConnectionUtil {
+    private final String TAG = "Notifications_WS_ConLog";
+    private OkHttpClient okHttpClient;
+    private WebSocket activityWebSocket;
+    private NotificationsWebSocketListener notificationsWebSocketListener;
+    private Request request;
     @SuppressLint("StaticFieldLeak")
     private static Context mContext;
     @SuppressLint("StaticFieldLeak")
-    private static WebSocketConnectionUtil webSocketConnectionUtil;
+    private static NotificationsWebSocketConnectionUtil notificationsWebSocketConnectionUtil;
 
 
     private final Handler mHandler;
 
 
-    public WebSocketConnectionUtil(Context context) {
-        customWebSocketListener = new CustomWebSocketListener(mContext);
+    public NotificationsWebSocketConnectionUtil(Context context) {
+        notificationsWebSocketListener = new NotificationsWebSocketListener(mContext);
         HandlerThread mHandlerThread = new HandlerThread("HandlerThread");
         mHandlerThread.start();
         mHandler = new Handler(mHandlerThread.getLooper());
     }
 
-    public static WebSocketConnectionUtil getInstance(Context context) {
+    public static NotificationsWebSocketConnectionUtil getInstance(Context context) {
         mContext = context.getApplicationContext();
-        if (webSocketConnectionUtil == null) {
-            synchronized (WebSocketConnectionUtil.class) {
-                if (webSocketConnectionUtil == null) {
-                    webSocketConnectionUtil = new WebSocketConnectionUtil(mContext);
+        if (notificationsWebSocketConnectionUtil == null) {
+            synchronized (NotificationsWebSocketConnectionUtil.class) {
+                if (notificationsWebSocketConnectionUtil == null) {
+                    notificationsWebSocketConnectionUtil = new NotificationsWebSocketConnectionUtil(mContext);
                 }
             }
         }
-        return webSocketConnectionUtil;
+        return notificationsWebSocketConnectionUtil;
     }
 
     public void startWebSocket(String url) {
@@ -56,7 +56,7 @@ public class WebSocketConnectionUtil {
                         //.url(BASE_URL_WS + "/ws/notification/" + GlobalVariables.getInstance(mContext).getWebSocketUserId() + "/?token=" )
                         .url(url)
                         .build();
-                activityWebSocket = okHttpClient.newWebSocket(request, customWebSocketListener);
+                activityWebSocket = okHttpClient.newWebSocket(request, notificationsWebSocketListener);
             }
         }, 1000);
     }
@@ -68,7 +68,7 @@ public class WebSocketConnectionUtil {
     }
 
     public boolean isWebSocketConnected() {
-        return customWebSocketListener.isWebSocketConnected();
+        return notificationsWebSocketListener.isWebSocketConnected();
     }
 
 
@@ -79,15 +79,15 @@ public class WebSocketConnectionUtil {
     }
 
     public void onDestroyCustomWebSocketListener() {
-        webSocketConnectionUtil = null;
+        notificationsWebSocketConnectionUtil = null;
 
         if (mContext != null) {
             mContext = null;
         }
 
-        if (customWebSocketListener != null) {
-            customWebSocketListener.onDestroy();
-            customWebSocketListener = null;
+        if (notificationsWebSocketListener != null) {
+            notificationsWebSocketListener.onDestroy();
+            notificationsWebSocketListener = null;
         }
 
     }

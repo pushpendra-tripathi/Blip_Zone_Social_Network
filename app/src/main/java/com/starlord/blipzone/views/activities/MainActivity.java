@@ -3,12 +3,14 @@ package com.starlord.blipzone.views.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.andrognito.flashbar.Flashbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.starlord.blipzone.R;
 import com.starlord.blipzone.configurations.GlobalVariables;
@@ -18,7 +20,10 @@ import com.starlord.blipzone.views.fragments.ProfileFragment;
 import com.starlord.blipzone.views.fragments.SearchFragment;
 import com.starlord.blipzone.websocket.NotificationsWebSocketConnectionUtil;
 
-import static com.starlord.blipzone.configurations.UrlConstants.INITIATE_CHAT_WS;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.starlord.blipzone.configurations.UrlConstants.NOTIFICATION_WS;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     //close two time back press
     private long backPressedTime;
     private final long backPressedOffsetTime = 2000;
+
+    Flashbar flashbar;
 
     private final String TAG = "MainActivityLog";
 
@@ -43,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initiateGlobalNotificationWebSocket() {
-        String SERVER_PATH = INITIATE_CHAT_WS +
-                GlobalVariables.getInstance(MainActivity.this).getUserName()
+        String SERVER_PATH = NOTIFICATION_WS +
+                GlobalVariables.getInstance(MainActivity.this).getUserId()
                 + "/?user_token="
                 + GlobalVariables.getInstance(MainActivity.this).getUserToken();
         GlobalVariables.getInstance(MainActivity.this).setWebSocketUrl(SERVER_PATH);
@@ -56,7 +63,41 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        notificationsWebSocketConnectionUtil = NotificationsWebSocketConnectionUtil.getInstance(MainActivity.this);
+        notificationsWebSocketConnectionUtil = NotificationsWebSocketConnectionUtil.
+                getInstance(MainActivity.this, (webSocket, text) -> {
+                    runOnUiThread(() ->{
+                        try {
+                            Log.d(TAG, "onMessageReceived: " + text);
+                            JSONObject jsonObject = new JSONObject(text);
+                            JSONObject message = jsonObject.getJSONObject("message");
+                            String title = null;
+                            if (message.getInt("type") == 2)
+                                title = "Like";
+                            else
+                                title = "Comment";
+
+                            flashbar = new Flashbar.Builder(MainActivity.this)
+                                    .gravity(Flashbar.Gravity.TOP)
+                                    .title(title)
+                                    .titleSizeInSp(24)
+                                    .message(message.getString("comment"))
+                                    .backgroundDrawable(R.drawable.bg_gradient)
+                                    .build();
+
+                            flashbar.show();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    flashbar.dismiss();
+                                }
+                            }, 2000);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                });
 
         getSupportFragmentManager()
                 .beginTransaction()

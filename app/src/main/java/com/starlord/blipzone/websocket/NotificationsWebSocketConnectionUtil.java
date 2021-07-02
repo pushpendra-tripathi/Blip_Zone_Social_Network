@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import com.starlord.blipzone.callbacks.OnActivityWebSocketListener;
 import com.starlord.blipzone.configurations.GlobalVariables;
 
 import okhttp3.OkHttpClient;
@@ -27,19 +28,21 @@ public class NotificationsWebSocketConnectionUtil {
     private final Handler mHandler;
 
 
-    public NotificationsWebSocketConnectionUtil(Context context) {
-        notificationsWebSocketListener = new NotificationsWebSocketListener(mContext);
+    public NotificationsWebSocketConnectionUtil(Context context, OnActivityWebSocketListener onActivityWebSocketListener) {
+        notificationsWebSocketListener = new NotificationsWebSocketListener(mContext, onActivityWebSocketListener);
         HandlerThread mHandlerThread = new HandlerThread("HandlerThread");
         mHandlerThread.start();
         mHandler = new Handler(mHandlerThread.getLooper());
     }
 
-    public static NotificationsWebSocketConnectionUtil getInstance(Context context) {
+    public static NotificationsWebSocketConnectionUtil getInstance(Context context,
+                                                                   OnActivityWebSocketListener onActivityWebSocketListener) {
         mContext = context.getApplicationContext();
         if (notificationsWebSocketConnectionUtil == null) {
             synchronized (NotificationsWebSocketConnectionUtil.class) {
                 if (notificationsWebSocketConnectionUtil == null) {
-                    notificationsWebSocketConnectionUtil = new NotificationsWebSocketConnectionUtil(mContext);
+                    notificationsWebSocketConnectionUtil =
+                            new NotificationsWebSocketConnectionUtil(mContext,  onActivityWebSocketListener);
                 }
             }
         }

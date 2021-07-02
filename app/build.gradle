@@ -63,4 +63,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf'          //for performance monitoring
     implementation 'com.google.firebase:firebase-messaging'     //for fcm notifications
 
+
+    // for flash notifications on top
+    implementation 'com.andrognito.flashbar:flashbar:1.0.3'
+
 }

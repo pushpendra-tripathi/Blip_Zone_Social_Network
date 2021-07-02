@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.starlord.blipzone.callbacks.IActivityWebSocket;
+import com.starlord.blipzone.callbacks.OnActivityWebSocketListener;
 import com.starlord.blipzone.configurations.GlobalVariables;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,15 +15,16 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
-public class NotificationsWebSocketListener extends WebSocketListener implements IActivityWebSocket {
+public class NotificationsWebSocketListener extends WebSocketListener {
     private final String TAG = "Notifications_WS_Log";
     private Context mContext;
     private boolean isWebSocketConnected;
 
     private OnActivityWebSocketListener onActivityWebsocketListener;
 
-    public NotificationsWebSocketListener(Context context) {
+    public NotificationsWebSocketListener(Context context, OnActivityWebSocketListener onActivityWebSocketListener) {
         mContext = context;
+        this.onActivityWebsocketListener = onActivityWebSocketListener;
         Log.d(TAG, "NotificationsWebSocketListener: ");
     }
 
@@ -48,16 +49,16 @@ public class NotificationsWebSocketListener extends WebSocketListener implements
         Log.d(TAG, "onFailure: response "+response);
 
         isWebSocketConnected = false;
-        NotificationsWebSocketConnectionUtil.getInstance(mContext).startWebSocket(GlobalVariables.getInstance(mContext).getWebSocketUrl());
+        NotificationsWebSocketConnectionUtil.getInstance(mContext, onActivityWebsocketListener)
+                .startWebSocket(GlobalVariables.getInstance(mContext).getWebSocketUrl());
     }
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         super.onMessage(webSocket, text);
         Log.d(TAG, "onMessage: 1 " + text);
-        if(onActivityWebsocketListener != null) {
+        if(onActivityWebsocketListener != null)
             onActivityWebsocketListener.onMessageReceived(webSocket, text);
-        }
 
     }
 
@@ -81,10 +82,6 @@ public class NotificationsWebSocketListener extends WebSocketListener implements
         return isWebSocketConnected;
     }
 
-    @Override
-    public void SetOnActivityWebSocketListener(OnActivityWebSocketListener onActivityWebsocketListener) {
-        this.onActivityWebsocketListener = onActivityWebsocketListener;
-    }
 
     public void onDestroy(){
         if(onActivityWebsocketListener != null){

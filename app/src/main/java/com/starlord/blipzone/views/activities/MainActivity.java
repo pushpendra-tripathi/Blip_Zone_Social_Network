@@ -64,40 +64,33 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         notificationsWebSocketConnectionUtil = NotificationsWebSocketConnectionUtil.
-                getInstance(MainActivity.this, (webSocket, text) -> {
-                    runOnUiThread(() ->{
-                        try {
-                            Log.d(TAG, "onMessageReceived: " + text);
-                            JSONObject jsonObject = new JSONObject(text);
-                            JSONObject message = jsonObject.getJSONObject("message");
-                            String title = null;
-                            if (message.getInt("type") == 2)
-                                title = "Like";
-                            else
-                                title = "Comment";
+                getInstance(MainActivity.this, (webSocket, text) -> runOnUiThread(() ->{
+                    try {
+                        Log.d(TAG, "onMessageReceived: " + text);
+                        JSONObject jsonObject = new JSONObject(text);
+                        JSONObject message = jsonObject.getJSONObject("message");
+                        String title;
+                        if (message.getInt("type") == 2)
+                            title = "Like";
+                        else
+                            title = "Comment";
 
-                            flashbar = new Flashbar.Builder(MainActivity.this)
-                                    .gravity(Flashbar.Gravity.TOP)
-                                    .title(title)
-                                    .titleSizeInSp(24)
-                                    .message(message.getString("comment"))
-                                    .backgroundDrawable(R.drawable.bg_gradient)
-                                    .build();
+                        flashbar = new Flashbar.Builder(MainActivity.this)
+                                .gravity(Flashbar.Gravity.TOP)
+                                .title(title)
+                                .titleSizeInSp(24)
+                                .message(message.getString("comment"))
+                                .backgroundDrawable(R.drawable.bg_gradient)
+                                .build();
 
-                            flashbar.show();
+                        flashbar.show();
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    flashbar.dismiss();
-                                }
-                            }, 2000);
+                        new Handler().postDelayed(() -> flashbar.dismiss(), 2000);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }));
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -165,6 +158,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         notificationsWebSocketConnectionUtil.closeWebSocket(1000, "User exited the app.");
-        notificationsWebSocketConnectionUtil.onDestroy();
+        notificationsWebSocketConnectionUtil.onDestroyNotificationsWebSocketListener();
     }
 }

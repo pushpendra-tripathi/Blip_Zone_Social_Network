@@ -81,7 +81,7 @@ public class NotificationsWebSocketConnectionUtil {
         }
     }
 
-    public void onDestroyCustomWebSocketListener() {
+    public void onDestroyNotificationsWebSocketListener() {
         notificationsWebSocketConnectionUtil = null;
 
         if (mContext != null) {
